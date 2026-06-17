@@ -71,23 +71,9 @@ function RedLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function DarkLabel({ children }: { children: React.ReactNode }) {
+function Divider() {
   return (
-    <span className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.3em] uppercase text-red-400 border-b-2 border-red-500/50 pb-1">
-      {children}
-    </span>
-  );
-}
-
-function Divider({ dark = false }: { dark?: boolean }) {
-  return (
-    <div
-      className={`w-full h-px ${
-        dark
-          ? "bg-gradient-to-r from-transparent via-white/10 to-transparent"
-          : "bg-gradient-to-r from-transparent via-gray-200 to-transparent"
-      }`}
-    />
+    <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
   );
 }
 
@@ -272,12 +258,9 @@ function HeroSection({ lang }: { lang: Lang }) {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-white">
-      {/* Subtle grid background */}
       <div className="absolute inset-0 grid-lines" />
-      {/* Red glow top */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-radial from-red-600/6 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-radial from-red-600/5 via-transparent to-transparent pointer-events-none" />
 
-      {/* Speaker SVG — very faint watermark */}
       <div className="absolute inset-0 flex items-center justify-center opacity-[0.025] pointer-events-none select-none">
         <SpeakerDiagramSVG />
       </div>
@@ -293,7 +276,7 @@ function HeroSection({ lang }: { lang: Lang }) {
 
         {/* Headline */}
         <FadeUp delay={0.15}>
-          <h1 className="font-fraunces font-bold leading-[1.05] tracking-tight mb-8">
+          <h1 className="font-bold leading-[1.05] tracking-tight mb-8">
             <span className="block text-gray-900 text-5xl sm:text-7xl lg:text-8xl xl:text-[90px]">
               {t.line1}
             </span>
@@ -337,12 +320,8 @@ function HeroSection({ lang }: { lang: Lang }) {
               { value: "6", label: t.stat4 },
             ].map((s) => (
               <div key={s.label} className="bg-white px-6 py-5 text-center">
-                <p className="font-fraunces text-3xl font-bold text-red-600">
-                  {s.value}
-                </p>
-                <p className="text-gray-500 text-xs tracking-wide mt-1">
-                  {s.label}
-                </p>
+                <p className="text-3xl font-bold text-red-600">{s.value}</p>
+                <p className="text-gray-500 text-xs tracking-wide mt-1">{s.label}</p>
               </div>
             ))}
           </div>
@@ -358,9 +337,7 @@ function HeroSection({ lang }: { lang: Lang }) {
           document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
         }
       >
-        <span className="text-gray-300 text-[10px] tracking-widest uppercase">
-          Scroll
-        </span>
+        <span className="text-gray-300 text-[10px] tracking-widest uppercase">Scroll</span>
         <ChevronDown className="size-5 text-gray-300" />
       </motion.div>
     </section>
@@ -372,17 +349,17 @@ function HeroSection({ lang }: { lang: Lang }) {
 function SpeakerDiagramSVG() {
   return (
     <svg width="700" height="700" viewBox="0 0 700 700" fill="none">
-      <rect x="50" y="200" width="600" height="300" rx="12" stroke="#DC2626" strokeWidth="1.5" />
-      <circle cx="200" cy="350" r="120" stroke="#DC2626" strokeWidth="1" />
-      <circle cx="200" cy="350" r="90" stroke="#DC2626" strokeWidth="0.8" />
-      <circle cx="200" cy="350" r="55" stroke="#DC2626" strokeWidth="0.8" />
-      <circle cx="200" cy="350" r="20" stroke="#DC2626" strokeWidth="1.5" fill="#DC2626" fillOpacity="0.06" />
+      <rect x="50" y="200" width="600" height="300" rx="12" stroke="#E8001D" strokeWidth="1.5" />
+      <circle cx="200" cy="350" r="120" stroke="#E8001D" strokeWidth="1" />
+      <circle cx="200" cy="350" r="90" stroke="#E8001D" strokeWidth="0.8" />
+      <circle cx="200" cy="350" r="55" stroke="#E8001D" strokeWidth="0.8" />
+      <circle cx="200" cy="350" r="20" stroke="#E8001D" strokeWidth="1.5" fill="#E8001D" fillOpacity="0.06" />
       <circle cx="420" cy="350" r="60" stroke="#111827" strokeWidth="1" />
       <circle cx="420" cy="350" r="35" stroke="#111827" strokeWidth="0.8" />
       <circle cx="420" cy="350" r="12" stroke="#111827" strokeWidth="1.5" fill="#111827" fillOpacity="0.04" />
-      <circle cx="570" cy="350" r="45" stroke="#DC2626" strokeWidth="0.8" />
-      <circle cx="570" cy="350" r="22" stroke="#DC2626" strokeWidth="0.8" />
-      <circle cx="570" cy="350" r="8" stroke="#DC2626" strokeWidth="1.5" fill="#DC2626" fillOpacity="0.06" />
+      <circle cx="570" cy="350" r="45" stroke="#E8001D" strokeWidth="0.8" />
+      <circle cx="570" cy="350" r="22" stroke="#E8001D" strokeWidth="0.8" />
+      <circle cx="570" cy="350" r="8" stroke="#E8001D" strokeWidth="1.5" fill="#E8001D" fillOpacity="0.06" />
       <line x1="50" y1="460" x2="650" y2="460" stroke="#E5E7EB" strokeWidth="1" />
       <rect x="310" y="230" width="60" height="40" rx="3" stroke="#111827" strokeWidth="1" fill="#111827" fillOpacity="0.03" />
     </svg>
@@ -400,7 +377,7 @@ function CompanySection({ lang }: { lang: Lang }) {
         <div className="grid lg:grid-cols-2 gap-16 items-start mb-20">
           <FadeUp>
             <RedLabel>{t.label}</RedLabel>
-            <h2 className="mt-6 font-fraunces text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
+            <h2 className="mt-6 text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
               {t.heading}
               <br />
               <span className="text-gradient-red">{t.headingAccent}</span>
@@ -422,9 +399,7 @@ function CompanySection({ lang }: { lang: Lang }) {
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-10 pt-14 border-t border-gray-100">
           {t.stats.map((s) => (
             <div key={s.label} className="text-center">
-              <p className="font-fraunces text-5xl lg:text-6xl font-bold text-gray-900 leading-none">
-                {s.value}
-              </p>
+              <p className="text-5xl lg:text-6xl font-bold text-gray-900 leading-none">{s.value}</p>
               <p className="text-gray-900 text-sm font-semibold mt-3">{s.label}</p>
               <p className="text-gray-400 text-xs mt-1">{s.sub}</p>
             </div>
@@ -438,9 +413,9 @@ function CompanySection({ lang }: { lang: Lang }) {
 /* ─────────────── BUSINESS AREAS ─────────────── */
 
 const BUSINESS_ICONS = [
-  { icon: <Volume2 className="size-8" />, color: "#DC2626" },
+  { icon: <Volume2 className="size-8" />, color: "#E8001D" },
   { icon: <Headphones className="size-8" />, color: "#111827" },
-  { icon: <Wrench className="size-8" />, color: "#DC2626" },
+  { icon: <Wrench className="size-8" />, color: "#E8001D" },
   { icon: <Boxes className="size-8" />, color: "#111827" },
 ];
 
@@ -455,7 +430,7 @@ function BusinessSection({ lang }: { lang: Lang }) {
             <RedLabel>{t.label}</RedLabel>
           </FadeUp>
           <FadeUp delay={0.1} className="mt-6">
-            <h2 className="font-fraunces text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
               {t.heading}
             </h2>
           </FadeUp>
@@ -468,21 +443,14 @@ function BusinessSection({ lang }: { lang: Lang }) {
           {t.areas.map((area, i) => (
             <FadeUp key={area.label} delay={i * 0.08}>
               <div className="group relative bg-white rounded-xl border border-gray-100 p-8 lg:p-10 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                {/* Hover top accent line */}
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-red-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-
                 <div className="flex items-start justify-between mb-6">
                   <span style={{ color: BUSINESS_ICONS[i].color }}>{BUSINESS_ICONS[i].icon}</span>
-                  <span className="text-xs font-mono text-gray-200 font-bold text-lg">
-                    {area.label}
-                  </span>
+                  <span className="text-xs font-mono text-gray-200 font-bold text-lg">{area.label}</span>
                 </div>
-                <h3 className="font-fraunces text-2xl font-bold text-gray-900 mb-1">
-                  {area.title}
-                </h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-1">{area.title}</h3>
                 <p className="text-sm text-gray-400 mb-4">{area.titleSub}</p>
                 <p className="text-gray-600 text-sm leading-relaxed">{area.desc}</p>
-
                 <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-red-600">
                   <span>{t.more}</span>
                   <ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -554,9 +522,7 @@ function TechnologySection({ lang }: { lang: Lang }) {
             <RedLabel>{t.label}</RedLabel>
           </FadeUp>
           <FadeUp delay={0.1} className="mt-6">
-            <h2 className="font-fraunces text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-              {t.heading}
-            </h2>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">{t.heading}</h2>
           </FadeUp>
           <FadeUp delay={0.2} className="mt-4">
             <p className="text-gray-500 text-lg leading-relaxed">{t.subtitle}</p>
@@ -567,13 +533,11 @@ function TechnologySection({ lang }: { lang: Lang }) {
           {TECH_CARDS.map((card, i) => (
             <FadeUp key={card.badge} delay={i * 0.07}>
               <div className="group relative h-full bg-white rounded-xl border border-gray-100 p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                {/* Top line accent on hover */}
                 <div
                   className={`absolute top-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left ${
                     card.accent === "red" ? "bg-red-600" : "bg-gray-900"
                   }`}
                 />
-
                 <span
                   className={`inline-flex items-center gap-1.5 text-[10px] font-bold tracking-[0.2em] uppercase px-2.5 py-1 rounded mb-5 border ${
                     card.accent === "red"
@@ -586,10 +550,7 @@ function TechnologySection({ lang }: { lang: Lang }) {
                   </span>
                   {card.badge}
                 </span>
-
-                <h3 className="font-fraunces text-xl font-semibold text-gray-900 mb-3 leading-snug">
-                  {card.title}
-                </h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3 leading-snug">{card.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{card.body}</p>
               </div>
             </FadeUp>
@@ -600,7 +561,7 @@ function TechnologySection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ─────────────── GLOBAL OPERATIONS (dark) ─────────────── */
+/* ─────────────── GLOBAL OPERATIONS (white) ─────────────── */
 
 const LOCATIONS = [
   { city: "수원, 한국", role: "HQ · 금형사업장", type: "hq" },
@@ -616,27 +577,25 @@ function GlobalSection({ lang }: { lang: Lang }) {
   const t = translations[lang].global;
 
   return (
-    <section id="operations" className="relative bg-gray-950 py-24 lg:py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-radial from-red-900/10 via-transparent to-transparent" />
-
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
+    <section id="operations" className="relative bg-white py-24 lg:py-32 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left */}
           <div>
             <FadeUp>
-              <DarkLabel>
+              <RedLabel>
                 <Globe2 className="size-3" />
                 {t.label}
-              </DarkLabel>
+              </RedLabel>
             </FadeUp>
             <FadeUp delay={0.1} className="mt-6">
-              <h2 className="font-fraunces text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight">
+              <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
                 {t.heading}
                 <span className="block text-gradient-red">{t.headingAccent}</span>
               </h2>
             </FadeUp>
             <FadeUp delay={0.2} className="mt-6">
-              <p className="text-gray-400 text-lg leading-relaxed">{t.subtitle}</p>
+              <p className="text-gray-600 text-lg leading-relaxed">{t.subtitle}</p>
             </FadeUp>
 
             <FadeUp delay={0.3} className="mt-10 space-y-3">
@@ -652,13 +611,13 @@ function GlobalSection({ lang }: { lang: Lang }) {
                   <div
                     className={`w-2 h-2 rounded-full flex-shrink-0 ${
                       loc.type === "hq"
-                        ? "bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.8)]"
-                        : "bg-white/40"
+                        ? "bg-red-600 shadow-[0_0_8px_rgba(232,0,29,0.7)]"
+                        : "bg-gray-300"
                     }`}
                   />
-                  <div className="flex-1 flex items-baseline justify-between border-b border-white/10 pb-2">
-                    <span className="text-white text-sm font-medium">{loc.city}</span>
-                    <span className="text-gray-500 text-xs">{loc.role}</span>
+                  <div className="flex-1 flex items-baseline justify-between border-b border-gray-100 pb-2">
+                    <span className="text-gray-900 text-sm font-medium">{loc.city}</span>
+                    <span className="text-gray-400 text-xs">{loc.role}</span>
                   </div>
                 </motion.div>
               ))}
@@ -675,7 +634,7 @@ function GlobalSection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ─────────────── MANUFACTURING PROCESS (dark) ─────────────── */
+/* ─────────────── MANUFACTURING PROCESS (light gray) ─────────────── */
 
 const TIMELINE_STEPS = [
   {
@@ -720,29 +679,29 @@ function ProcessSection({ lang }: { lang: Lang }) {
   const t = translations[lang].process;
 
   return (
-    <section className="relative bg-gray-950 py-24 lg:py-32 overflow-hidden">
+    <section className="relative bg-gray-50 py-24 lg:py-32 overflow-hidden">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Sticky left */}
           <div className="lg:sticky lg:top-32">
             <FadeUp>
-              <DarkLabel>
+              <RedLabel>
                 <Factory className="size-3" />
                 {t.label}
-              </DarkLabel>
+              </RedLabel>
             </FadeUp>
             <FadeUp delay={0.1} className="mt-6">
-              <h2 className="font-fraunces text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight">
+              <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
                 {t.heading}
                 <span className="block text-gradient-red">{t.headingAccent}</span>
               </h2>
             </FadeUp>
             <FadeUp delay={0.2} className="mt-6">
-              <p className="text-gray-400 text-lg leading-relaxed">{t.subtitle}</p>
+              <p className="text-gray-600 text-lg leading-relaxed">{t.subtitle}</p>
             </FadeUp>
             <FadeUp delay={0.3} className="mt-8">
               <a href="#contact">
-                <button className="inline-flex items-center gap-2 text-sm font-bold text-white border border-white/20 hover:border-red-500 hover:text-red-400 px-6 py-3 rounded transition-colors">
+                <button className="inline-flex items-center gap-2 text-sm font-bold text-gray-700 border border-gray-200 hover:border-red-500 hover:text-red-600 px-6 py-3 rounded transition-colors">
                   {t.cta}
                   <ArrowUpRight className="size-4" />
                 </button>
@@ -752,20 +711,20 @@ function ProcessSection({ lang }: { lang: Lang }) {
 
           {/* Steps */}
           <div className="relative">
-            <div className="absolute left-5 top-4 bottom-4 w-px bg-gradient-to-b from-red-600/60 via-white/10 to-transparent" />
+            <div className="absolute left-5 top-4 bottom-4 w-px bg-gradient-to-b from-red-600/50 via-gray-200 to-transparent" />
             <div className="space-y-0">
               {TIMELINE_STEPS.map((step, i) => (
                 <FadeUp key={step.step} delay={i * 0.08}>
                   <div className="relative pl-14 pb-10 group">
-                    <div className="absolute left-0 top-0 w-10 h-10 rounded-lg bg-gray-900 border border-white/10 group-hover:border-red-500/50 flex items-center justify-center transition-colors z-10">
-                      <span className="text-red-500">{step.icon}</span>
+                    <div className="absolute left-0 top-0 w-10 h-10 rounded-lg bg-white border border-gray-200 group-hover:border-red-400 flex items-center justify-center transition-colors z-10 shadow-sm">
+                      <span className="text-red-600">{step.icon}</span>
                     </div>
-                    <div className="bg-gray-900 border border-white/8 rounded-lg p-5 group-hover:border-white/15 transition-all">
+                    <div className="bg-white border border-gray-100 rounded-lg p-5 group-hover:border-gray-200 group-hover:shadow-md transition-all shadow-sm">
                       <div className="flex items-baseline gap-3 mb-2">
-                        <span className="text-xs font-mono text-red-600/70 tracking-wider">{step.step}</span>
-                        <h3 className="font-fraunces text-lg font-semibold text-white">{step.title}</h3>
+                        <span className="text-xs font-mono text-red-400 tracking-wider">{step.step}</span>
+                        <h3 className="text-lg font-semibold text-gray-900">{step.title}</h3>
                       </div>
-                      <p className="text-gray-400 text-sm leading-relaxed">{step.body}</p>
+                      <p className="text-gray-500 text-sm leading-relaxed">{step.body}</p>
                     </div>
                   </div>
                 </FadeUp>
@@ -785,7 +744,7 @@ const CLIENT_LOGOS = [
     name: "Samsung Electronics",
     svg: (
       <svg width="160" height="40" viewBox="0 0 160 40" fill="none">
-        <text x="0" y="30" fontFamily="var(--font-inter),system-ui" fontSize="22" fontWeight="700" letterSpacing="-0.5" fill="#9CA3AF">SAMSUNG</text>
+        <text x="0" y="30" fontFamily="var(--font-noto),system-ui" fontSize="22" fontWeight="700" letterSpacing="-0.5" fill="#9CA3AF">SAMSUNG</text>
       </svg>
     ),
   },
@@ -793,7 +752,7 @@ const CLIENT_LOGOS = [
     name: "LG Electronics",
     svg: (
       <svg width="100" height="40" viewBox="0 0 100 40" fill="none">
-        <text x="0" y="30" fontFamily="var(--font-inter),system-ui" fontSize="26" fontWeight="700" letterSpacing="2" fill="#9CA3AF">LG</text>
+        <text x="0" y="30" fontFamily="var(--font-noto),system-ui" fontSize="26" fontWeight="700" letterSpacing="2" fill="#9CA3AF">LG</text>
       </svg>
     ),
   },
@@ -801,7 +760,7 @@ const CLIENT_LOGOS = [
     name: "SONY",
     svg: (
       <svg width="120" height="40" viewBox="0 0 120 40" fill="none">
-        <text x="0" y="30" fontFamily="var(--font-inter),system-ui" fontSize="24" fontWeight="300" letterSpacing="6" fill="#9CA3AF">SONY</text>
+        <text x="0" y="30" fontFamily="var(--font-noto),system-ui" fontSize="24" fontWeight="300" letterSpacing="6" fill="#9CA3AF">SONY</text>
       </svg>
     ),
   },
@@ -809,7 +768,7 @@ const CLIENT_LOGOS = [
     name: "Harman Kardon",
     svg: (
       <svg width="200" height="40" viewBox="0 0 200 40" fill="none">
-        <text x="0" y="28" fontFamily="var(--font-inter),system-ui" fontSize="16" fontWeight="400" letterSpacing="3" fill="#9CA3AF">HARMAN KARDON</text>
+        <text x="0" y="28" fontFamily="var(--font-noto),system-ui" fontSize="16" fontWeight="400" letterSpacing="3" fill="#9CA3AF">HARMAN KARDON</text>
       </svg>
     ),
   },
@@ -817,7 +776,7 @@ const CLIENT_LOGOS = [
     name: "JBL",
     svg: (
       <svg width="80" height="40" viewBox="0 0 80 40" fill="none">
-        <text x="0" y="32" fontFamily="var(--font-inter),system-ui" fontSize="32" fontWeight="900" letterSpacing="-1" fill="#9CA3AF">JBL</text>
+        <text x="0" y="32" fontFamily="var(--font-noto),system-ui" fontSize="32" fontWeight="900" letterSpacing="-1" fill="#9CA3AF">JBL</text>
       </svg>
     ),
   },
@@ -825,7 +784,7 @@ const CLIENT_LOGOS = [
     name: "Panasonic",
     svg: (
       <svg width="170" height="40" viewBox="0 0 170 40" fill="none">
-        <text x="0" y="29" fontFamily="var(--font-inter),system-ui" fontSize="20" fontWeight="500" letterSpacing="4" fill="#9CA3AF">Panasonic</text>
+        <text x="0" y="29" fontFamily="var(--font-noto),system-ui" fontSize="20" fontWeight="500" letterSpacing="4" fill="#9CA3AF">Panasonic</text>
       </svg>
     ),
   },
@@ -833,7 +792,7 @@ const CLIENT_LOGOS = [
     name: "HP",
     svg: (
       <svg width="60" height="40" viewBox="0 0 60 40" fill="none">
-        <text x="0" y="32" fontFamily="var(--font-inter),system-ui" fontSize="30" fontWeight="800" fill="#9CA3AF">hp</text>
+        <text x="0" y="32" fontFamily="var(--font-noto),system-ui" fontSize="30" fontWeight="800" fill="#9CA3AF">hp</text>
       </svg>
     ),
   },
@@ -841,7 +800,7 @@ const CLIENT_LOGOS = [
     name: "Dell",
     svg: (
       <svg width="90" height="40" viewBox="0 0 90 40" fill="none">
-        <text x="0" y="30" fontFamily="var(--font-inter),system-ui" fontSize="22" fontWeight="400" letterSpacing="2" fill="#9CA3AF">DELL</text>
+        <text x="0" y="30" fontFamily="var(--font-noto),system-ui" fontSize="22" fontWeight="400" letterSpacing="2" fill="#9CA3AF">DELL</text>
       </svg>
     ),
   },
@@ -858,7 +817,7 @@ function ClientsSection({ lang }: { lang: Lang }) {
             <RedLabel>{t.label}</RedLabel>
           </FadeUp>
           <FadeUp delay={0.1} className="mt-6">
-            <h2 className="font-fraunces text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
               {t.heading}
               <span className="block text-gradient-red">{t.headingAccent}</span>
             </h2>
@@ -900,7 +859,7 @@ function ClientsSection({ lang }: { lang: Lang }) {
         <FadeUp delay={0.4} className="mt-14 grid grid-cols-3 gap-6 max-w-xl mx-auto text-center">
           {t.stats.map((item) => (
             <div key={item.label} className="border border-gray-100 rounded-xl p-5">
-              <p className="font-fraunces text-2xl font-bold text-red-600">{item.value}</p>
+              <p className="text-2xl font-bold text-red-600">{item.value}</p>
               <p className="text-gray-500 text-xs mt-1">{item.label}</p>
             </div>
           ))}
@@ -917,16 +876,11 @@ function CTAStrip({ lang }: { lang: Lang }) {
 
   return (
     <div className="relative bg-red-600 py-20 overflow-hidden">
-      {/* Subtle pattern */}
       <div className="absolute inset-0 grid-lines opacity-10" />
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10 text-center">
         <FadeUp>
-          <p className="text-white/70 text-[11px] font-bold tracking-[0.35em] uppercase mb-5">
-            {t.label}
-          </p>
-          <h2 className="font-fraunces text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            {t.heading}
-          </h2>
+          <p className="text-white/70 text-[11px] font-bold tracking-[0.35em] uppercase mb-5">{t.label}</p>
+          <h2 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">{t.heading}</h2>
           <p className="text-white/70 text-lg mb-10 max-w-xl mx-auto">{t.subtitle}</p>
           <a href="#contact">
             <button className="inline-flex items-center gap-2 text-sm font-bold text-red-600 bg-white hover:bg-gray-50 px-8 py-4 rounded transition-colors shadow-xl">
@@ -940,7 +894,7 @@ function CTAStrip({ lang }: { lang: Lang }) {
   );
 }
 
-/* ─────────────── CONTACT (dark) ─────────────── */
+/* ─────────────── CONTACT (white) ─────────────── */
 
 function FormField({
   label,
@@ -959,7 +913,7 @@ function FormField({
     <div>
       <label
         htmlFor={id}
-        className="block text-gray-300 text-xs font-semibold tracking-widest uppercase mb-2"
+        className="block text-gray-600 text-xs font-semibold tracking-widest uppercase mb-2"
       >
         {label}
       </label>
@@ -969,7 +923,7 @@ function FormField({
         type={type}
         placeholder={placeholder}
         required={required}
-        className="w-full bg-gray-900 border border-white/10 text-white text-sm rounded-lg px-4 py-3 focus:outline-none focus:border-red-500 transition-colors placeholder:text-gray-600"
+        className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg px-4 py-3 focus:outline-none focus:border-red-500 transition-colors placeholder:text-gray-400"
       />
     </div>
   );
@@ -986,28 +940,28 @@ function ContactSection({ lang }: { lang: Lang }) {
   }
 
   return (
-    <section id="contact" className="relative bg-gray-950 py-24 lg:py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-radial from-red-900/8 via-transparent to-transparent" />
+    <section id="contact" className="relative bg-white py-24 lg:py-32 overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-gradient-radial from-red-50 via-transparent to-transparent pointer-events-none" />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left */}
           <div>
             <FadeUp>
-              <DarkLabel>
+              <RedLabel>
                 <Shield className="size-3" />
                 {t.label}
-              </DarkLabel>
+              </RedLabel>
             </FadeUp>
             <FadeUp delay={0.1} className="mt-6">
-              <h2 className="font-fraunces text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight">
+              <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
                 {t.heading}
                 <span className="block text-gradient-red">{t.headingAccent}</span>
                 {t.headingEnd}
               </h2>
             </FadeUp>
             <FadeUp delay={0.2} className="mt-6">
-              <p className="text-gray-400 text-lg leading-relaxed">{t.subtitle}</p>
+              <p className="text-gray-600 text-lg leading-relaxed">{t.subtitle}</p>
             </FadeUp>
 
             <FadeUp delay={0.3} className="mt-10 space-y-4">
@@ -1016,37 +970,33 @@ function ContactSection({ lang }: { lang: Lang }) {
                 { icon: <Phone className="size-4" />, label: "031-493-9415" },
                 { icon: <MapPin className="size-4" />, label: "수원시 권선구 고색동, 경기도" },
               ].map((item) => (
-                <div key={item.label} className="flex items-center gap-3 text-gray-400">
-                  <span className="text-red-500">{item.icon}</span>
+                <div key={item.label} className="flex items-center gap-3 text-gray-600">
+                  <span className="text-red-600">{item.icon}</span>
                   <span className="text-sm">{item.label}</span>
                 </div>
               ))}
             </FadeUp>
 
-            <FadeUp delay={0.4} className="mt-10 p-5 border border-red-900/40 bg-red-900/10 rounded-lg">
-              <p className="text-xs text-red-400 font-bold tracking-widest uppercase mb-2">NDA Policy</p>
-              <p className="text-gray-400 text-sm leading-relaxed">{t.ndaBox}</p>
+            <FadeUp delay={0.4} className="mt-10 p-5 border border-red-200 bg-red-50 rounded-lg">
+              <p className="text-xs text-red-600 font-bold tracking-widest uppercase mb-2">NDA Policy</p>
+              <p className="text-gray-600 text-sm leading-relaxed">{t.ndaBox}</p>
             </FadeUp>
           </div>
 
           {/* Right: form */}
           <FadeUp delay={0.2}>
             {submitted ? (
-              <div className="flex flex-col items-center justify-center text-center py-20 bg-gray-900 border border-white/10 rounded-xl p-8">
-                <div className="w-16 h-16 rounded-full border border-red-500/40 flex items-center justify-center mb-6">
-                  <BadgeCheck className="size-7 text-red-500" />
+              <div className="flex flex-col items-center justify-center text-center py-20 bg-gray-50 border border-gray-100 rounded-xl p-8">
+                <div className="w-16 h-16 rounded-full border border-red-200 flex items-center justify-center mb-6">
+                  <BadgeCheck className="size-7 text-red-600" />
                 </div>
-                <h3 className="font-fraunces text-2xl font-bold text-white mb-3">
-                  {t.form.successTitle}
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
-                  {t.form.successBody}
-                </p>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">{t.form.successTitle}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed max-w-sm">{t.form.successBody}</p>
               </div>
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="bg-gray-900 border border-white/10 rounded-xl p-7 space-y-5"
+                className="bg-white border border-gray-100 rounded-xl p-7 space-y-5 shadow-sm"
               >
                 <div className="grid sm:grid-cols-2 gap-4">
                   <FormField label={t.form.firstName} id="fname" placeholder="길동" required />
@@ -1057,11 +1007,11 @@ function ContactSection({ lang }: { lang: Lang }) {
                 <FormField label={t.form.phone} id="phone" type="tel" placeholder="+82 10 1234 5678" />
 
                 <div>
-                  <label className="block text-gray-300 text-xs font-semibold tracking-widest uppercase mb-2">
+                  <label className="block text-gray-600 text-xs font-semibold tracking-widest uppercase mb-2">
                     {t.form.category}
                   </label>
                   <select
-                    className="w-full bg-gray-900 border border-white/10 text-gray-400 text-sm rounded-lg px-4 py-3 focus:outline-none focus:border-red-500 transition-colors"
+                    className="w-full bg-white border border-gray-200 text-gray-700 text-sm rounded-lg px-4 py-3 focus:outline-none focus:border-red-500 transition-colors"
                     required
                   >
                     <option value="">{t.form.categoryPlaceholder}</option>
@@ -1075,13 +1025,13 @@ function ContactSection({ lang }: { lang: Lang }) {
                 </div>
 
                 <div>
-                  <label className="block text-gray-300 text-xs font-semibold tracking-widest uppercase mb-2">
+                  <label className="block text-gray-600 text-xs font-semibold tracking-widest uppercase mb-2">
                     {t.form.brief}
                   </label>
                   <textarea
                     rows={4}
                     placeholder={t.form.briefPlaceholder}
-                    className="w-full bg-gray-900 border border-white/10 text-white text-sm rounded-lg px-4 py-3 focus:outline-none focus:border-red-500 transition-colors resize-none placeholder:text-gray-600"
+                    className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg px-4 py-3 focus:outline-none focus:border-red-500 transition-colors resize-none placeholder:text-gray-400"
                     required
                   />
                 </div>
@@ -1095,16 +1045,14 @@ function ContactSection({ lang }: { lang: Lang }) {
                       className="peer sr-only"
                       required
                     />
-                    <div className="w-4 h-4 border border-white/20 rounded bg-gray-900 peer-checked:border-red-500 peer-checked:bg-red-500/20 transition-colors" />
+                    <div className="w-4 h-4 border border-gray-300 rounded bg-white peer-checked:border-red-500 peer-checked:bg-red-50 transition-colors" />
                     {ndaAccepted && (
-                      <svg className="absolute inset-0 m-auto w-2.5 h-2.5 text-red-500" viewBox="0 0 12 12" fill="none">
+                      <svg className="absolute inset-0 m-auto w-2.5 h-2.5 text-red-600" viewBox="0 0 12 12" fill="none">
                         <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     )}
                   </div>
-                  <span className="text-gray-400 text-xs leading-relaxed">
-                    {t.form.ndaCheck}
-                  </span>
+                  <span className="text-gray-500 text-xs leading-relaxed">{t.form.ndaCheck}</span>
                 </label>
 
                 <button
@@ -1123,14 +1071,14 @@ function ContactSection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ─────────────── FOOTER ─────────────── */
+/* ─────────────── FOOTER (charcoal) ─────────────── */
 
 function Footer({ lang }: { lang: Lang }) {
   const t = translations[lang].footer;
   const nav = translations[lang].nav;
 
   return (
-    <footer className="relative bg-gray-950 border-t border-white/8 py-14">
+    <footer className="relative bg-charcoal border-t border-white/8 py-14">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
@@ -1195,9 +1143,7 @@ function Footer({ lang }: { lang: Lang }) {
         </div>
 
         <div className="pt-8 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 text-xs">
-            © {new Date().getFullYear()} {t.copyright}
-          </p>
+          <p className="text-gray-500 text-xs">© {new Date().getFullYear()} {t.copyright}</p>
           <p className="text-gray-600 text-xs tracking-widest uppercase">{t.tagline}</p>
         </div>
       </div>
@@ -1220,9 +1166,9 @@ export default function Page() {
         <TechnologySection lang={lang} />
         <Divider />
         <GlobalSection lang={lang} />
-        <Divider dark />
+        <Divider />
         <ProcessSection lang={lang} />
-        <Divider dark />
+        <Divider />
         <ClientsSection lang={lang} />
         <CTAStrip lang={lang} />
         <ContactSection lang={lang} />

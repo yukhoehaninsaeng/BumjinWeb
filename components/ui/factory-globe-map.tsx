@@ -139,7 +139,7 @@ function GlobeAutoRotate() {
 
     const animate = () => {
       if (!userInteracting) {
-        map.rotateTo(map.getBearing() - 0.08, { duration: 0 });
+        map.rotateTo(map.getBearing() + 0.08, { duration: 0 });
       }
       animId = requestAnimationFrame(animate);
     };
@@ -195,7 +195,7 @@ export function FactoryGlobeMap({ mapHint }: { mapHint?: string }) {
           data={ARCS}
           curvature={0.25}
           paint={{
-            "line-color": "#DC2626",
+            "line-color": "#E8001D",
             "line-width": 1.5,
             "line-opacity": 0.6,
             "line-dasharray": [3, 3],

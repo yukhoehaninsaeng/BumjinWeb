@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 
-const fraunces = Fraunces({
+const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap",
-  axes: ["SOFT", "WONK"],
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700", "900"],
+  variable: "--font-noto",
   display: "swap",
 });
 
@@ -40,12 +34,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${fraunces.variable} ${inter.variable} dark`}
-      suppressHydrationWarning
-    >
-      <body className="bg-midnight text-cream font-sans antialiased">
+    <html lang="ko" className={notoSansKR.variable} suppressHydrationWarning>
+      <body className="bg-white text-gray-900 font-sans antialiased">
         {children}
       </body>
     </html>

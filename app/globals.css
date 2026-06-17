@@ -6,9 +6,9 @@
   --foreground: #111827;
   --background: #ffffff;
 
-  /* Red primary accent */
-  --primary: #DC2626;
-  --primary-light: #FEE2E2;
+  /* Company red */
+  --primary: #E8001D;
+  --primary-light: #FFF0F0;
 
   /* MapLibre popup theming */
   --popover: #ffffff;
@@ -16,7 +16,7 @@
   --border: #E5E7EB;
   --muted-foreground: #6B7280;
   --accent: #F3F4F6;
-  --ring: #DC2626;
+  --ring: #E8001D;
 }
 
 * {
@@ -46,40 +46,39 @@ body {
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #DC2626;
+  background: #E8001D;
 }
 
 /* Selection */
 ::selection {
-  background-color: rgba(220, 38, 38, 0.15);
+  background-color: rgba(232, 0, 29, 0.12);
   color: #111827;
 }
 
 /* Red gradient text */
 .text-gradient-red {
-  background: linear-gradient(135deg, #DC2626 0%, #EF4444 50%, #B91C1C 100%);
+  background: linear-gradient(135deg, #E8001D 0%, #FF3040 50%, #C50019 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Gold gradient text (kept for compatibility) */
+/* Legacy aliases */
 .text-gradient-gold {
-  background: linear-gradient(135deg, #DC2626 0%, #EF4444 50%, #B91C1C 100%);
+  background: linear-gradient(135deg, #E8001D 0%, #FF3040 50%, #C50019 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Electric blue gradient */
 .text-gradient-electric {
-  background: linear-gradient(135deg, #DC2626 0%, #EF4444 50%, #B91C1C 100%);
+  background: linear-gradient(135deg, #E8001D 0%, #FF3040 50%, #C50019 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Grid line utility (subtle on white) */
+/* Grid line utility */
 .grid-lines {
   background-image:
     linear-gradient(rgba(17, 24, 39, 0.04) 1px, transparent 1px),
@@ -97,13 +96,7 @@ body {
   opacity: 0.02;
 }
 
-@layer utilities {
-  .font-fraunces {
-    font-family: var(--font-fraunces), Georgia, serif;
-  }
-}
-
-/* MapLibre popup reset for white bg */
+/* MapLibre popup reset */
 .maplibregl-popup-content {
   padding: 0 !important;
   background: transparent !important;
