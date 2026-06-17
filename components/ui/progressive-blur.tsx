@@ -1,58 +1,59 @@
-"use client";
+'use client';
+import { cn } from '@/lib/utils';
+import { HTMLMotionProps, motion } from 'motion/react';
 
-import { cn } from "@/lib/utils";
+export const GRADIENT_ANGLES = {
+  top: 0,
+  right: 90,
+  bottom: 180,
+  left: 270,
+};
 
-interface ProgressiveBlurProps {
+export type ProgressiveBlurProps = {
+  direction?: keyof typeof GRADIENT_ANGLES;
+  blurLayers?: number;
   className?: string;
-  direction?: "left" | "right" | "top" | "bottom";
   blurIntensity?: number;
-  layers?: number;
-}
+} & HTMLMotionProps<'div'>;
 
 export function ProgressiveBlur({
+  direction = 'bottom',
+  blurLayers = 8,
   className,
-  direction = "left",
-  blurIntensity = 1,
-  layers = 8,
+  blurIntensity = 0.25,
+  ...props
 }: ProgressiveBlurProps) {
-  const isHorizontal = direction === "left" || direction === "right";
-
-  const positionClass = {
-    left: "left-0 top-0 bottom-0",
-    right: "right-0 top-0 bottom-0",
-    top: "top-0 left-0 right-0",
-    bottom: "bottom-0 left-0 right-0",
-  }[direction];
-
-  const gradientDirection = {
-    left: "to right",
-    right: "to left",
-    top: "to bottom",
-    bottom: "to top",
-  }[direction];
-
-  const sizeClass = isHorizontal ? "w-32 h-full" : "h-32 w-full";
+  const layers = Math.max(blurLayers, 2);
+  const segmentSize = 1 / (blurLayers + 1);
 
   return (
-    <div
-      className={cn("absolute pointer-events-none z-10", positionClass, sizeClass, className)}
-      aria-hidden="true"
-    >
-      {Array.from({ length: layers }).map((_, i) => {
-        const blur = (i + 1) * blurIntensity * 1.5;
-        const startPct = (i / layers) * 100;
-        const endPct = ((i + 1) / layers) * 100;
+    <div className={cn('relative', className)}>
+      {Array.from({ length: layers }).map((_, index) => {
+        const angle = GRADIENT_ANGLES[direction];
+        const gradientStops = [
+          index * segmentSize,
+          (index + 1) * segmentSize,
+          (index + 2) * segmentSize,
+          (index + 3) * segmentSize,
+        ].map(
+          (pos, posIndex) =>
+            `rgba(255, 255, 255, ${posIndex === 1 || posIndex === 2 ? 1 : 0}) ${pos * 100}%`
+        );
+
+        const gradient = `linear-gradient(${angle}deg, ${gradientStops.join(
+          ', '
+        )})`;
 
         return (
-          <div
-            key={i}
-            className="absolute inset-0"
+          <motion.div
+            key={index}
+            className='pointer-events-none absolute inset-0 rounded-[inherit]'
             style={{
-              backdropFilter: `blur(${blur}px)`,
-              WebkitBackdropFilter: `blur(${blur}px)`,
-              maskImage: `linear-gradient(${gradientDirection}, black ${startPct}%, transparent ${endPct}%)`,
-              WebkitMaskImage: `linear-gradient(${gradientDirection}, black ${startPct}%, transparent ${endPct}%)`,
+              maskImage: gradient,
+              WebkitMaskImage: gradient,
+              backdropFilter: `blur(${index * blurIntensity}px)`,
             }}
+            {...props}
           />
         );
       })}

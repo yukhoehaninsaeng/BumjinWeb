@@ -743,8 +743,18 @@ function ClientBannerSection() {
         {/* Infinite slider with progressive blur edges */}
         <FadeUp delay={0.3}>
           <div className="relative">
-            <ProgressiveBlur direction="left" blurIntensity={1} className="z-20" />
-            <ProgressiveBlur direction="right" blurIntensity={1} className="z-20" />
+            {/* Left edge: direction="right" fades left→transparent */}
+            <ProgressiveBlur
+              direction="right"
+              blurIntensity={1}
+              className="absolute inset-y-0 left-0 w-32 z-10 pointer-events-none"
+            />
+            {/* Right edge: direction="left" fades right→transparent */}
+            <ProgressiveBlur
+              direction="left"
+              blurIntensity={1}
+              className="absolute inset-y-0 right-0 w-32 z-10 pointer-events-none"
+            />
 
             <InfiniteSlider gap={72} duration={28} className="py-6">
               {CLIENT_LOGOS.map((client) => (
