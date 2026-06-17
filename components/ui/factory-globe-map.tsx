@@ -139,7 +139,7 @@ function GlobeAutoRotate() {
 
     const animate = () => {
       if (!userInteracting) {
-        map.rotateTo(map.getBearing() + 0.08, { duration: 0 });
+        map.rotateTo(map.getBearing() + 0.28, { duration: 0 });
       }
       animId = requestAnimationFrame(animate);
     };
@@ -180,8 +180,8 @@ export function FactoryGlobeMap({ mapHint }: { mapHint?: string }) {
   return (
     <div className="h-[500px] w-full overflow-hidden rounded-xl border border-gray-200 shadow-xl">
       <Map
-        center={[30, 25]}
-        zoom={1.4}
+        center={[126.97, 37.244]}
+        zoom={1.6}
         projection={{ type: "globe" }}
         theme="dark"
         styles={{ dark: DARK_STYLE }}
