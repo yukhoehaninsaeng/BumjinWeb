@@ -8,6 +8,7 @@ type Factory = {
   id: string;
   name: string;
   nameKo: string;
+  shortLabel: string;
   address: string;
   tel: string;
   fax: string;
@@ -22,6 +23,7 @@ const FACTORIES: Factory[] = [
     id: "suwon-hq",
     name: "Bumjin Electronics / Bumjin C&L",
     nameKo: "범진전자 · 범진시엔엘",
+    shortLabel: "본사 (수원)",
     address: "경기도 수원시 권선구 산업로 155번길 217 (고색동)",
     tel: "031-493-9415",
     fax: "031-298-9418",
@@ -34,6 +36,7 @@ const FACTORIES: Factory[] = [
     id: "suwon-mold",
     name: "Bumjin IND Mold (Suwon)",
     nameKo: "범진아이엔디 금형",
+    shortLabel: "금형 (수원)",
     address: "경기도 수원시 권선구 산업로 174-14 (고색동)",
     tel: "031-676-1461",
     fax: "031-292-1466",
@@ -46,6 +49,7 @@ const FACTORIES: Factory[] = [
     id: "anseong",
     name: "Bumjin IND Injection (Anseong)",
     nameKo: "범진아이엔디 성형",
+    shortLabel: "성형 (안성)",
     address: "경기도 안성시 보개면 신장길 47-10",
     tel: "031-678-9203",
     fax: "031-678-9230",
@@ -58,6 +62,7 @@ const FACTORIES: Factory[] = [
     id: "mexico",
     name: "BJAM MEXICANA S.A. DE C.V.",
     nameKo: "범진아이엔디 멕시코",
+    shortLabel: "멕시코",
     address: "Carretera Libre Tijuana-Tecate No.22001, El Realito, Tijuana, B.C.",
     tel: "+52 664 231 5126",
     fax: "+52 664 978 2525",
@@ -70,6 +75,7 @@ const FACTORIES: Factory[] = [
     id: "indonesia",
     name: "Bumjin Electronics Indonesia",
     nameKo: "범진전자 인도네시아",
+    shortLabel: "인도네시아",
     address: "KWS. INDUSTRI JABABEKA TAHAP 3, Block A5B, Cikarang, Indonesia",
     tel: "+62 21-8984-2744",
     fax: "+62 21-8984-2666",
@@ -82,6 +88,7 @@ const FACTORIES: Factory[] = [
     id: "vietnam",
     name: "Bumjin Electronics Vietnam",
     nameKo: "범진전자 베트남",
+    shortLabel: "베트남",
     address: "CN-04, Dong Mai Industrial Zone, Quang Yen, Quang Ninh, Viet Nam",
     tel: "+84 2033 684 666",
     fax: "+84 2033 684 123",
@@ -94,6 +101,7 @@ const FACTORIES: Factory[] = [
     id: "china",
     name: "Huizhou Bumjin Technology (HJB)",
     nameKo: "혜주범진과기(유)",
+    shortLabel: "중국 (혜주)",
     address: "Block B, Jinherui Hi-tech Industrial Park, Huizhou City, Guangdong",
     tel: "+86-0752-319-7998",
     fax: "+86-0752-319-7997",
@@ -106,6 +114,7 @@ const FACTORIES: Factory[] = [
     id: "hungary",
     name: "Bumjin IND Hungary",
     nameKo: "범진아이엔디 헝가리",
+    shortLabel: "헝가리",
     address: "3021 Lőrinci, Heredi ut 050/18, Hungary",
     tel: "+36-20-213-3255",
     fax: "+36-37-999-622",
@@ -124,13 +133,13 @@ const ARCS = FACTORIES.filter((f) => f.country !== "Korea").map((f) => ({
   to: [f.lng, f.lat] as [number, number],
 }));
 
-const DARK_STYLE = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
+/* Light style — white ocean, subtle gray continents, no label clutter */
+const LIGHT_STYLE = "https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json";
 
 /*
  * Rotates the globe by advancing center longitude each frame.
- * This makes the Earth appear to spin naturally (west→east) instead of
- * the compass bearing spinning in place (which looked wrong).
- * Speed: ~0.07° longitude / frame ≈ one full revolution every ~85 s at 60 fps.
+ * Moving center.lng forward makes the globe slide west→east (Earth's actual
+ * rotation direction) rather than spinning the compass bearing in place.
  */
 function GlobeAutoRotate() {
   const { map, isLoaded } = useMap();
@@ -182,32 +191,31 @@ export function FactoryGlobeMap({ mapHint }: { mapHint?: string }) {
   const [activeFactory, setActiveFactory] = useState<string | null>(null);
 
   return (
-    <div className="h-[500px] w-full overflow-hidden rounded-xl border border-gray-200 shadow-xl">
+    /* No border, no shadow, no rounded corners — just the globe */
+    <div className="relative h-[520px] w-full overflow-hidden">
       <Map
         center={[126.97, 37.244]}
         zoom={1.6}
         projection={{ type: "globe" }}
-        theme="dark"
-        styles={{ dark: DARK_STYLE }}
+        theme="light"
+        styles={{ light: LIGHT_STYLE }}
         renderWorldCopies={false}
       >
-        {/* Auto-rotation */}
         <GlobeAutoRotate />
 
-        {/* Arcs from Korean HQ to international plants */}
+        {/* Dashed arcs from Korean HQ to each international plant */}
         <MapArc
           data={ARCS}
           curvature={0.25}
           paint={{
             "line-color": "#E8001D",
             "line-width": 1.5,
-            "line-opacity": 0.6,
+            "line-opacity": 0.55,
             "line-dasharray": [3, 3],
           }}
           interactive={false}
         />
 
-        {/* Factory markers */}
         {FACTORIES.map((factory) => (
           <MapMarker
             key={factory.id}
@@ -217,37 +225,44 @@ export function FactoryGlobeMap({ mapHint }: { mapHint?: string }) {
               setActiveFactory(activeFactory === factory.id ? null : factory.id)
             }
           >
+            {/* Always-visible dot + short label */}
             <MarkerContent>
-              <div className="relative flex items-center justify-center">
-                {factory.type === "hq" ? (
-                  <div className="size-4 rounded-full border-2 border-white bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.9)]" />
-                ) : (
-                  <div className="size-3 rounded-full border-2 border-white bg-white/80 shadow-[0_0_6px_rgba(255,255,255,0.8)]" />
-                )}
+              <div className="flex flex-col items-center gap-0.5 cursor-pointer select-none">
+                {/* Red dot — larger for HQ */}
+                <div
+                  className={`rounded-full bg-red-600 border-2 border-white shadow-[0_0_8px_rgba(232,0,29,0.55)] ${
+                    factory.type === "hq" ? "w-4 h-4" : "w-2.5 h-2.5"
+                  }`}
+                />
+                {/* Short company label */}
+                <span className="px-1.5 py-[2px] bg-white/90 border border-gray-200 text-[8.5px] font-semibold text-gray-700 whitespace-nowrap leading-tight shadow-sm">
+                  {factory.shortLabel}
+                </span>
               </div>
             </MarkerContent>
 
+            {/* Click to expand full details */}
             {activeFactory === factory.id && (
-              <MarkerPopup closeButton offset={20}>
-                <div className="min-w-[200px] space-y-2 bg-gray-900/95 backdrop-blur rounded-lg p-3 border border-white/10">
+              <MarkerPopup closeButton offset={24}>
+                <div className="min-w-[210px] space-y-2.5 bg-white/97 rounded-lg p-3.5 border border-gray-100 shadow-xl">
                   <div className="flex items-start gap-2">
-                    <Building2 className="mt-0.5 size-4 shrink-0 text-red-400" />
+                    <Building2 className="mt-0.5 size-4 shrink-0 text-red-600" />
                     <div>
-                      <p className="text-sm font-semibold leading-tight text-white">
+                      <p className="text-[13px] font-bold leading-tight text-gray-900">
                         {factory.nameKo}
                       </p>
-                      <p className="text-[11px] text-gray-400">{factory.name}</p>
+                      <p className="text-[11px] text-gray-400 mt-0.5">{factory.name}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2">
                     <MapPin className="mt-0.5 size-3.5 shrink-0 text-gray-400" />
-                    <p className="text-[11px] leading-relaxed text-gray-300">
+                    <p className="text-[11px] leading-relaxed text-gray-600">
                       {factory.address}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
                     <Phone className="size-3.5 shrink-0 text-gray-400" />
-                    <p className="text-[11px] text-gray-300">{factory.tel}</p>
+                    <p className="text-[11px] text-gray-600">{factory.tel}</p>
                   </div>
                 </div>
               </MarkerPopup>
@@ -257,9 +272,6 @@ export function FactoryGlobeMap({ mapHint }: { mapHint?: string }) {
 
         <MapControls position="bottom-right" showZoom showCompass />
       </Map>
-      {mapHint && (
-        <p className="mt-2 text-center text-[11px] text-gray-400">{mapHint}</p>
-      )}
     </div>
   );
 }
