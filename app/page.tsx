@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   ArrowUpRight,
   ChevronRight,
+  ChevronDown,
   Cpu,
   Globe2,
   Layers,
@@ -21,6 +22,12 @@ import {
   Phone,
   MapPin,
   ExternalLink,
+  Menu,
+  X,
+  Volume2,
+  Headphones,
+  Wrench,
+  Boxes,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -54,9 +61,17 @@ function FadeUp({
   );
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function DarkLabel({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.25em] uppercase text-gold border border-gold/20 bg-gold/5 px-3 py-1.5 rounded-sm">
+    <span className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.3em] uppercase text-gold/80 border border-gold/20 bg-gold/5 px-3 py-1.5">
+      {children}
+    </span>
+  );
+}
+
+function LightLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="block text-[11px] font-bold tracking-[0.3em] uppercase text-gray-400 pb-2 border-b border-gray-200 mb-0 w-fit">
       {children}
     </span>
   );
@@ -71,190 +86,149 @@ function Divider() {
 /* ───────────────────────── navigation ────────────────────────── */
 
 const NAV_LINKS = [
-  { label: "Solutions", href: "#solutions" },
-  { label: "Global Operations", href: "#operations" },
-  { label: "Capabilities", href: "#capabilities" },
-  { label: "Clients", href: "#clients" },
-  { label: "Contact", href: "#contact" },
+  { label: "회사소개", href: "#about" },
+  { label: "사업영역", href: "#solutions" },
+  { label: "기술역량", href: "#capabilities" },
+  { label: "글로벌", href: "#operations" },
+  { label: "고객사", href: "#clients" },
+  { label: "문의", href: "#contact" },
 ];
 
 function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", fn, { passive: true });
+    fn();
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="relative">
-        {/* Glass backdrop */}
-        <div className="absolute inset-0 bg-midnight/80 backdrop-blur-xl border-b border-charcoal-border/40" />
-        <nav className="relative mx-auto max-w-7xl px-6 lg:px-10 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-sm bg-gold/10 border border-gold/30 flex items-center justify-center group-hover:border-gold/60 transition-colors">
-              <span className="text-gold font-fraunces font-bold text-sm">B</span>
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-cream text-sm font-semibold tracking-wider">BUMJIN</p>
-              <p className="text-cream-dim text-[10px] tracking-[0.2em] uppercase">Electronics</p>
-            </div>
-          </a>
-
-          {/* Desktop links */}
-          <ul className="hidden lg:flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
-              <li key={link.label}>
-                <a
-                  href={link.href}
-                  className="text-cream-muted text-sm hover:text-cream transition-colors duration-200 tracking-wide"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          {/* Careers CTA */}
-          <div className="flex items-center gap-3">
-            <a
-              href="https://bumjin.career.greetinghr.com/ko/home"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button variant="careers" size="sm">
-                Careers
-                <ExternalLink className="!size-3" />
-              </Button>
-            </a>
-
-            {/* Mobile menu toggle */}
-            <button
-              className="lg:hidden text-cream-muted hover:text-cream p-1"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle menu"
-            >
-              <div className="w-5 flex flex-col gap-1">
-                <span
-                  className={`h-px bg-current transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-1.5 w-5" : "w-5"}`}
-                />
-                <span
-                  className={`h-px bg-current transition-all duration-300 ${mobileOpen ? "opacity-0 w-0" : "w-4"}`}
-                />
-                <span
-                  className={`h-px bg-current transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-1.5 w-5" : "w-5"}`}
-                />
-              </div>
-            </button>
-          </div>
-        </nav>
-
-        {/* Mobile menu */}
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="relative lg:hidden bg-midnight/95 backdrop-blur-xl border-b border-charcoal-border/40 px-6 pb-4"
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-white shadow-sm border-b border-gray-100"
+          : "bg-transparent"
+      }`}
+    >
+      <nav className="relative mx-auto max-w-7xl px-6 lg:px-10 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <a href="#" className="flex items-center gap-3 group">
+          <div
+            className={`w-8 h-8 rounded-sm flex items-center justify-center transition-colors duration-300 ${
+              scrolled
+                ? "bg-gray-100 border border-gray-200 group-hover:border-gray-400"
+                : "bg-gold/10 border border-gold/30 group-hover:border-gold/60"
+            }`}
           >
-            {NAV_LINKS.map((link) => (
+            <span
+              className={`font-fraunces font-bold text-sm transition-colors duration-300 ${
+                scrolled ? "text-gray-900" : "text-gold"
+              }`}
+            >
+              B
+            </span>
+          </div>
+          <div className="hidden sm:block">
+            <p
+              className={`text-sm font-semibold tracking-wider transition-colors duration-300 ${
+                scrolled ? "text-gray-900" : "text-cream"
+              }`}
+            >
+              BUMJIN
+            </p>
+            <p
+              className={`text-[10px] tracking-[0.2em] uppercase transition-colors duration-300 ${
+                scrolled ? "text-gray-400" : "text-cream-dim"
+              }`}
+            >
+              Electronics
+            </p>
+          </div>
+        </a>
+
+        {/* Desktop links */}
+        <ul className="hidden lg:flex items-center gap-8">
+          {NAV_LINKS.map((link) => (
+            <li key={link.label}>
               <a
-                key={link.label}
                 href={link.href}
-                className="block py-3 text-cream-muted hover:text-cream border-b border-charcoal-border/20 text-sm tracking-wide"
-                onClick={() => setMobileOpen(false)}
+                className={`text-sm hover:opacity-80 transition-all duration-200 tracking-wide ${
+                  scrolled ? "text-gray-600 hover:text-gray-900" : "text-cream-muted hover:text-cream"
+                }`}
               >
                 {link.label}
               </a>
-            ))}
-          </motion.div>
-        )}
-      </div>
+            </li>
+          ))}
+        </ul>
+
+        {/* Right CTA */}
+        <div className="flex items-center gap-3">
+          <a href="#contact" className="hidden lg:block">
+            <button
+              className={`text-sm font-semibold px-5 py-2 rounded-sm border transition-all duration-300 ${
+                scrolled
+                  ? "border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white"
+                  : "border-gold text-gold hover:bg-gold hover:text-midnight"
+              }`}
+            >
+              문의하기
+            </button>
+          </a>
+
+          {/* Mobile menu toggle */}
+          <button
+            className={`lg:hidden p-1 transition-colors duration-300 ${
+              scrolled ? "text-gray-600 hover:text-gray-900" : "text-cream-muted hover:text-cream"
+            }`}
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="relative lg:hidden bg-white border-b border-gray-100 shadow-lg px-6 pb-4"
+        >
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className="block py-3 text-gray-600 hover:text-gray-900 border-b border-gray-100 text-sm tracking-wide"
+              onClick={() => setMobileOpen(false)}
+            >
+              {link.label}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            className="block mt-3 py-2 text-center text-sm font-semibold text-gray-900 border border-gray-900 rounded-sm hover:bg-gray-900 hover:text-white transition-colors"
+            onClick={() => setMobileOpen(false)}
+          >
+            문의하기
+          </a>
+        </motion.div>
+      )}
     </header>
   );
 }
 
 /* ─────────────────────────── hero ────────────────────────────── */
 
-function HeroSection() {
-  return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
-      {/* Background: layered grid + radial gradient */}
-      <div className="absolute inset-0 grid-lines opacity-40" />
-      <div className="absolute inset-0 bg-gradient-radial from-electric-dark/10 via-transparent to-transparent" />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-gradient-radial from-gold/5 via-transparent to-transparent blur-3xl pointer-events-none" />
-
-      {/* Speaker cross-section diagram (SVG) */}
-      <div className="absolute inset-0 flex items-center justify-end opacity-5 pr-8 lg:pr-24 pointer-events-none select-none">
-        <SpeakerDiagramSVG />
-      </div>
-
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10 pt-32 pb-20">
-        <FadeUp delay={0.1}>
-          <SectionLabel>
-            <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse-gold" />
-            ODM / OEM Manufacturing Partner
-          </SectionLabel>
-        </FadeUp>
-
-        <FadeUp delay={0.25} className="mt-8">
-          <h1 className="font-fraunces font-bold leading-[1.05] tracking-tight">
-            <span className="block text-cream text-5xl sm:text-6xl lg:text-8xl xl:text-[6.5rem]">
-              We Engineer
-            </span>
-            <span className="block text-5xl sm:text-6xl lg:text-8xl xl:text-[6.5rem] text-gradient-gold">
-              the Future
-            </span>
-            <span className="block text-cream text-5xl sm:text-6xl lg:text-8xl xl:text-[6.5rem]">
-              of Sound.
-            </span>
-          </h1>
-        </FadeUp>
-
-        <FadeUp delay={0.4} className="mt-8 max-w-2xl">
-          <p className="text-cream-muted text-lg lg:text-xl leading-relaxed">
-            Bumjin Electronics delivers world-class soundbar ODM/OEM manufacturing
-            across 8 global facilities — from precision mold engineering to automated
-            mass assembly certified for Dolby Atmos, Harman, and beyond.
-          </p>
-        </FadeUp>
-
-        <FadeUp delay={0.55} className="mt-10 flex flex-wrap gap-4 items-center">
-          <a href="#contact">
-            <Button variant="default" size="xl">
-              Start a Partnership
-              <ChevronRight />
-            </Button>
-          </a>
-          <a href="#capabilities">
-            <Button variant="outline" size="xl">
-              Explore Capabilities
-            </Button>
-          </a>
-        </FadeUp>
-
-        {/* Key stats */}
-        <FadeUp delay={0.7} className="mt-20">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 pt-10 border-t border-charcoal-border/40">
-            {HERO_STATS.map((stat) => (
-              <div key={stat.label}>
-                <p className="font-fraunces text-3xl lg:text-4xl font-bold text-gradient-gold">
-                  {stat.value}
-                </p>
-                <p className="text-cream-dim text-sm mt-1 tracking-wide">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </FadeUp>
-      </div>
-
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-midnight to-transparent pointer-events-none" />
-    </section>
-  );
-}
-
 const HERO_STATS = [
-  { value: "8", label: "Global Facilities" },
-  { value: "30+", label: "Years of Excellence" },
-  { value: "50M+", label: "Units Shipped Annually" },
-  { value: "100%", label: "Dolby Atmos Certified" },
+  { value: "30+", label: "Years of Excellence", sub: "년 업력" },
+  { value: "8", label: "Global Facilities", sub: "글로벌 사업장" },
+  { value: "50M+", label: "Units Annually", sub: "연간 생산량" },
+  { value: "6", label: "Countries", sub: "진출 국가" },
 ];
 
 function SpeakerDiagramSVG() {
@@ -298,6 +272,397 @@ function SpeakerDiagramSVG() {
   );
 }
 
+function HeroSection() {
+  return (
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+      {/* Background: layered grid + radial gradients */}
+      <div className="absolute inset-0 grid-lines opacity-40" />
+      <div className="absolute inset-0 bg-gradient-radial from-electric-dark/10 via-transparent to-transparent" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-gradient-radial from-gold/5 via-transparent to-transparent blur-3xl pointer-events-none" />
+
+      {/* Speaker cross-section diagram (SVG) centered */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-[0.04] pointer-events-none select-none">
+        <SpeakerDiagramSVG />
+      </div>
+
+      {/* Centered content */}
+      <div className="relative w-full mx-auto max-w-7xl px-6 lg:px-10 flex flex-col items-center text-center pt-24 pb-40">
+        <FadeUp delay={0.1}>
+          <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.25em] uppercase text-gold border border-gold/20 bg-gold/5 px-3 py-1.5 rounded-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse-gold" />
+            Premium Audio ODM / OEM Manufacturing
+          </span>
+        </FadeUp>
+
+        <FadeUp delay={0.25} className="mt-8 max-w-5xl">
+          <h1 className="font-fraunces font-bold leading-[1.05] tracking-tight">
+            <span className="block text-cream text-5xl sm:text-7xl lg:text-8xl xl:text-9xl">
+              We Engineer
+            </span>
+            <span className="block text-5xl sm:text-7xl lg:text-8xl xl:text-9xl text-gradient-gold">
+              the Future
+            </span>
+            <span className="block text-cream text-5xl sm:text-7xl lg:text-8xl xl:text-9xl">
+              of Sound.
+            </span>
+          </h1>
+        </FadeUp>
+
+        <FadeUp delay={0.4} className="mt-8 max-w-2xl">
+          <p className="text-cream/60 text-lg lg:text-xl leading-relaxed">
+            세계 최고 수준의 음향 ODM/OEM 파트너 — 설계부터 양산까지.<br className="hidden sm:block" />
+            Bumjin Electronics delivers world-class manufacturing across 8 global facilities.
+          </p>
+        </FadeUp>
+
+        <FadeUp delay={0.55} className="mt-10 flex flex-wrap gap-4 items-center justify-center">
+          <a href="#contact">
+            <Button variant="default" size="xl">
+              파트너십 시작하기
+              <ChevronRight />
+            </Button>
+          </a>
+          <a href="#solutions">
+            <Button variant="outline" size="xl">
+              사업 영역 보기
+            </Button>
+          </a>
+        </FadeUp>
+      </div>
+
+      {/* Stats bar at bottom — dark glass strip */}
+      <div className="absolute bottom-12 left-0 right-0 mx-auto max-w-5xl px-6">
+        <FadeUp delay={0.7}>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-charcoal-border/30 rounded-sm overflow-hidden border border-charcoal-border/40 backdrop-blur-md">
+            {HERO_STATS.map((stat) => (
+              <div
+                key={stat.label}
+                className="bg-midnight/70 px-6 py-5 text-center"
+              >
+                <p className="font-fraunces text-3xl lg:text-4xl font-bold text-gradient-gold">
+                  {stat.value}
+                </p>
+                <p className="text-cream text-xs font-semibold mt-1 tracking-wide">{stat.label}</p>
+                <p className="text-cream-dim text-[10px] mt-0.5">{stat.sub}</p>
+              </div>
+            ))}
+          </div>
+        </FadeUp>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1">
+        <a href="#about" aria-label="Scroll to company overview">
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
+            className="text-cream-dim hover:text-cream transition-colors"
+          >
+            <ChevronDown className="size-5" />
+          </motion.div>
+        </a>
+      </div>
+
+      {/* Bottom gradient fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-midnight to-transparent pointer-events-none" />
+    </section>
+  );
+}
+
+/* ─────────────────────── company overview ────────────────────── */
+
+const COMPANY_STATS = [
+  { value: "1993", label: "Year Founded", sub: "설립연도" },
+  { value: "8", label: "Global Sites", sub: "글로벌 사업장" },
+  { value: "50M+", label: "Units/Year", sub: "연간 생산량" },
+  { value: "6", label: "Countries", sub: "진출 국가" },
+  { value: "ISO 9001", label: "Certified", sub: "품질 인증" },
+];
+
+function CompanySection() {
+  return (
+    <section id="about" className="bg-white py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
+          {/* Left col */}
+          <FadeUp>
+            <LightLabel>COMPANY OVERVIEW / 회사 소개</LightLabel>
+            <h2 className="font-fraunces text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight mt-8">
+              소리를 만드는 기업,<br />범진전자
+            </h2>
+          </FadeUp>
+
+          {/* Right col */}
+          <FadeUp delay={0.15}>
+            <p className="text-gray-600 text-lg leading-relaxed">
+              1993년 설립된 범진전자는 30년 이상의 경험을 바탕으로 전 세계 주요 오디오 브랜드의
+              신뢰받는 ODM/OEM 파트너로 성장해왔습니다. 국내외 8개 생산 거점을 통해 연간 5,000만
+              대 이상의 사운드바 및 오디오 기기를 생산하며, 설계부터 양산까지 오디오 제조의
+              전 가치사슬을 완결합니다.
+            </p>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-1.5 mt-6 text-gray-900 text-sm font-semibold hover:text-gray-600 transition-colors group"
+            >
+              비즈니스 문의
+              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+          </FadeUp>
+        </div>
+
+        {/* Stats row */}
+        <div className="border-t border-gray-100 pt-16 mt-16">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-10 text-center">
+            {COMPANY_STATS.map((stat, i) => (
+              <FadeUp key={stat.label} delay={i * 0.08}>
+                <div>
+                  <p className="font-fraunces text-6xl lg:text-7xl font-bold text-gray-900 leading-none">
+                    {stat.value}
+                  </p>
+                  <p className="text-sm font-semibold text-gray-900 mt-3">{stat.label}</p>
+                  <p className="text-xs text-gray-400 mt-1">{stat.sub}</p>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ──────────────────────── business areas ─────────────────────── */
+
+const BUSINESS_CARDS = [
+  {
+    icon: <Volume2 className="size-6" />,
+    iconColor: "#3B82F6",
+    iconBg: "bg-blue-50",
+    label: "01",
+    title: "Soundbar ODM",
+    titleKo: "사운드바 ODM",
+    desc: "기획 단계부터 양산까지 완전한 ODM 솔루션. 음향 설계, PCB 개발, 금형 제작, 조립에 이르는 전 공정 내재화로 품질과 납기를 동시에 보장합니다.",
+    linkColor: "text-blue-600 hover:text-blue-700",
+    gradient: "from-blue-50 to-transparent",
+  },
+  {
+    icon: <Headphones className="size-6" />,
+    iconColor: "#C8A84B",
+    iconBg: "bg-amber-50",
+    label: "02",
+    title: "Soundbar OEM",
+    titleKo: "사운드바 OEM",
+    desc: "Dolby Atmos, DTS:X, Hi-Res Audio 인증을 포함한 고객사 브랜드 스펙 맞춤 OEM 생산. 고객의 기준으로, 고객의 브랜드로 완성합니다.",
+    linkColor: "text-amber-600 hover:text-amber-700",
+    gradient: "from-amber-50 to-transparent",
+  },
+  {
+    icon: <Wrench className="size-6" />,
+    iconColor: "#64748B",
+    iconBg: "bg-slate-50",
+    label: "03",
+    title: "Precision Mold & Injection",
+    titleKo: "정밀 금형 · 사출",
+    desc: "수원 및 안성 사업장에서 CNC 머시닝 및 EDM 금형 내재화 생산. 업계 평균 대비 40% 단축된 리드타임으로 제품 개발 주기를 앞당깁니다.",
+    linkColor: "text-slate-600 hover:text-slate-700",
+    gradient: "from-slate-50 to-transparent",
+  },
+  {
+    icon: <Boxes className="size-6" />,
+    iconColor: "#10B981",
+    iconBg: "bg-emerald-50",
+    label: "04",
+    title: "Electronic Components",
+    titleKo: "전자 부품 · PCB 조립",
+    desc: "고속 SMT 라인과 AOI 검사 설비를 통한 정밀 PCB 조립. Class-D/AB 앰프, DSP 모듈, 무선 플랫폼 통합까지 원스톱으로 제공합니다.",
+    linkColor: "text-emerald-600 hover:text-emerald-700",
+    gradient: "from-emerald-50 to-transparent",
+  },
+];
+
+function BusinessSection() {
+  return (
+    <section id="solutions" className="bg-gray-50 py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        {/* Center header */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <FadeUp>
+            <div className="flex justify-center">
+              <LightLabel>BUSINESS AREAS / 사업 영역</LightLabel>
+            </div>
+          </FadeUp>
+          <FadeUp delay={0.15} className="mt-8">
+            <h2 className="font-fraunces text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
+              범진의 핵심 사업
+            </h2>
+          </FadeUp>
+          <FadeUp delay={0.25} className="mt-5">
+            <p className="text-gray-600 text-lg leading-relaxed">
+              설계부터 양산까지 오디오 제조의 전 가치사슬을 통합 제공합니다.
+            </p>
+          </FadeUp>
+        </div>
+
+        {/* 2x2 grid */}
+        <div className="grid sm:grid-cols-2 gap-6">
+          {BUSINESS_CARDS.map((card, i) => (
+            <FadeUp key={card.label} delay={i * 0.1}>
+              <div className="group relative bg-white rounded-xl border border-gray-100 p-10 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-default">
+                {/* Hover gradient overlay */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+                />
+
+                <div className="relative">
+                  {/* Label + Icon row */}
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-mono text-4xl font-bold text-gray-100 select-none">
+                      {card.label}
+                    </span>
+                    <div className={`${card.iconBg} w-14 h-14 rounded-xl flex items-center justify-center`} style={{ color: card.iconColor }}>
+                      {card.icon}
+                    </div>
+                  </div>
+
+                  <h3 className="font-fraunces text-2xl font-bold text-gray-900 leading-snug">
+                    {card.title}
+                  </h3>
+                  <p className="text-sm font-medium text-gray-400 mt-1">{card.titleKo}</p>
+                  <p className="text-gray-600 text-sm leading-relaxed mt-4">{card.desc}</p>
+
+                  <button className={`inline-flex items-center gap-1.5 mt-6 text-sm font-semibold transition-colors ${card.linkColor}`}>
+                    자세히 보기
+                    <ArrowUpRight className="size-4" />
+                  </button>
+                </div>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ──────────────────── technology section ─────────────────────── */
+
+const TECH_CARDS = [
+  {
+    icon: <Cpu className="size-5" />,
+    badge: "DSP Engineering",
+    title: "Precision Digital Signal Processing",
+    body:
+      "In-house DSP tuning pipelines with parametric EQ, active crossover design, and room-correction algorithms — calibrated in our anechoic measurement chambers.",
+    accent: "electric",
+  },
+  {
+    icon: <Mic2 className="size-5" />,
+    badge: "Acoustic Drivers",
+    title: "Custom Acoustic Driver Manufacturing",
+    body:
+      "Full vertical integration of woofer, mid-range, and tweeter production. Proprietary voice-coil winding and cone-forming processes optimised for SPL and THD performance.",
+    accent: "gold",
+  },
+  {
+    icon: <BadgeCheck className="size-5" />,
+    badge: "Certification",
+    title: "Dolby Atmos & Hi-Res Audio Ready",
+    body:
+      "End-to-end Dolby Atmos, DTS:X, and Hi-Res Audio certification pipelines embedded in our production workflow — reducing client time-to-market by 40%.",
+    accent: "electric",
+  },
+  {
+    icon: <Zap className="size-5" />,
+    badge: "Amplification",
+    title: "Class-D & Class-AB Amplifier Design",
+    body:
+      "Custom Class-D amplifier ICs with power outputs from 20W to 1000W RMS, full EMC compliance, and thermal management solutions engineered for sustained peak loads.",
+    accent: "gold",
+  },
+  {
+    icon: <Layers className="size-5" />,
+    badge: "Integration",
+    title: "Wireless & Smart Platform Integration",
+    body:
+      "Integrated Wi-Fi 6, Bluetooth 5.3, AirPlay 2, Chromecast, HDMI eARC, and HDMI 2.1 modules with proprietary multi-room synchronisation firmware.",
+    accent: "electric",
+  },
+  {
+    icon: <Shield className="size-5" />,
+    badge: "Quality",
+    title: "Zero-Defect Quality Architecture",
+    body:
+      "AI-driven optical inspection, 100% end-of-line acoustic test, and ISO 9001 / IATF 16949 certified quality management across all facilities.",
+    accent: "gold",
+  },
+];
+
+function TechnologySection() {
+  return (
+    <section id="capabilities" className="bg-white py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="text-center max-w-3xl mx-auto">
+          <FadeUp>
+            <div className="flex justify-center">
+              <LightLabel>TECHNOLOGY / 기술 역량</LightLabel>
+            </div>
+          </FadeUp>
+          <FadeUp delay={0.15} className="mt-8">
+            <h2 className="font-fraunces text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
+              기술 역량
+            </h2>
+          </FadeUp>
+          <FadeUp delay={0.25} className="mt-5">
+            <p className="text-gray-600 text-lg leading-relaxed">
+              세계에서 가장 까다로운 오디오 브랜드들이 선택하는 범진의 6가지 핵심 기술 역량.
+            </p>
+          </FadeUp>
+        </div>
+
+        <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {TECH_CARDS.map((card, i) => (
+            <FadeUp key={card.badge} delay={i * 0.08}>
+              <div className="group relative h-full bg-white border border-gray-100 hover:shadow-md hover:-translate-y-1 rounded-xl p-6 transition-all duration-300 overflow-hidden">
+                {/* Hover top line */}
+                <div
+                  className={`absolute -top-px left-0 right-0 h-px transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${
+                    card.accent === "gold"
+                      ? "bg-gradient-to-r from-transparent via-gold/40 to-transparent"
+                      : "bg-gradient-to-r from-transparent via-electric/40 to-transparent"
+                  }`}
+                />
+
+                {/* Badge */}
+                <span
+                  className={`inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.2em] uppercase px-2.5 py-1 rounded-sm mb-5 ${
+                    card.accent === "gold"
+                      ? "text-amber-700 bg-amber-50 border border-amber-100"
+                      : "text-blue-700 bg-blue-50 border border-blue-100"
+                  }`}
+                >
+                  <span
+                    className={
+                      card.accent === "gold" ? "text-amber-600" : "text-blue-600"
+                    }
+                  >
+                    {card.icon}
+                  </span>
+                  {card.badge}
+                </span>
+
+                <h3 className="font-fraunces text-xl font-semibold text-gray-900 mb-3 leading-snug">
+                  {card.title}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{card.body}</p>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ──────────────────── global operations (globe) ──────────────── */
 
 const LOCATIONS = [
@@ -308,6 +673,7 @@ const LOCATIONS = [
   { city: "Quang Ninh, Vietnam", role: "Vietnam Manufacturing Hub", type: "plant" },
   { city: "Huizhou, China", role: "Guangdong Component Plant", type: "plant" },
   { city: "Lőrinci, Hungary", role: "European Manufacturing", type: "plant" },
+  { city: "Warsaw, Poland", role: "European Logistics Hub", type: "plant" },
 ];
 
 function GlobalOperationsSection() {
@@ -321,10 +687,10 @@ function GlobalOperationsSection() {
           {/* Left: text content */}
           <div>
             <FadeUp>
-              <SectionLabel>
+              <DarkLabel>
                 <Globe2 className="!size-3" />
-                Global Footprint
-              </SectionLabel>
+                Global Footprint / 글로벌 거점
+              </DarkLabel>
             </FadeUp>
 
             <FadeUp delay={0.15} className="mt-6">
@@ -382,130 +748,6 @@ function GlobalOperationsSection() {
   );
 }
 
-/* ──────────────────── audio engineering ──────────────────────── */
-
-const TECH_CARDS = [
-  {
-    icon: <Cpu className="size-5" />,
-    badge: "DSP Engineering",
-    title: "Precision Digital Signal Processing",
-    body:
-      "In-house DSP tuning pipelines with parametric EQ, active crossover design, and room-correction algorithms — calibrated in our anechoic measurement chambers.",
-    accent: "electric",
-  },
-  {
-    icon: <Mic2 className="size-5" />,
-    badge: "Acoustic Drivers",
-    title: "Custom Acoustic Driver Manufacturing",
-    body:
-      "Full vertical integration of woofer, mid-range, and tweeter production. Proprietary voice-coil winding and cone-forming processes optimised for SPL and THD performance.",
-    accent: "gold",
-  },
-  {
-    icon: <BadgeCheck className="size-5" />,
-    badge: "Certification",
-    title: "Dolby Atmos & Hi-Res Audio Ready",
-    body:
-      "End-to-end Dolby Atmos, DTS:X, and Hi-Res Audio certification pipelines embedded in our production workflow — reducing client time-to-market by 40%.",
-    accent: "electric",
-  },
-  {
-    icon: <Zap className="size-5" />,
-    badge: "Amplification",
-    title: "Class-D & Class-AB Amplifier Design",
-    body:
-      "Custom Class-D amplifier ICs with power outputs from 20W to 1000W RMS, full EMC compliance, and thermal management solutions engineered for sustained peak loads.",
-    accent: "gold",
-  },
-  {
-    icon: <Layers className="size-5" />,
-    badge: "Integration",
-    title: "Wireless & Smart Platform Integration",
-    body:
-      "Integrated Wi-Fi 6, Bluetooth 5.3, AirPlay 2, Chromecast, HDMI eARC, and HDMI 2.1 modules with proprietary multi-room synchronisation firmware.",
-    accent: "electric",
-  },
-  {
-    icon: <Shield className="size-5" />,
-    badge: "Quality",
-    title: "Zero-Defect Quality Architecture",
-    body:
-      "AI-driven optical inspection, 100% end-of-line acoustic test, and ISO 9001 / IATF 16949 certified quality management across all facilities.",
-    accent: "gold",
-  },
-];
-
-function AudioEngineeringSection() {
-  return (
-    <section id="capabilities" className="relative py-28 lg:py-36">
-      <div className="absolute inset-0 grid-lines opacity-20" />
-
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="text-center max-w-3xl mx-auto">
-          <FadeUp>
-            <SectionLabel>
-              <Settings2 className="!size-3" />
-              Technical Capabilities
-            </SectionLabel>
-          </FadeUp>
-          <FadeUp delay={0.15} className="mt-6">
-            <h2 className="font-fraunces text-4xl lg:text-5xl xl:text-6xl font-bold text-cream leading-tight">
-              Where Acoustics
-              <span className="block text-gradient-gold">Meet Engineering.</span>
-            </h2>
-          </FadeUp>
-          <FadeUp delay={0.25} className="mt-5">
-            <p className="text-cream-muted text-lg leading-relaxed">
-              Six core competencies that make Bumjin the manufacturing partner of choice
-              for the world's most demanding audio brands.
-            </p>
-          </FadeUp>
-        </div>
-
-        <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {TECH_CARDS.map((card, i) => (
-            <FadeUp key={card.badge} delay={i * 0.08}>
-              <div className="group relative h-full bg-charcoal border border-charcoal-border hover:border-charcoal-border/80 rounded-sm p-6 transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-                {/* Hover glow */}
-                <div
-                  className={`absolute -top-px left-0 right-0 h-px transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${
-                    card.accent === "gold"
-                      ? "bg-gradient-to-r from-transparent via-gold/60 to-transparent"
-                      : "bg-gradient-to-r from-transparent via-electric/60 to-transparent"
-                  }`}
-                />
-
-                {/* Badge */}
-                <span
-                  className={`inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.2em] uppercase px-2.5 py-1 rounded-sm mb-5 ${
-                    card.accent === "gold"
-                      ? "text-gold bg-gold/8 border border-gold/20"
-                      : "text-electric bg-electric/8 border border-electric/20"
-                  }`}
-                >
-                  <span
-                    className={
-                      card.accent === "gold" ? "text-gold" : "text-electric"
-                    }
-                  >
-                    {card.icon}
-                  </span>
-                  {card.badge}
-                </span>
-
-                <h3 className="font-fraunces text-xl font-semibold text-cream mb-3 leading-snug">
-                  {card.title}
-                </h3>
-                <p className="text-cream-muted text-sm leading-relaxed">{card.body}</p>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ──────────────────── manufacturing timeline ─────────────────── */
 
 const TIMELINE_STEPS = [
@@ -553,7 +795,7 @@ const TIMELINE_STEPS = [
   },
 ];
 
-function ManufacturingTimelineSection() {
+function ManufacturingSection() {
   return (
     <section className="relative py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-[#0A0A0F]" />
@@ -563,10 +805,10 @@ function ManufacturingTimelineSection() {
           {/* Left: heading */}
           <div className="lg:sticky lg:top-32">
             <FadeUp>
-              <SectionLabel>
+              <DarkLabel>
                 <Factory className="!size-3" />
-                Turn-Key Manufacturing
-              </SectionLabel>
+                Turn-Key Manufacturing / 제조 공정
+              </DarkLabel>
             </FadeUp>
             <FadeUp delay={0.15} className="mt-6">
               <h2 className="font-fraunces text-4xl lg:text-5xl xl:text-6xl font-bold text-cream leading-tight">
@@ -634,7 +876,7 @@ const CLIENT_LOGOS = [
     name: "Samsung Electronics",
     svg: (
       <svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="30" fontFamily="var(--font-inter), system-ui" fontSize="22" fontWeight="700" letterSpacing="-0.5" fill="#C8C0B0">
+        <text x="0" y="30" fontFamily="var(--font-inter), system-ui" fontSize="22" fontWeight="700" letterSpacing="-0.5" fill="#D1D5DB">
           SAMSUNG
         </text>
       </svg>
@@ -644,7 +886,7 @@ const CLIENT_LOGOS = [
     name: "LG Electronics",
     svg: (
       <svg width="100" height="40" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="30" fontFamily="var(--font-inter), system-ui" fontSize="26" fontWeight="700" letterSpacing="2" fill="#C8C0B0">
+        <text x="0" y="30" fontFamily="var(--font-inter), system-ui" fontSize="26" fontWeight="700" letterSpacing="2" fill="#D1D5DB">
           LG
         </text>
       </svg>
@@ -654,7 +896,7 @@ const CLIENT_LOGOS = [
     name: "SONY Corporation",
     svg: (
       <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="30" fontFamily="var(--font-inter), system-ui" fontSize="24" fontWeight="300" letterSpacing="6" fill="#C8C0B0">
+        <text x="0" y="30" fontFamily="var(--font-inter), system-ui" fontSize="24" fontWeight="300" letterSpacing="6" fill="#D1D5DB">
           SONY
         </text>
       </svg>
@@ -664,7 +906,7 @@ const CLIENT_LOGOS = [
     name: "Harman Kardon",
     svg: (
       <svg width="200" height="40" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="28" fontFamily="var(--font-inter), system-ui" fontSize="16" fontWeight="400" letterSpacing="3" fill="#C8C0B0">
+        <text x="0" y="28" fontFamily="var(--font-inter), system-ui" fontSize="16" fontWeight="400" letterSpacing="3" fill="#D1D5DB">
           HARMAN KARDON
         </text>
       </svg>
@@ -674,7 +916,7 @@ const CLIENT_LOGOS = [
     name: "JBL",
     svg: (
       <svg width="80" height="40" viewBox="0 0 80 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="32" fontFamily="var(--font-inter), system-ui" fontSize="32" fontWeight="900" letterSpacing="-1" fill="#C8C0B0">
+        <text x="0" y="32" fontFamily="var(--font-inter), system-ui" fontSize="32" fontWeight="900" letterSpacing="-1" fill="#D1D5DB">
           JBL
         </text>
       </svg>
@@ -684,7 +926,7 @@ const CLIENT_LOGOS = [
     name: "Panasonic",
     svg: (
       <svg width="170" height="40" viewBox="0 0 170 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="29" fontFamily="var(--font-inter), system-ui" fontSize="20" fontWeight="500" letterSpacing="4" fill="#C8C0B0">
+        <text x="0" y="29" fontFamily="var(--font-inter), system-ui" fontSize="20" fontWeight="500" letterSpacing="4" fill="#D1D5DB">
           Panasonic
         </text>
       </svg>
@@ -694,7 +936,7 @@ const CLIENT_LOGOS = [
     name: "HP",
     svg: (
       <svg width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="32" fontFamily="var(--font-inter), system-ui" fontSize="30" fontWeight="800" fill="#C8C0B0">
+        <text x="0" y="32" fontFamily="var(--font-inter), system-ui" fontSize="30" fontWeight="800" fill="#D1D5DB">
           hp
         </text>
       </svg>
@@ -704,7 +946,7 @@ const CLIENT_LOGOS = [
     name: "Dell",
     svg: (
       <svg width="90" height="40" viewBox="0 0 90 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="30" fontFamily="var(--font-inter), system-ui" fontSize="22" fontWeight="400" letterSpacing="2" fill="#C8C0B0">
+        <text x="0" y="30" fontFamily="var(--font-inter), system-ui" fontSize="22" fontWeight="400" letterSpacing="2" fill="#D1D5DB">
           DELL
         </text>
       </svg>
@@ -712,29 +954,26 @@ const CLIENT_LOGOS = [
   },
 ];
 
-function ClientBannerSection() {
+function ClientsSection() {
   return (
-    <section id="clients" className="relative py-28 lg:py-36">
-      <div className="absolute inset-0 grid-lines opacity-15" />
-
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
+    <section id="clients" className="bg-white py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="text-center mb-16">
           <FadeUp>
-            <SectionLabel>
-              <BadgeCheck className="!size-3" />
-              Client Portfolio
-            </SectionLabel>
+            <div className="flex justify-center">
+              <LightLabel>CLIENT PORTFOLIO / 고객사</LightLabel>
+            </div>
           </FadeUp>
-          <FadeUp delay={0.15} className="mt-6">
-            <h2 className="font-fraunces text-4xl lg:text-5xl font-bold text-cream">
-              Trusted by the
-              <span className="block text-gradient-gold">World's Leading Audio Brands.</span>
+          <FadeUp delay={0.15} className="mt-8">
+            <h2 className="font-fraunces text-4xl lg:text-5xl font-bold text-gray-900">
+              세계 주요 오디오 브랜드의
+              <span className="block">제조 파트너</span>
             </h2>
           </FadeUp>
           <FadeUp delay={0.25} className="mt-4">
-            <p className="text-cream-muted text-lg max-w-2xl mx-auto">
-              From consumer electronics giants to boutique audiophile marques —
-              Bumjin manufactures the sound behind the brands you trust.
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              소비자 가전 대기업부터 하이엔드 오디오 브랜드까지 — 범진전자가
+              신뢰받는 브랜드의 소리를 만듭니다.
             </p>
           </FadeUp>
         </div>
@@ -779,9 +1018,9 @@ function ClientBannerSection() {
             { value: "18", label: "Countries Distributed" },
             { value: "15+", label: "Years of Partnership" },
           ].map((item) => (
-            <div key={item.label} className="border border-charcoal-border rounded-sm p-4">
-              <p className="font-fraunces text-2xl font-bold text-gradient-gold">{item.value}</p>
-              <p className="text-cream-dim text-xs mt-1">{item.label}</p>
+            <div key={item.label} className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
+              <p className="font-fraunces text-3xl font-bold text-gray-900">{item.value}</p>
+              <p className="text-gray-500 text-xs mt-1">{item.label}</p>
             </div>
           ))}
         </FadeUp>
@@ -790,9 +1029,84 @@ function ClientBannerSection() {
   );
 }
 
+/* ─────────────────────────── CTA strip ───────────────────────── */
+
+function CTAStrip() {
+  return (
+    <section
+      className="relative py-24 overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, #0a0a0f 0%, #1c1500 50%, #0a0a0f 100%)",
+      }}
+    >
+      {/* Subtle gold radial */}
+      <div className="absolute inset-0 bg-gradient-radial from-gold/8 via-transparent to-transparent pointer-events-none" />
+
+      <div className="relative mx-auto max-w-4xl px-6 lg:px-10 text-center">
+        <FadeUp>
+          <p className="text-[11px] font-bold tracking-[0.3em] uppercase text-gold/70 mb-6">
+            PARTNERSHIP INQUIRY
+          </p>
+        </FadeUp>
+        <FadeUp delay={0.15}>
+          <h2 className="font-fraunces text-4xl sm:text-5xl lg:text-6xl font-bold text-cream leading-tight">
+            함께 소리를 만들어 갑시다.
+          </h2>
+        </FadeUp>
+        <FadeUp delay={0.25} className="mt-6">
+          <p className="text-cream/50 text-lg leading-relaxed max-w-2xl mx-auto">
+            ODM/OEM 파트너십에 관심이 있으신가요? 비즈니스 개발팀이 24시간 내 연락 드립니다.
+          </p>
+        </FadeUp>
+        <FadeUp delay={0.35} className="mt-10">
+          <a href="#contact">
+            <Button variant="default" size="xl">
+              파트너십 문의 시작하기
+              <ChevronRight />
+            </Button>
+          </a>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
 /* ────────────────── enterprise inquiry portal ────────────────── */
 
-function EnterpriseInquirySection() {
+function FormField({
+  label,
+  id,
+  type = "text",
+  placeholder,
+  required,
+}: {
+  label: string;
+  id: string;
+  type?: string;
+  placeholder?: string;
+  required?: boolean;
+}) {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="block text-cream-muted text-xs font-semibold tracking-widest uppercase mb-2"
+      >
+        {label}
+      </label>
+      <input
+        id={id}
+        name={id}
+        type={type}
+        placeholder={placeholder}
+        required={required}
+        className="w-full bg-midnight border border-charcoal-border text-cream text-sm rounded-sm px-4 py-3 focus:outline-none focus:border-gold/50 transition-colors placeholder:text-cream-dim"
+      />
+    </div>
+  );
+}
+
+function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
   const [ndaAccepted, setNdaAccepted] = useState(false);
 
@@ -811,10 +1125,10 @@ function EnterpriseInquirySection() {
           {/* Left: info */}
           <div>
             <FadeUp>
-              <SectionLabel>
+              <DarkLabel>
                 <Shield className="!size-3" />
-                Enterprise Inquiry
-              </SectionLabel>
+                Enterprise Inquiry / 사업 문의
+              </DarkLabel>
             </FadeUp>
             <FadeUp delay={0.15} className="mt-6">
               <h2 className="font-fraunces text-4xl lg:text-5xl xl:text-6xl font-bold text-cream leading-tight">
@@ -948,7 +1262,7 @@ function EnterpriseInquirySection() {
                   </div>
                   <span className="text-cream-muted text-xs leading-relaxed">
                     I acknowledge that all information shared will be protected under
-                    Bumjin Electronics' standard{" "}
+                    Bumjin Electronics&apos; standard{" "}
                     <span className="text-gold underline underline-offset-2 cursor-pointer">
                       Mutual Non-Disclosure Agreement
                     </span>
@@ -966,39 +1280,6 @@ function EnterpriseInquirySection() {
         </div>
       </div>
     </section>
-  );
-}
-
-function FormField({
-  label,
-  id,
-  type = "text",
-  placeholder,
-  required,
-}: {
-  label: string;
-  id: string;
-  type?: string;
-  placeholder?: string;
-  required?: boolean;
-}) {
-  return (
-    <div>
-      <label
-        htmlFor={id}
-        className="block text-cream-muted text-xs font-semibold tracking-widest uppercase mb-2"
-      >
-        {label}
-      </label>
-      <input
-        id={id}
-        name={id}
-        type={type}
-        placeholder={placeholder}
-        required={required}
-        className="w-full bg-midnight border border-charcoal-border text-cream text-sm rounded-sm px-4 py-3 focus:outline-none focus:border-gold/50 transition-colors placeholder:text-cream-dim"
-      />
-    </div>
   );
 }
 
@@ -1028,7 +1309,7 @@ function Footer() {
               href="https://bumjin.career.greetinghr.com/ko/home"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 mt-5 text-gold text-sm hover:text-gold-light transition-colors"
+              className="inline-flex items-center gap-1.5 mt-5 text-gold text-sm hover:opacity-80 transition-opacity"
             >
               <span>Join Our Team</span>
               <ExternalLink className="size-3" />
@@ -1098,16 +1379,14 @@ export default function Page() {
       <Navigation />
       <main>
         <HeroSection />
-        <Divider />
+        <CompanySection />
+        <BusinessSection />
+        <TechnologySection />
         <GlobalOperationsSection />
-        <Divider />
-        <AudioEngineeringSection />
-        <Divider />
-        <ManufacturingTimelineSection />
-        <Divider />
-        <ClientBannerSection />
-        <Divider />
-        <EnterpriseInquirySection />
+        <ManufacturingSection />
+        <ClientsSection />
+        <CTAStrip />
+        <ContactSection />
       </main>
       <Footer />
     </div>
