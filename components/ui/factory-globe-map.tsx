@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Map, MapArc, MapMarker, MarkerContent, MarkerPopup, MapControls } from "@/components/ui/mapcn-map-arc";
+import { useEffect, useState } from "react";
+import { Map, MapArc, MapMarker, MarkerContent, MarkerPopup, MapControls, useMap } from "@/components/ui/mapcn-map-arc";
 import { MapPin, Phone, Building2 } from "lucide-react";
 
 type Factory = {
@@ -116,26 +116,69 @@ const FACTORIES: Factory[] = [
   },
 ];
 
-// HQ coordinates (Suwon — average of the two Korean HQ sites)
 const HQ: [number, number] = [126.97, 37.244];
 
-// Arcs from HQ to each international plant
-const ARCS = FACTORIES.filter(
-  (f) => f.country !== "Korea",
-).map((f) => ({
+const ARCS = FACTORIES.filter((f) => f.country !== "Korea").map((f) => ({
   id: f.id,
   from: HQ,
   to: [f.lng, f.lat] as [number, number],
 }));
 
-const DARK_STYLE =
-  "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
+const DARK_STYLE = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 
-export function FactoryGlobeMap() {
+/* Auto-rotate the globe — stops on user interaction, resumes after 2s */
+function GlobeAutoRotate() {
+  const { map, isLoaded } = useMap();
+
+  useEffect(() => {
+    if (!map || !isLoaded) return;
+
+    let animId: number;
+    let userInteracting = false;
+    let resumeTimer: ReturnType<typeof setTimeout>;
+
+    const animate = () => {
+      if (!userInteracting) {
+        map.rotateTo(map.getBearing() - 0.08, { duration: 0 });
+      }
+      animId = requestAnimationFrame(animate);
+    };
+
+    const onInteractStart = () => {
+      userInteracting = true;
+      clearTimeout(resumeTimer);
+    };
+    const onInteractEnd = () => {
+      resumeTimer = setTimeout(() => {
+        userInteracting = false;
+      }, 2000);
+    };
+
+    map.on("mousedown", onInteractStart);
+    map.on("touchstart", onInteractStart);
+    map.on("mouseup", onInteractEnd);
+    map.on("touchend", onInteractEnd);
+
+    animId = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      clearTimeout(resumeTimer);
+      map.off("mousedown", onInteractStart);
+      map.off("touchstart", onInteractStart);
+      map.off("mouseup", onInteractEnd);
+      map.off("touchend", onInteractEnd);
+    };
+  }, [map, isLoaded]);
+
+  return null;
+}
+
+export function FactoryGlobeMap({ mapHint }: { mapHint?: string }) {
   const [activeFactory, setActiveFactory] = useState<string | null>(null);
 
   return (
-    <div className="h-[500px] w-full overflow-hidden rounded-xl border border-charcoal-border/40 shadow-2xl">
+    <div className="h-[500px] w-full overflow-hidden rounded-xl border border-gray-200 shadow-xl">
       <Map
         center={[30, 25]}
         zoom={1.4}
@@ -144,14 +187,17 @@ export function FactoryGlobeMap() {
         styles={{ dark: DARK_STYLE }}
         renderWorldCopies={false}
       >
+        {/* Auto-rotation */}
+        <GlobeAutoRotate />
+
         {/* Arcs from Korean HQ to international plants */}
         <MapArc
           data={ARCS}
           curvature={0.25}
           paint={{
-            "line-color": "#C8A84B",
+            "line-color": "#DC2626",
             "line-width": 1.5,
-            "line-opacity": 0.55,
+            "line-opacity": 0.6,
             "line-dasharray": [3, 3],
           }}
           interactive={false}
@@ -164,26 +210,24 @@ export function FactoryGlobeMap() {
             longitude={factory.lng}
             latitude={factory.lat}
             onClick={() =>
-              setActiveFactory(
-                activeFactory === factory.id ? null : factory.id,
-              )
+              setActiveFactory(activeFactory === factory.id ? null : factory.id)
             }
           >
             <MarkerContent>
               <div className="relative flex items-center justify-center">
                 {factory.type === "hq" ? (
-                  <div className="size-4 rounded-full border-2 border-white bg-[#C8A84B] shadow-[0_0_8px_rgba(200,168,75,0.8)]" />
+                  <div className="size-4 rounded-full border-2 border-white bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.9)]" />
                 ) : (
-                  <div className="size-3 rounded-full border-2 border-white bg-[#3B82F6] shadow-[0_0_6px_rgba(59,130,246,0.7)]" />
+                  <div className="size-3 rounded-full border-2 border-white bg-white/80 shadow-[0_0_6px_rgba(255,255,255,0.8)]" />
                 )}
               </div>
             </MarkerContent>
 
             {activeFactory === factory.id && (
               <MarkerPopup closeButton offset={20}>
-                <div className="min-w-[200px] space-y-2">
+                <div className="min-w-[200px] space-y-2 bg-gray-900/95 backdrop-blur rounded-lg p-3 border border-white/10">
                   <div className="flex items-start gap-2">
-                    <Building2 className="mt-0.5 size-4 shrink-0 text-[#C8A84B]" />
+                    <Building2 className="mt-0.5 size-4 shrink-0 text-red-400" />
                     <div>
                       <p className="text-sm font-semibold leading-tight text-white">
                         {factory.nameKo}
@@ -209,6 +253,9 @@ export function FactoryGlobeMap() {
 
         <MapControls position="bottom-right" showZoom showCompass />
       </Map>
+      {mapHint && (
+        <p className="mt-2 text-center text-[11px] text-gray-400">{mapHint}</p>
+      )}
     </div>
   );
 }

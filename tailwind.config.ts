@@ -35,6 +35,11 @@ const config: Config = {
           dark: "#1D4ED8",
           glow: "#60A5FA",
         },
+        primary: {
+          DEFAULT: "#DC2626",
+          light: "#FEE2E2",
+          dark: "#991B1B",
+        },
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
