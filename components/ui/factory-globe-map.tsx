@@ -126,7 +126,12 @@ const ARCS = FACTORIES.filter((f) => f.country !== "Korea").map((f) => ({
 
 const DARK_STYLE = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 
-/* Auto-rotate the globe — stops on user interaction, resumes after 2s */
+/*
+ * Rotates the globe by advancing center longitude each frame.
+ * This makes the Earth appear to spin naturally (west→east) instead of
+ * the compass bearing spinning in place (which looked wrong).
+ * Speed: ~0.07° longitude / frame ≈ one full revolution every ~85 s at 60 fps.
+ */
 function GlobeAutoRotate() {
   const { map, isLoaded } = useMap();
 
@@ -139,7 +144,8 @@ function GlobeAutoRotate() {
 
     const animate = () => {
       if (!userInteracting) {
-        map.rotateTo(map.getBearing() + 0.28, { duration: 0 });
+        const { lng, lat } = map.getCenter();
+        map.setCenter([lng + 0.07, lat]);
       }
       animId = requestAnimationFrame(animate);
     };
@@ -149,9 +155,7 @@ function GlobeAutoRotate() {
       clearTimeout(resumeTimer);
     };
     const onInteractEnd = () => {
-      resumeTimer = setTimeout(() => {
-        userInteracting = false;
-      }, 2000);
+      resumeTimer = setTimeout(() => { userInteracting = false; }, 2000);
     };
 
     map.on("mousedown", onInteractStart);
