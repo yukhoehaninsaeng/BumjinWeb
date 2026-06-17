@@ -24,9 +24,9 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { GlobeFeatureSection } from "@/components/ui/globe-feature-section";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
+import { FactoryGlobeMap } from "@/components/ui/factory-globe-map";
 
 /* ─────────────────────────── helpers ─────────────────────────── */
 
@@ -369,13 +369,12 @@ function GlobalOperationsSection() {
             </FadeUp>
           </div>
 
-          {/* Right: globe */}
-          <FadeUp delay={0.2} className="relative flex justify-center">
-            <div className="relative w-full max-w-[520px]">
-              {/* Glow ring behind globe */}
-              <div className="absolute inset-0 rounded-full bg-gradient-radial from-electric/10 via-transparent to-transparent blur-2xl" />
-              <GlobeFeatureSection />
-            </div>
+          {/* Right: interactive factory map */}
+          <FadeUp delay={0.2} className="relative w-full">
+            <FactoryGlobeMap />
+            <p className="mt-2 text-center text-[11px] text-cream-dim">
+              마커를 클릭하면 사업장 정보를 확인할 수 있습니다
+            </p>
           </FadeUp>
         </div>
       </div>

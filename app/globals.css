@@ -5,6 +5,14 @@
 :root {
   --foreground: #F5F0E8;
   --background: #050505;
+
+  /* MapLibre popup theming */
+  --popover: #111118;
+  --popover-foreground: #F5F0E8;
+  --border: #2E2E42;
+  --muted-foreground: #888899;
+  --accent: #1A1A28;
+  --ring: #C8A84B;
 }
 
 * {
