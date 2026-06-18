@@ -107,3 +107,6 @@ body {
 .maplibregl-popup-tip {
   display: none !important;
 }
+.maplibregl-ctrl-attrib {
+  display: none !important;
+}

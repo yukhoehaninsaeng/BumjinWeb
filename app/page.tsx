@@ -520,7 +520,7 @@ function GlobalSection({ lang }: { lang: Lang }) {
           </div>
 
           <FadeIn delay={0.1} className="w-full">
-            <FactoryGlobeMap mapHint={t.mapHint} />
+            <FactoryGlobeMap mapHint={t.mapHint} lang={lang} />
           </FadeIn>
         </div>
       </div>
