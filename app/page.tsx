@@ -115,7 +115,7 @@ function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
               onClick={() => setLangOpen(!langOpen)}
               className="flex items-center gap-1 text-[12px] font-medium text-gray-500 hover:text-gray-900 transition-colors px-2 py-1"
             >
-              {LANG_OPTIONS.find((o) => o.code === lang)?.label}
+              Language
               <ChevronDown className="size-3" />
             </button>
             {langOpen && (
