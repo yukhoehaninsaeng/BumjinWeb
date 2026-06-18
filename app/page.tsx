@@ -912,7 +912,7 @@ function ScrollVideoSection({ lang }: { lang: Lang }) {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 64px", "end end"],
+    offset: ["start start", "end end"],
   });
 
   /* Scrub video.currentTime on scroll without triggering re-renders */
@@ -959,8 +959,7 @@ function ScrollVideoSection({ lang }: { lang: Lang }) {
 
   return (
     <div ref={containerRef} style={{ height: "300vh" }}>
-      {/* top-16 = nav height (64px); height fills remaining viewport below nav */}
-      <div className="sticky top-16 overflow-hidden bg-black" style={{ height: "calc(100vh - 4rem)" }}>
+      <div className="sticky top-0 h-screen overflow-hidden bg-black">
         <video
           ref={videoRef}
           src="/Soundbar.mp4"
@@ -1026,7 +1025,6 @@ export default function Page() {
     <div className="bg-white text-gray-900 min-h-screen">
       <Navigation lang={lang} setLang={setLang} />
       <main>
-        <HeroSection lang={lang} />
         <ScrollVideoSection lang={lang} />
         <CompanySection lang={lang} />
         <BusinessSection lang={lang} />
