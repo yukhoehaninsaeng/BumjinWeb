@@ -870,7 +870,7 @@ function ScrollVideoSection({ lang }: { lang: Lang }) {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"],
+    offset: ["start 64px", "end end"],
   });
 
   /* Scrub video.currentTime on scroll without triggering re-renders */
@@ -917,7 +917,8 @@ function ScrollVideoSection({ lang }: { lang: Lang }) {
 
   return (
     <div ref={containerRef} style={{ height: "300vh" }}>
-      <div className="sticky top-0 h-screen overflow-hidden bg-black">
+      {/* top-16 = nav height (64px); height fills remaining viewport below nav */}
+      <div className="sticky top-16 overflow-hidden bg-black" style={{ height: "calc(100vh - 4rem)" }}>
         <video
           ref={videoRef}
           src="/Soundbar.mp4"
