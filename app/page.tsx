@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import {
   ArrowUpRight,
   ChevronDown,
@@ -906,142 +906,20 @@ function Footer({ lang }: { lang: Lang }) {
   );
 }
 
-/* ─── SCROLL VIDEO SECTION ─── */
+/* ─── HERO VIDEO ─── */
 
-const SCROLL_STAGES: Record<Lang, { tag: string; text: string; sub: string }[]> = {
-  ko: [
-    { tag: "SOUND DESIGN", text: "소리를 설계하는\n기술", sub: "1994년부터 이어온 음향 엔지니어링의 여정" },
-    { tag: "GLOBAL MANUFACTURING", text: "세계 6개국\n생산 거점", sub: "한국·멕시코·인도네시아·베트남·중국·헝가리" },
-    { tag: "ODM / OEM PARTNERSHIP", text: "30년의 신뢰\n파트너십", sub: "삼성·LG·소니가 선택한 사운드바 제조사" },
-    { tag: "FUTURE OF SOUND", text: "소리의 미래를\n함께 설계합니다", sub: "귀하의 브랜드, 범진의 기술" },
-  ],
-  en: [
-    { tag: "SOUND DESIGN", text: "Engineering\nSound", sub: "30 years of acoustic engineering excellence" },
-    { tag: "GLOBAL MANUFACTURING", text: "6 Countries.\nOne Standard.", sub: "Korea · Mexico · Indonesia · Vietnam · China · Hungary" },
-    { tag: "ODM / OEM PARTNERSHIP", text: "Trusted by\nthe World's Best", sub: "Samsung · LG · Sony choose Bumjin" },
-    { tag: "FUTURE OF SOUND", text: "Shaping\nTomorrow's Sound", sub: "Your brand. Our engineering." },
-  ],
-  zh: [
-    { tag: "声音设计", text: "设计声音\n的技术", sub: "自1994年起的声学工程之旅" },
-    { tag: "全球制造", text: "全球6个\n国家生产基地", sub: "韩国·墨西哥·印度尼西亚·越南·中国·匈牙利" },
-    { tag: "ODM / OEM 合作", text: "30年的信任\n合作伙伴", sub: "三星·LG·索尼选择范振" },
-    { tag: "声音的未来", text: "共同设计\n声音的未来", sub: "您的品牌，范振的技术" },
-  ],
-  ja: [
-    { tag: "サウンドデザイン", text: "サウンドを\n設計する技術", sub: "1994年から続く音響エンジニアリングの歩み" },
-    { tag: "グローバル製造", text: "世界6カ国\n生産拠点", sub: "韓国·メキシコ·インドネシア·ベトナム·中国·ハンガリー" },
-    { tag: "ODM / OEM パートナー", text: "30年の信頼\nパートナーシップ", sub: "Samsung·LG·Sonyが選ぶ" },
-    { tag: "サウンドの未来", text: "サウンドの\n未来を共に", sub: "お客様のブランド、범진の技術" },
-  ],
-};
-
-function ScrollVideoSection({ lang }: { lang: Lang }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  /* Scrub video.currentTime on scroll without triggering re-renders */
-  useEffect(() => {
-    const unsub = scrollYProgress.on("change", (p) => {
-      const v = videoRef.current;
-      if (v && v.readyState >= 2 && v.duration) {
-        v.currentTime = p * v.duration;
-      }
-    });
-    return unsub;
-  }, [scrollYProgress]);
-
-  /* Stage 0: 0 → 0.28 */
-  const op0 = useTransform(scrollYProgress, [0, 0.04, 0.22, 0.28], [0, 1, 1, 0]);
-  const y0  = useTransform(scrollYProgress, [0, 0.06], [24, 0]);
-  /* Stage 1: 0.28 → 0.54 */
-  const op1 = useTransform(scrollYProgress, [0.26, 0.32, 0.48, 0.54], [0, 1, 1, 0]);
-  const y1  = useTransform(scrollYProgress, [0.26, 0.34], [24, 0]);
-  /* Stage 2: 0.54 → 0.80 */
-  const op2 = useTransform(scrollYProgress, [0.52, 0.58, 0.74, 0.80], [0, 1, 1, 0]);
-  const y2  = useTransform(scrollYProgress, [0.52, 0.60], [24, 0]);
-  /* Stage 3: 0.80 → 1.0 (stays visible at end) */
-  const op3 = useTransform(scrollYProgress, [0.78, 0.84, 1.0, 1.0], [0, 1, 1, 1]);
-  const y3  = useTransform(scrollYProgress, [0.78, 0.86], [24, 0]);
-
-  /* Progress dots */
-  const dot0 = useTransform(scrollYProgress, [0, 0.06, 0.22, 0.28], [0.3, 1, 1, 0.3]);
-  const dot1 = useTransform(scrollYProgress, [0.26, 0.34, 0.48, 0.54], [0.3, 1, 1, 0.3]);
-  const dot2 = useTransform(scrollYProgress, [0.52, 0.60, 0.74, 0.80], [0.3, 1, 1, 0.3]);
-  const dot3 = useTransform(scrollYProgress, [0.78, 0.86, 1.0, 1.0], [0.3, 1, 1, 1]);
-
-  /* Scroll hint fades out after first stage */
-  const hintOp = useTransform(scrollYProgress, [0, 0.07], [1, 0]);
-
-  const stageData = [
-    { op: op0, y: y0, dot: dot0 },
-    { op: op1, y: y1, dot: dot1 },
-    { op: op2, y: y2, dot: dot2 },
-    { op: op3, y: y3, dot: dot3 },
-  ];
-
-  const s = SCROLL_STAGES[lang];
-
+function HeroVideo() {
   return (
-    <div ref={containerRef} style={{ height: "300vh" }}>
-      <div className="sticky top-0 h-screen overflow-hidden bg-black">
-        <video
-          ref={videoRef}
-          src="/Soundbar.mp4"
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-80"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-black/25" />
-
-        {/* Text stages — stack on same spot, each fades in/out */}
-        {stageData.map(({ op, y }, i) => (
-          <motion.div
-            key={i}
-            className="absolute bottom-16 left-0 right-0 max-w-7xl mx-auto px-6 lg:px-10"
-            style={{ opacity: op, y }}
-          >
-            <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-red-400/80 mb-4">
-              {s[i].tag}
-            </p>
-            <h2
-              className="font-black text-white leading-[1.05] tracking-[-0.02em] mb-4 whitespace-pre-line"
-              style={{ fontSize: "clamp(40px, 5.5vw, 82px)" }}
-            >
-              {s[i].text}
-            </h2>
-            <p className="text-white/55 text-[15px]">{s[i].sub}</p>
-          </motion.div>
-        ))}
-
-        {/* Progress dots — right side */}
-        <div className="absolute bottom-10 right-8 flex flex-col gap-2 items-center">
-          {stageData.map(({ dot }, i) => (
-            <motion.div
-              key={i}
-              className="w-[3px] h-[3px] rounded-full bg-white"
-              style={{ opacity: dot }}
-            />
-          ))}
-        </div>
-
-        {/* Scroll hint */}
-        <motion.div
-          className="absolute bottom-8 left-0 right-0 flex justify-center pointer-events-none"
-          style={{ opacity: hintOp }}
-        >
-          <div className="flex flex-col items-center gap-1.5 text-white/40">
-            <p className="text-[9px] tracking-[0.4em] uppercase">Scroll</p>
-            <ChevronDown className="size-3.5 animate-bounce" />
-          </div>
-        </motion.div>
-      </div>
-    </div>
+    <section className="relative w-full h-screen overflow-hidden bg-black">
+      <video
+        src="/WebVideo_V2.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+    </section>
   );
 }
 
@@ -1054,7 +932,7 @@ export default function Page() {
     <div className="bg-white text-gray-900 min-h-screen">
       <Navigation lang={lang} setLang={setLang} />
       <main>
-        <ScrollVideoSection lang={lang} />
+        <HeroVideo />
         <CompanySection lang={lang} />
         <BusinessSection lang={lang} />
         <TechnologySection lang={lang} />
