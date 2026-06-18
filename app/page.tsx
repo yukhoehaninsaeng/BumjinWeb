@@ -329,15 +329,15 @@ function CompanySection({ lang }: { lang: Lang }) {
   const t = translations[lang].company;
 
   return (
-    <section id="about" className="bg-white pt-14 lg:pt-18">
-      {/* Intro — tighter */}
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 pb-12 lg:pb-14">
+    <section id="about" className="bg-white py-28 lg:py-40">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <SectionLabel>{t.label}</SectionLabel>
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-24">
+
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 mb-20">
           <FadeIn>
             <h2
               className="font-black leading-[1.0] tracking-tight text-gray-900"
-              style={{ fontSize: "clamp(42px, 5.2vw, 76px)" }}
+              style={{ fontSize: "clamp(36px, 4.5vw, 68px)" }}
             >
               {t.heading}
               <br />
@@ -352,24 +352,20 @@ function CompanySection({ lang }: { lang: Lang }) {
             </a>
           </FadeIn>
         </div>
-      </div>
 
-      {/* Full-width dark stats bar */}
-      <div className="bg-gray-950">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid grid-cols-2 lg:grid-cols-5 divide-x divide-white/10">
-            {t.stats.map((s, i) => (
-              <FadeIn key={s.label} delay={i * 0.05}>
-                <div className="py-9 px-5 lg:px-8 first:pl-0">
-                  <p className="text-[42px] lg:text-[52px] font-black text-white leading-none tracking-tighter">
-                    {s.value}
-                  </p>
-                  <p className="text-[12px] font-semibold text-gray-400 mt-2">{s.label}</p>
-                  {s.sub && <p className="text-[10px] text-gray-600 mt-0.5">{s.sub}</p>}
-                </div>
-              </FadeIn>
-            ))}
-          </div>
+        {/* Large stats — no containers, just numbers */}
+        <div className="border-t border-gray-100 pt-14 grid grid-cols-2 lg:grid-cols-5 gap-y-10">
+          {t.stats.map((s, i) => (
+            <FadeIn key={s.label} delay={i * 0.06}>
+              <div className={i < t.stats.length - 1 ? "lg:pr-10 lg:border-r lg:border-gray-100" : "lg:pl-0"}>
+                <p className="text-[52px] lg:text-[64px] font-black text-gray-900 leading-none tracking-tighter">
+                  {s.value}
+                </p>
+                <p className="text-[13px] font-semibold text-gray-700 mt-3">{s.label}</p>
+                {s.sub && <p className="text-[11px] text-gray-400 mt-1">{s.sub}</p>}
+              </div>
+            </FadeIn>
+          ))}
         </div>
       </div>
     </section>
@@ -382,7 +378,7 @@ function BusinessSection({ lang }: { lang: Lang }) {
   const t = translations[lang].business;
 
   return (
-    <section id="solutions" className="bg-white py-24 lg:py-32">
+    <section id="solutions" className="bg-gray-50 py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* Header row */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between border-b border-gray-200 pb-10 mb-0">
@@ -390,12 +386,12 @@ function BusinessSection({ lang }: { lang: Lang }) {
             <SectionLabel>{t.label}</SectionLabel>
             <h2
               className="font-black text-gray-900 leading-[0.95] tracking-tight"
-              style={{ fontSize: "clamp(44px, 5.5vw, 82px)" }}
+              style={{ fontSize: "clamp(36px, 5vw, 72px)" }}
             >
               {t.heading}
             </h2>
           </div>
-          <p className="text-gray-400 text-[14px] max-w-[280px] hidden lg:block leading-relaxed pb-1">
+          <p className="text-gray-400 text-[13px] max-w-[220px] hidden lg:block leading-relaxed pb-1">
             {t.subtitle}
           </p>
         </div>
@@ -408,14 +404,14 @@ function BusinessSection({ lang }: { lang: Lang }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.06, duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
-            className="group flex items-center gap-6 lg:gap-16 py-8 border-b border-gray-200 hover:bg-gray-50 -mx-6 lg:-mx-10 px-6 lg:px-10 transition-colors cursor-pointer"
+            className="group flex items-center gap-6 lg:gap-16 py-9 border-b border-gray-200 hover:bg-white -mx-6 lg:-mx-10 px-6 lg:px-10 transition-colors cursor-pointer"
           >
             <span className="text-[11px] font-mono text-gray-300 shrink-0 w-6 tabular-nums">
               {String(i + 1).padStart(2, "0")}
             </span>
             <div className="flex-1 grid lg:grid-cols-3 gap-2 lg:gap-12 items-center min-w-0">
               <div className="lg:col-span-1">
-                <p className="text-[20px] lg:text-[26px] font-bold text-gray-900 leading-snug">
+                <p className="text-[18px] lg:text-[22px] font-bold text-gray-900 leading-snug">
                   {area.title}
                 </p>
                 <p className="text-[12px] text-gray-400 mt-0.5">{area.titleSub}</p>
@@ -453,26 +449,26 @@ function TechnologySection({ lang }: { lang: Lang }) {
   const t = translations[lang].technology;
 
   return (
-    <section id="capabilities" className="bg-gray-50 py-24 lg:py-32">
+    <section id="capabilities" className="bg-white py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-28 items-start">
           <FadeIn>
             <SectionLabel>{t.label}</SectionLabel>
             <h2
               className="font-black text-gray-900 leading-[1.0] tracking-tight mb-6"
-              style={{ fontSize: "clamp(40px, 5vw, 70px)" }}
+              style={{ fontSize: "clamp(34px, 4.2vw, 60px)" }}
             >
               {t.heading}
             </h2>
-            <p className="text-gray-500 text-[16px] leading-relaxed">{t.subtitle}</p>
+            <p className="text-gray-500 text-[15px] leading-relaxed">{t.subtitle}</p>
           </FadeIn>
 
           <FadeIn delay={0.15}>
             <div className="grid grid-cols-1 sm:grid-cols-2">
               {CAPABILITIES.map((cap, i) => (
-                <div key={i} className="flex items-center gap-3 py-5 border-b border-gray-200">
-                  <div className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
-                  <span className="text-gray-700 text-[14px]">{cap}</span>
+                <div key={i} className="flex items-center gap-3 py-3.5 border-b border-gray-100">
+                  <div className="w-1 h-1 rounded-full bg-red-600 shrink-0" />
+                  <span className="text-gray-700 text-[13px]">{cap}</span>
                 </div>
               ))}
             </div>
@@ -499,7 +495,7 @@ function GlobalSection({ lang }: { lang: Lang }) {
   const t = translations[lang].global;
 
   return (
-    <section id="operations" className="bg-gray-50 py-24 lg:py-32">
+    <section id="operations" className="bg-gray-50 py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-start">
           <div>
@@ -507,7 +503,7 @@ function GlobalSection({ lang }: { lang: Lang }) {
               <SectionLabel>{t.label}</SectionLabel>
               <h2
                 className="font-black text-gray-900 leading-[1.0] tracking-tight mb-6"
-                style={{ fontSize: "clamp(40px, 5vw, 72px)" }}
+                style={{ fontSize: "clamp(34px, 4.5vw, 64px)" }}
               >
                 {t.heading}
                 <span className="block text-red-600">{t.headingAccent}</span>
@@ -557,14 +553,14 @@ function ProcessSection({ lang }: { lang: Lang }) {
   const t = translations[lang].process;
 
   return (
-    <section className="bg-white py-24 lg:py-32">
+    <section className="bg-white py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between pb-10 border-b border-gray-200 mb-0">
           <div>
             <SectionLabel>{t.label}</SectionLabel>
             <h2
               className="font-black text-gray-900 leading-[1.0] tracking-tight"
-              style={{ fontSize: "clamp(40px, 4.8vw, 68px)" }}
+              style={{ fontSize: "clamp(34px, 4.2vw, 60px)" }}
             >
               {t.heading}
             </h2>
@@ -608,14 +604,14 @@ function ClientsSection({ lang }: { lang: Lang }) {
   const t = translations[lang].clients;
 
   return (
-    <section id="clients" className="bg-gray-50 py-24 lg:py-32">
+    <section id="clients" className="bg-gray-50 py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-3 gap-12 lg:gap-20 mb-16 items-end">
           <div className="lg:col-span-1">
             <SectionLabel>{t.label}</SectionLabel>
             <h2
               className="font-black text-gray-900 leading-[1.0] tracking-tight"
-              style={{ fontSize: "clamp(38px, 4.5vw, 64px)" }}
+              style={{ fontSize: "clamp(34px, 4vw, 56px)" }}
             >
               {t.heading}
               <span className="block text-red-600">{t.headingAccent}</span>
@@ -711,7 +707,7 @@ function ContactSection({ lang }: { lang: Lang }) {
   const [ndaAccepted, setNdaAccepted] = useState(false);
 
   return (
-    <section id="contact" className="bg-white py-24 lg:py-32">
+    <section id="contact" className="bg-white py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           {/* Left */}
@@ -720,7 +716,7 @@ function ContactSection({ lang }: { lang: Lang }) {
               <SectionLabel>{t.label}</SectionLabel>
               <h2
                 className="font-black text-gray-900 leading-[1.0] tracking-tight mb-6"
-                style={{ fontSize: "clamp(40px, 5vw, 72px)" }}
+                style={{ fontSize: "clamp(34px, 4.5vw, 64px)" }}
               >
                 {t.heading}
                 <span className="block text-red-600">{t.headingAccent}</span>
