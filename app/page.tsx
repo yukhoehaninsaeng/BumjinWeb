@@ -95,7 +95,7 @@ function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
     >
       <nav className="mx-auto max-w-7xl px-6 lg:px-10 h-16 flex items-center justify-between">
         <a href="#" className="shrink-0">
-          <Image src="/logo.svg" alt="Bumjin Electronics" width={120} height={36} priority className="h-8 w-auto" />
+          <Image src="/bumjin%20icon.jpg" alt="Bumjin Electronics" width={120} height={36} priority className="h-9 w-auto object-contain" />
         </a>
 
         <ul className="hidden lg:flex items-center gap-10">
@@ -787,7 +787,7 @@ function Footer({ lang }: { lang: Lang }) {
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div className="lg:col-span-2">
-            <Image src="/logo.svg" alt="Bumjin Electronics" width={110} height={34} className="h-8 w-auto mb-5 brightness-0 invert opacity-80" />
+            <Image src="/bumjin%20icon.jpg" alt="Bumjin Electronics" width={110} height={34} className="h-9 w-auto mb-5 object-contain brightness-0 invert opacity-70" />
             <p className="text-gray-500 text-[13px] leading-relaxed max-w-xs mb-5">{t.desc}</p>
             <a href="https://bumjin.career.greetinghr.com/ko/home" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-red-400 text-[13px] hover:text-red-300 transition-colors">
               {t.careers}
@@ -835,6 +835,45 @@ function Footer({ lang }: { lang: Lang }) {
   );
 }
 
+/* ─── VIDEO SHOWCASE ─── */
+
+function VideoShowcase({ lang }: { lang: Lang }) {
+  const labels: Record<Lang, { tag: string; headline: string; sub: string }> = {
+    ko: { tag: "PRODUCT REEL", headline: "소리를 설계하는 기술", sub: "삼성·LG·소니가 신뢰하는 사운드바 ODM/OEM 파트너" },
+    en: { tag: "PRODUCT REEL", headline: "Engineering Sound", sub: "The ODM/OEM partner trusted by Samsung, LG, and Sony" },
+    zh: { tag: "产品展示", headline: "设计声音的技术", sub: "三星·LG·索尼信赖的声棒 ODM/OEM 合作伙伴" },
+    ja: { tag: "製品紹介", headline: "サウンドを設計する技術", sub: "Samsung・LG・Sonyが信頼するサウンドバー ODM/OEM パートナー" },
+  };
+  const l = labels[lang];
+
+  return (
+    <section className="relative w-full overflow-hidden bg-black" style={{ height: "min(72vh, 640px)" }}>
+      <video
+        src="/Soundbar.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-75"
+      />
+      {/* gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/30" />
+
+      {/* text */}
+      <div className="absolute bottom-10 left-0 right-0 mx-auto max-w-7xl px-6 lg:px-10">
+        <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/50 mb-3">{l.tag}</p>
+        <h2
+          className="font-black text-white leading-[1.05] tracking-[-0.02em] mb-4"
+          style={{ fontSize: "clamp(36px, 5vw, 72px)" }}
+        >
+          {l.headline}
+        </h2>
+        <p className="text-white/60 text-[15px]">{l.sub}</p>
+      </div>
+    </section>
+  );
+}
+
 /* ─── PAGE ─── */
 
 export default function Page() {
@@ -845,6 +884,7 @@ export default function Page() {
       <Navigation lang={lang} setLang={setLang} />
       <main>
         <HeroSection lang={lang} />
+        <VideoShowcase lang={lang} />
         <CompanySection lang={lang} />
         <BusinessSection lang={lang} />
         <TechnologySection lang={lang} />
