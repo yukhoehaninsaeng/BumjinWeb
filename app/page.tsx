@@ -976,16 +976,16 @@ function HeroVideo({ lang }: { lang: Lang }) {
             className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
             style={{ opacity: textOpacity, y: textY }}
           >
-            <p className="text-[10px] font-bold tracking-[0.45em] uppercase text-white/55 mb-7">
+            <p className="text-[15px] font-bold tracking-[0.45em] uppercase text-white/55 mb-7">
               {c.tag}
             </p>
             <h1
               className="font-black text-white leading-[1.05] tracking-[-0.02em] mb-7 whitespace-pre-line"
-              style={{ fontSize: "clamp(38px, 5vw, 76px)" }}
+              style={{ fontSize: "clamp(57px, 7.5vw, 114px)" }}
             >
               {c.headline}
             </h1>
-            <p className="text-white/65 text-[14px] leading-relaxed max-w-xl">
+            <p className="text-white/65 text-[21px] leading-relaxed max-w-xl">
               {c.body}
             </p>
           </motion.div>
