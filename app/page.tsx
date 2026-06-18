@@ -221,7 +221,7 @@ function HeroSection({ lang }: { lang: Lang }) {
 
           <FadeIn delay={0.15}>
             <h1
-              className="font-black leading-[0.88] tracking-[-0.025em] text-gray-900 mb-10"
+              className="font-black leading-[1.1] tracking-[-0.02em] text-gray-900 mb-10"
               style={{ fontSize: "clamp(52px, 8.5vw, 130px)" }}
             >
               {t.line1}
