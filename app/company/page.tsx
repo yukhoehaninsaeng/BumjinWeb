@@ -144,7 +144,7 @@ function OverviewSection() {
             className="font-semibold tracking-[0.4em] uppercase mb-16"
             style={{ fontSize: "11px", color: "#999999" }}
           >
-            사훈
+            Vision
           </p>
         </FadeIn>
 
@@ -178,7 +178,7 @@ function OverviewSection() {
                       y={78}
                       textAnchor="middle"
                       fontFamily="Noto Sans KR, sans-serif"
-                      fontSize={26}
+                      fontSize={31}
                       fontWeight={700}
                       fill="#c0392b"
                     >
@@ -213,7 +213,7 @@ function OverviewSection() {
                   <p
                     style={{
                       color: "#111111",
-                      fontSize: "clamp(13px, 1.4vw, 20px)",
+                      fontSize: "clamp(16px, 1.7vw, 24px)",
                       fontWeight: 500,
                       marginBottom: "6px",
                       lineHeight: 1.3,
@@ -224,7 +224,7 @@ function OverviewSection() {
                   <p
                     style={{
                       color: "#999999",
-                      fontSize: "13px",
+                      fontSize: "16px",
                       marginBottom: "14px",
                     }}
                   >
@@ -240,8 +240,8 @@ function OverviewSection() {
                   <p
                     style={{
                       color: "#666666",
-                      fontSize: "12.5px",
-                      fontWeight: 300,
+                      fontSize: "15px",
+                      fontWeight: 400,
                       lineHeight: 1.8,
                     }}
                   >
@@ -260,13 +260,13 @@ function OverviewSection() {
           className="mx-auto px-12 pb-20"
           style={{ maxWidth: "1200px", marginTop: "48px" }}
         >
-          <div style={{ borderTop: "2px solid #111111", paddingTop: "40px" }}>
+          <div style={{ paddingTop: "40px" }}>
             <div className="flex flex-col sm:flex-row gap-8 sm:gap-16 items-start">
               <span
                 className="shrink-0"
                 style={{
                   color: "#999999",
-                  fontSize: "11px",
+                  fontSize: "13px",
                   fontWeight: 600,
                   letterSpacing: "2px",
                   textTransform: "uppercase",
@@ -278,7 +278,7 @@ function OverviewSection() {
               <p
                 style={{
                   color: "#111111",
-                  fontSize: "clamp(15px, 1.8vw, 22px)",
+                  fontSize: "clamp(19px, 2.2vw, 27px)",
                   fontWeight: 500,
                   lineHeight: 1.75,
                 }}
