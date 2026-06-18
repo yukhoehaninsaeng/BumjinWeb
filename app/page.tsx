@@ -329,11 +329,11 @@ function CompanySection({ lang }: { lang: Lang }) {
   const t = translations[lang].company;
 
   return (
-    <section id="about" className="bg-white py-28 lg:py-40">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+    <section id="about" className="bg-white pt-14 lg:pt-18">
+      {/* Intro — tighter */}
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 pb-12 lg:pb-14">
         <SectionLabel>{t.label}</SectionLabel>
-
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 mb-20">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-24">
           <FadeIn>
             <h2
               className="font-black leading-[1.0] tracking-tight text-gray-900"
@@ -352,20 +352,24 @@ function CompanySection({ lang }: { lang: Lang }) {
             </a>
           </FadeIn>
         </div>
+      </div>
 
-        {/* Large stats — no containers, just numbers */}
-        <div className="border-t border-gray-100 pt-14 grid grid-cols-2 lg:grid-cols-5 gap-y-10">
-          {t.stats.map((s, i) => (
-            <FadeIn key={s.label} delay={i * 0.06}>
-              <div className={i < t.stats.length - 1 ? "lg:pr-10 lg:border-r lg:border-gray-100" : "lg:pl-0"}>
-                <p className="text-[52px] lg:text-[64px] font-black text-gray-900 leading-none tracking-tighter">
-                  {s.value}
-                </p>
-                <p className="text-[13px] font-semibold text-gray-700 mt-3">{s.label}</p>
-                {s.sub && <p className="text-[11px] text-gray-400 mt-1">{s.sub}</p>}
-              </div>
-            </FadeIn>
-          ))}
+      {/* Full-width dark stats bar */}
+      <div className="bg-gray-950">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="grid grid-cols-2 lg:grid-cols-5 divide-x divide-white/10">
+            {t.stats.map((s, i) => (
+              <FadeIn key={s.label} delay={i * 0.05}>
+                <div className="py-9 px-5 lg:px-8 first:pl-0">
+                  <p className="text-[42px] lg:text-[52px] font-black text-white leading-none tracking-tighter">
+                    {s.value}
+                  </p>
+                  <p className="text-[12px] font-semibold text-gray-400 mt-2">{s.label}</p>
+                  {s.sub && <p className="text-[10px] text-gray-600 mt-0.5">{s.sub}</p>}
+                </div>
+              </FadeIn>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -378,10 +382,10 @@ function BusinessSection({ lang }: { lang: Lang }) {
   const t = translations[lang].business;
 
   return (
-    <section id="solutions" className="bg-gray-50 py-28 lg:py-40">
+    <section id="solutions" className="bg-white py-14 lg:py-18">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* Header row */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between border-b border-gray-200 pb-10 mb-0">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between border-b border-gray-200 pb-8 mb-0">
           <div>
             <SectionLabel>{t.label}</SectionLabel>
             <h2
@@ -404,7 +408,7 @@ function BusinessSection({ lang }: { lang: Lang }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.06, duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
-            className="group flex items-center gap-6 lg:gap-16 py-9 border-b border-gray-200 hover:bg-white -mx-6 lg:-mx-10 px-6 lg:px-10 transition-colors cursor-pointer"
+            className="group flex items-center gap-6 lg:gap-16 py-6 border-b border-gray-200 hover:bg-gray-50 -mx-6 lg:-mx-10 px-6 lg:px-10 transition-colors cursor-pointer"
           >
             <span className="text-[11px] font-mono text-gray-300 shrink-0 w-6 tabular-nums">
               {String(i + 1).padStart(2, "0")}
@@ -449,7 +453,7 @@ function TechnologySection({ lang }: { lang: Lang }) {
   const t = translations[lang].technology;
 
   return (
-    <section id="capabilities" className="bg-white py-28 lg:py-40">
+    <section id="capabilities" className="bg-gray-50 py-14 lg:py-18">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-28 items-start">
           <FadeIn>
@@ -495,7 +499,7 @@ function GlobalSection({ lang }: { lang: Lang }) {
   const t = translations[lang].global;
 
   return (
-    <section id="operations" className="bg-gray-50 py-28 lg:py-40">
+    <section id="operations" className="bg-gray-50 py-14 lg:py-18">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-start">
           <div>
@@ -553,7 +557,7 @@ function ProcessSection({ lang }: { lang: Lang }) {
   const t = translations[lang].process;
 
   return (
-    <section className="bg-white py-28 lg:py-40">
+    <section className="bg-white py-14 lg:py-18">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between pb-10 border-b border-gray-200 mb-0">
           <div>
@@ -604,7 +608,7 @@ function ClientsSection({ lang }: { lang: Lang }) {
   const t = translations[lang].clients;
 
   return (
-    <section id="clients" className="bg-gray-50 py-28 lg:py-40">
+    <section id="clients" className="bg-gray-50 py-14 lg:py-18">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-3 gap-12 lg:gap-20 mb-16 items-end">
           <div className="lg:col-span-1">
@@ -707,7 +711,7 @@ function ContactSection({ lang }: { lang: Lang }) {
   const [ndaAccepted, setNdaAccepted] = useState(false);
 
   return (
-    <section id="contact" className="bg-white py-28 lg:py-40">
+    <section id="contact" className="bg-white py-14 lg:py-18">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           {/* Left */}
