@@ -13,19 +13,19 @@ const config: Config = {
         sans: ["var(--font-noto)", "Noto Sans KR", "system-ui", "sans-serif"],
       },
       colors: {
-        /* Company red #E8001D as red-600 base */
+        /* Company red #C0392B as red-600 base */
         red: {
-          50: "#fff0f0",
-          100: "#ffe1e1",
-          200: "#ffbdbd",
-          300: "#ff9090",
-          400: "#ff5050",
-          500: "#f02525",
-          600: "#E8001D",
-          700: "#c50019",
-          800: "#a00015",
-          900: "#7a000f",
-          950: "#5a000b",
+          50: "#fef2f1",
+          100: "#fde3e1",
+          200: "#fbc5c0",
+          300: "#f79b93",
+          400: "#f06558",
+          500: "#e04535",
+          600: "#C0392B",
+          700: "#A93226",
+          800: "#8B2820",
+          900: "#6D1E18",
+          950: "#4A1410",
         },
         charcoal: {
           DEFAULT: "#1A1A24",
@@ -33,9 +33,9 @@ const config: Config = {
           border: "#2E2E42",
         },
         primary: {
-          DEFAULT: "#E8001D",
+          DEFAULT: "#C0392B",
           light: "#FFF0F0",
-          dark: "#c50019",
+          dark: "#A93226",
         },
       },
       backgroundImage: {

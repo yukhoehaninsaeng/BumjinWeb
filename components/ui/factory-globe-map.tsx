@@ -208,7 +208,7 @@ export function FactoryGlobeMap({ mapHint }: { mapHint?: string }) {
           data={ARCS}
           curvature={0.25}
           paint={{
-            "line-color": "#E8001D",
+            "line-color": "#C0392B",
             "line-width": 1.5,
             "line-opacity": 0.55,
             "line-dasharray": [3, 3],

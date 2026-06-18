@@ -7,7 +7,7 @@
   --background: #ffffff;
 
   /* Company red */
-  --primary: #E8001D;
+  --primary: #C0392B;
   --primary-light: #FFF0F0;
 
   /* MapLibre popup theming */
@@ -16,7 +16,7 @@
   --border: #E5E7EB;
   --muted-foreground: #6B7280;
   --accent: #F3F4F6;
-  --ring: #E8001D;
+  --ring: #C0392B;
 }
 
 * {
@@ -48,18 +48,18 @@ body {
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #E8001D;
+  background: #C0392B;
 }
 
 /* Selection */
 ::selection {
-  background-color: rgba(232, 0, 29, 0.12);
+  background-color: rgba(192, 57, 43, 0.12);
   color: #111827;
 }
 
 /* Red gradient text */
 .text-gradient-red {
-  background: linear-gradient(135deg, #E8001D 0%, #FF3040 50%, #C50019 100%);
+  background: linear-gradient(135deg, #C0392B 0%, #D4503E 50%, #A93226 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -67,14 +67,14 @@ body {
 
 /* Legacy aliases */
 .text-gradient-gold {
-  background: linear-gradient(135deg, #E8001D 0%, #FF3040 50%, #C50019 100%);
+  background: linear-gradient(135deg, #C0392B 0%, #D4503E 50%, #A93226 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-electric {
-  background: linear-gradient(135deg, #E8001D 0%, #FF3040 50%, #C50019 100%);
+  background: linear-gradient(135deg, #C0392B 0%, #D4503E 50%, #A93226 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

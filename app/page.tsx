@@ -206,7 +206,7 @@ function SoundWaveBackground() {
             cx="680"
             cy="340"
             r={r}
-            stroke="#E8001D"
+            stroke="#C0392B"
             strokeWidth={i < 2 ? 1.5 : 1}
             fill="none"
             animate={{
