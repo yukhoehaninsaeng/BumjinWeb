@@ -481,16 +481,6 @@ function TechnologySection({ lang }: { lang: Lang }) {
 
 /* ─── GLOBAL OPERATIONS ─── */
 
-const LOCATIONS = [
-  { city: "수원, 한국", role: "HQ · 금형사업장", type: "hq" },
-  { city: "안성, 한국", role: "사출성형 공장", type: "plant" },
-  { city: "티후아나, 멕시코", role: "BJAM MEXICANA", type: "plant" },
-  { city: "찌카랑, 인도네시아", role: "동남아 생산 거점", type: "plant" },
-  { city: "꽝닌, 베트남", role: "베트남 제조 허브", type: "plant" },
-  { city: "후이저우, 중국", role: "광동 부품 공장", type: "plant" },
-  { city: "뢰린치, 헝가리", role: "유럽 제조 거점", type: "plant" },
-];
-
 function GlobalSection({ lang }: { lang: Lang }) {
   const t = translations[lang].global;
 
@@ -512,7 +502,7 @@ function GlobalSection({ lang }: { lang: Lang }) {
             </FadeIn>
 
             <div>
-              {LOCATIONS.map((loc, i) => (
+              {t.locations.map((loc, i) => (
                 <motion.div
                   key={loc.city}
                   initial={{ opacity: 0, x: -12 }}

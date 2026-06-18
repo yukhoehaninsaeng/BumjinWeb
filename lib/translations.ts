@@ -81,6 +81,15 @@ export const translations = {
       subtitle:
         "6개국 8개 시설을 통해 모든 글로벌 공급망 거점에서 유연하고 비용 최적화된 생산을 제공합니다.",
       mapHint: "마커를 클릭하면 사업장 정보를 확인할 수 있습니다",
+      locations: [
+        { city: "수원, 한국", role: "HQ · 금형사업장", type: "hq" },
+        { city: "안성, 한국", role: "사출성형 공장", type: "plant" },
+        { city: "티후아나, 멕시코", role: "BJAM MEXICANA", type: "plant" },
+        { city: "찌카랑, 인도네시아", role: "동남아 생산 거점", type: "plant" },
+        { city: "꽝닌, 베트남", role: "베트남 제조 허브", type: "plant" },
+        { city: "후이저우, 중국", role: "광동 부품 공장", type: "plant" },
+        { city: "뢰린치, 헝가리", role: "유럽 제조 거점", type: "plant" },
+      ],
     },
     process: {
       label: "제조 프로세스",
@@ -224,6 +233,15 @@ export const translations = {
       subtitle:
         "8 strategically positioned facilities across 6 countries — delivering flexible, cost-optimised production at every global supply-chain node.",
       mapHint: "Click a marker to view facility details",
+      locations: [
+        { city: "Suwon, Korea", role: "HQ · Mold Division", type: "hq" },
+        { city: "Anseong, Korea", role: "Injection Molding Plant", type: "plant" },
+        { city: "Tijuana, Mexico", role: "BJAM MEXICANA", type: "plant" },
+        { city: "Cikarang, Indonesia", role: "Southeast Asia Hub", type: "plant" },
+        { city: "Quảng Ninh, Vietnam", role: "Vietnam Manufacturing Hub", type: "plant" },
+        { city: "Huizhou, China", role: "Guangdong Parts Factory", type: "plant" },
+        { city: "Lőrinci, Hungary", role: "European Manufacturing Base", type: "plant" },
+      ],
     },
     process: {
       label: "Manufacturing Process",
@@ -365,6 +383,15 @@ export const translations = {
       headingAccent: "制造。",
       subtitle: "分布在6个国家的8个战略性布局工厂，为全球供应链各节点提供灵活、成本优化的生产服务。",
       mapHint: "点击标记查看工厂详情",
+      locations: [
+        { city: "水原，韩国", role: "总部·金属模具事业部", type: "hq" },
+        { city: "安城，韩国", role: "注塑工厂", type: "plant" },
+        { city: "蒂华纳，墨西哥", role: "BJAM MEXICANA", type: "plant" },
+        { city: "吉卡朗，印尼", role: "东南亚生产基地", type: "plant" },
+        { city: "广宁，越南", role: "越南制造中心", type: "plant" },
+        { city: "惠州，中国", role: "广东零部件工厂", type: "plant" },
+        { city: "勒林茨，匈牙利", role: "欧洲制造基地", type: "plant" },
+      ],
     },
     process: {
       label: "制造流程",
@@ -502,6 +529,15 @@ export const translations = {
       headingAccent: "製造。",
       subtitle: "6か国8拠点の戦略的配置により、グローバルサプライチェーンの各ノードで柔軟かつコスト最適化された生産を実現します。",
       mapHint: "マーカーをクリックすると拠点情報を表示します",
+      locations: [
+        { city: "水原（韓国）", role: "本社・金型事業場", type: "hq" },
+        { city: "安城（韓国）", role: "射出成形工場", type: "plant" },
+        { city: "ティフアナ、メキシコ", role: "BJAM MEXICANA", type: "plant" },
+        { city: "チカラン、インドネシア", role: "東南アジア生産拠点", type: "plant" },
+        { city: "クアンニン、ベトナム", role: "ベトナム製造ハブ", type: "plant" },
+        { city: "恵州、中国", role: "広東部品工場", type: "plant" },
+        { city: "レーリンツィ、ハンガリー", role: "欧州製造拠点", type: "plant" },
+      ],
     },
     process: {
       label: "製造プロセス",
