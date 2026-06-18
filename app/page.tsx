@@ -188,6 +188,46 @@ function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
   );
 }
 
+/* ─── SOUND WAVE BACKGROUND ─── */
+
+function SoundWaveBackground() {
+  const radii = [70, 150, 230, 310, 390, 470, 550, 630];
+  return (
+    <div aria-hidden className="absolute inset-0 pointer-events-none select-none overflow-hidden">
+      <svg
+        className="absolute right-[-3%] top-1/2 -translate-y-1/2 w-[58vw] max-w-[680px] h-auto"
+        viewBox="0 0 680 680"
+        fill="none"
+      >
+        {radii.map((r, i) => (
+          <motion.circle
+            key={r}
+            cx="680"
+            cy="340"
+            r={r}
+            stroke="#E8001D"
+            strokeWidth={i < 2 ? 1.5 : 1}
+            fill="none"
+            animate={{
+              opacity: [
+                0.03 + (radii.length - i) * 0.007,
+                0.13 + (radii.length - i) * 0.007,
+                0.03 + (radii.length - i) * 0.007,
+              ],
+            }}
+            transition={{
+              duration: 3.4,
+              delay: i * 0.22,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </svg>
+    </div>
+  );
+}
+
 /* ─── HERO ─── */
 
 function HeroSection({ lang }: { lang: Lang }) {
@@ -201,6 +241,8 @@ function HeroSection({ lang }: { lang: Lang }) {
 
   return (
     <section className="relative min-h-screen flex flex-col bg-white overflow-hidden">
+      <SoundWaveBackground />
+
       {/* Giant background "B" — subtle brand watermark */}
       <div
         aria-hidden
