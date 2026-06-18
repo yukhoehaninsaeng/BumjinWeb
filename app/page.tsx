@@ -95,7 +95,7 @@ function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
     >
       <nav className="mx-auto max-w-7xl px-6 lg:px-10 h-16 flex items-center justify-between">
         <a href="#" className="shrink-0">
-          <Image src="/bumjin%20icon.jpg" alt="Bumjin Electronics" width={120} height={36} priority className="h-9 w-auto object-contain" />
+          <Image src="/bumjin%20icon.jpg" alt="Bumjin Electronics" width={160} height={48} priority className="h-12 w-auto object-contain" />
         </a>
 
         <ul className="hidden lg:flex items-center gap-10">
@@ -787,7 +787,7 @@ function Footer({ lang }: { lang: Lang }) {
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div className="lg:col-span-2">
-            <Image src="/bumjin%20icon.jpg" alt="Bumjin Electronics" width={110} height={34} className="h-9 w-auto mb-5 object-contain brightness-0 invert opacity-70" />
+            <Image src="/bumjin%20icon.jpg" alt="Bumjin Electronics" width={150} height={44} className="h-12 w-auto mb-5 object-contain brightness-0 invert opacity-70" />
             <p className="text-gray-500 text-[13px] leading-relaxed max-w-xs mb-5">{t.desc}</p>
             <a href="https://bumjin.career.greetinghr.com/ko/home" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-red-400 text-[13px] hover:text-red-300 transition-colors">
               {t.careers}
