@@ -73,26 +73,31 @@ function SubNav({ active }: { active: string }) {
 
 const MOTTO_ITEMS = [
   {
+    num: "01",
     title: "도전과 혁신",
     en: "Challenge & Innovation",
     body: "지속적인 도전과 혁신을 통해 풍부한 가치를 창조합니다.",
   },
   {
+    num: "02",
     title: "인재경영",
     en: "People Management",
     body: "범진의 미래는 인재에 달려있다는 믿음으로 인재 양성을 추구합니다.",
   },
   {
+    num: "03",
     title: "고객만족",
     en: "Customer Satisfaction",
     body: "혁신적인 선도기술을 바탕으로 고객 감동을 실천합니다.",
   },
   {
+    num: "04",
     title: "정도경영",
     en: "Integrity Management",
     body: "준법경영 실천을 통해 임직원, 고객 그리고 사회와의 약속을 지켜갑니다.",
   },
   {
+    num: "05",
     title: "변화추구",
     en: "Pursuit of Change",
     body: "대담한 도전으로 새로운 가치를 창조하며 미래를 선도합니다.",
@@ -132,65 +137,158 @@ function OverviewSection() {
       {/* Full-width divider */}
       <div className="h-px bg-gray-100 mx-6 lg:mx-10" />
 
-      {/* 사훈 — editorial row list */}
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-16 pb-6">
+      {/* 사훈 — arch layout */}
+      <div className="mx-auto pt-20 pb-0 px-12" style={{ maxWidth: "1200px" }}>
         <FadeIn>
-          <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-12">
+          <p
+            className="font-semibold tracking-[0.4em] uppercase mb-16"
+            style={{ fontSize: "11px", color: "#999999" }}
+          >
             사훈
           </p>
         </FadeIn>
-      </div>
 
-      {MOTTO_ITEMS.map((item, i) => (
-        <motion.div
-          key={item.title}
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.06, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="group border-t border-gray-100 hover:bg-gray-50 transition-colors duration-300"
-        >
-          <div className="mx-auto max-w-7xl px-6 lg:px-10 py-8 lg:py-10 grid lg:grid-cols-12 gap-6 lg:gap-12 items-center">
-            <span className="text-[11px] font-mono text-gray-300 lg:col-span-1">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <div className="lg:col-span-5">
-              <p
-                className="font-black text-gray-900 leading-tight tracking-tight group-hover:text-red-600 transition-colors duration-300"
-                style={{ fontSize: "clamp(28px, 3.5vw, 52px)" }}
+        {/* Horizontal scroll wrapper for narrow viewports */}
+        <div className="overflow-x-auto">
+          <div style={{ minWidth: "680px" }}>
+            {/* All 5 arches in a single SVG for seamless stroke alignment */}
+            <FadeIn>
+              <svg
+                viewBox="0 0 1000 115"
+                className="w-full block"
+                aria-hidden="true"
+                style={{ aspectRatio: "1000 / 115" }}
               >
-                {item.title}
-              </p>
-              <p className="text-[11px] tracking-[0.25em] uppercase text-gray-300 mt-1">
-                {item.en}
-              </p>
-            </div>
-            <p className="text-gray-500 text-[14px] leading-relaxed lg:col-span-5">
-              {item.body}
-            </p>
-            <div className="hidden lg:flex lg:col-span-1 justify-end">
-              <ArrowUpRight className="size-4 text-gray-200 group-hover:text-red-600 transition-colors duration-300" />
+                {MOTTO_ITEMS.map((item, i) => (
+                  <g key={i}>
+                    {/* Arch: M start-x,base A radius radius 0 0 0 end-x,base */}
+                    <path
+                      d={`M ${i * 200} 108 A 100 100 0 0 0 ${i * 200 + 200} 108`}
+                      stroke="#111111"
+                      strokeWidth="1"
+                      fill="none"
+                    />
+                    {/* Junction dot between arches */}
+                    {i > 0 && (
+                      <circle cx={i * 200} cy={108} r="3.5" fill="#111111" />
+                    )}
+                    {/* Korean keyword centered inside arch */}
+                    <text
+                      x={i * 200 + 100}
+                      y={78}
+                      textAnchor="middle"
+                      fontFamily="Noto Sans KR, sans-serif"
+                      fontSize={26}
+                      fontWeight={700}
+                      fill="#c0392b"
+                    >
+                      {item.title}
+                    </text>
+                  </g>
+                ))}
+              </svg>
+            </FadeIn>
+
+            {/* Detail columns */}
+            <div className="grid grid-cols-5 divide-x divide-[#e8e8e8] border-t border-[#e8e8e8]">
+              {MOTTO_ITEMS.map((item, i) => (
+                <motion.div
+                  key={item.en}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.07, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  style={{ padding: "24px 20px 40px" }}
+                >
+                  <p
+                    style={{
+                      color: "#c0392b",
+                      fontSize: "11px",
+                      letterSpacing: "2px",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    {item.num}
+                  </p>
+                  <p
+                    style={{
+                      color: "#111111",
+                      fontSize: "clamp(13px, 1.4vw, 20px)",
+                      fontWeight: 500,
+                      marginBottom: "6px",
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {item.en}
+                  </p>
+                  <p
+                    style={{
+                      color: "#999999",
+                      fontSize: "13px",
+                      marginBottom: "14px",
+                    }}
+                  >
+                    {item.title}
+                  </p>
+                  <div
+                    style={{
+                      height: "1px",
+                      backgroundColor: "#e0e0e0",
+                      marginBottom: "14px",
+                    }}
+                  />
+                  <p
+                    style={{
+                      color: "#666666",
+                      fontSize: "12.5px",
+                      fontWeight: 300,
+                      lineHeight: 1.8,
+                    }}
+                  >
+                    {item.body}
+                  </p>
+                </motion.div>
+              ))}
             </div>
           </div>
-        </motion.div>
-      ))}
-
-      {/* Core message — full bleed dark */}
-      <div className="bg-gray-950 mt-0">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 lg:py-28">
-          <FadeIn>
-            <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-600 mb-8">
-              Core Message
-            </p>
-            <p
-              className="font-black text-white leading-[1.1] tracking-tight max-w-4xl"
-              style={{ fontSize: "clamp(22px, 3.5vw, 48px)" }}
-            >
-              "도전과 혁신, 인재와 고객 중심의 가치 실현을 통해 지속 가능한 성장을 만들어가는 기업"
-            </p>
-          </FadeIn>
         </div>
       </div>
+
+      {/* Core message block */}
+      <FadeIn>
+        <div
+          className="mx-auto px-12 pb-20"
+          style={{ maxWidth: "1200px", marginTop: "48px" }}
+        >
+          <div style={{ borderTop: "2px solid #111111", paddingTop: "40px" }}>
+            <div className="flex flex-col sm:flex-row gap-8 sm:gap-16 items-start">
+              <span
+                className="shrink-0"
+                style={{
+                  color: "#999999",
+                  fontSize: "11px",
+                  fontWeight: 600,
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  paddingTop: "4px",
+                }}
+              >
+                Core Message
+              </span>
+              <p
+                style={{
+                  color: "#111111",
+                  fontSize: "clamp(15px, 1.8vw, 22px)",
+                  fontWeight: 500,
+                  lineHeight: 1.75,
+                }}
+              >
+                "도전과 혁신, 인재와 고객 중심의 가치 실현을 통해 지속 가능한 성장을 만들어가는 기업"
+              </p>
+            </div>
+          </div>
+        </div>
+      </FadeIn>
     </section>
   );
 }
