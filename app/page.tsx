@@ -81,7 +81,7 @@ function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
   }, []);
 
   const navLinks = [
-    { label: t.company, href: "#about" },
+    { label: t.company, href: "/company" },
     { label: t.business, href: "#solutions" },
     { label: t.technology, href: "#capabilities" },
     { label: t.global, href: "#operations" },
