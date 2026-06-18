@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import {
   ArrowUpRight,
   ChevronDown,
@@ -910,20 +910,101 @@ function Footer({ lang }: { lang: Lang }) {
   );
 }
 
-/* ─── HERO VIDEO ─── */
+/* ─── HERO VIDEO — small → full screen on scroll ─── */
 
-function HeroVideo() {
+const HERO_COPY: Record<Lang, { tag: string; headline: string; body: string }> = {
+  ko: {
+    tag: "Since 1994 — Bumjin Electronics",
+    headline: "Your complete\nmanufacturing partner",
+    body: "범진은 고객의 아이디어를 현실로 구현하기 위해 기획부터 설계, 금형, 생산까지 전 과정을 함께합니다. 축적된 제조 기술력과 품질 경쟁력을 바탕으로 전자산업의 혁신을 이끌며, 고객과 함께 성장하는 글로벌 제조 파트너로 나아가고 있습니다.",
+  },
+  en: {
+    tag: "Since 1994 — Bumjin Electronics",
+    headline: "Your complete\nmanufacturing partner",
+    body: "From concept to mass production, Bumjin walks every step with our clients — design, tooling, injection molding, and assembly. Backed by 30 years of manufacturing excellence, we drive innovation in the electronics industry as a trusted global partner.",
+  },
+  zh: {
+    tag: "自1994年 — 范振电子",
+    headline: "您的全程\n制造合作伙伴",
+    body: "从创意到量产，范振陪伴客户走过每一步——设计、模具、注塑成型、组装。依托30年制造卓越，我们作为值得信赖的全球合作伙伴，引领电子行业创新。",
+  },
+  ja: {
+    tag: "1994年創業 — 범진電子",
+    headline: "お客様の完全な\n製造パートナー",
+    body: "コンセプトから量産まで、設計・金型・射出成形・組立のすべてをご一緒します。30年の製造技術と品質競争力を背景に、電子産業の革新を牽引するグローバル製造パートナーとして歩んでいます。",
+  },
+};
+
+function HeroVideo({ lang }: { lang: Lang }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const c = HERO_COPY[lang];
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  /* Video window: 72% → 100% of viewport */
+  const scale        = useTransform(scrollYProgress, [0, 0.85], [0.72, 1]);
+  const borderRadius = useTransform(scrollYProgress, [0, 0.75], [16, 0]);
+
+  /* Text: visible at start, fades as video expands */
+  const textOpacity = useTransform(scrollYProgress, [0, 0.32], [1, 0]);
+  const textY       = useTransform(scrollYProgress, [0, 0.32], [0, -20]);
+
+  /* Scroll hint: fades quickly */
+  const hintOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
+
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-black">
-      <video
-        src="/WebVideo_V2.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-      />
-    </section>
+    <div ref={containerRef} style={{ height: "200vh" }}>
+      <div className="sticky top-0 h-screen bg-white overflow-hidden flex items-center justify-center">
+        <motion.div
+          className="relative w-full h-full overflow-hidden"
+          style={{ scale, borderRadius }}
+        >
+          {/* Video */}
+          <video
+            src="/WebVideo_V2.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+
+          {/* Dark overlay so text is readable */}
+          <div className="absolute inset-0 bg-black/52" />
+
+          {/* Text overlay — fades out as video expands */}
+          <motion.div
+            className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
+            style={{ opacity: textOpacity, y: textY }}
+          >
+            <p className="text-[10px] font-bold tracking-[0.45em] uppercase text-white/55 mb-7">
+              {c.tag}
+            </p>
+            <h1
+              className="font-black text-white leading-[1.05] tracking-[-0.02em] mb-7 whitespace-pre-line"
+              style={{ fontSize: "clamp(38px, 5vw, 76px)" }}
+            >
+              {c.headline}
+            </h1>
+            <p className="text-white/65 text-[14px] leading-relaxed max-w-xl">
+              {c.body}
+            </p>
+          </motion.div>
+
+          {/* Scroll cue */}
+          <motion.div
+            className="absolute bottom-8 left-0 right-0 flex flex-col items-center gap-2 text-white/40 pointer-events-none"
+            style={{ opacity: hintOpacity }}
+          >
+            <p className="text-[9px] tracking-[0.4em] uppercase">Scroll</p>
+            <ChevronDown className="size-3.5 animate-bounce" />
+          </motion.div>
+        </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -936,7 +1017,7 @@ export default function Page() {
     <div className="bg-white text-gray-900 min-h-screen">
       <Navigation lang={lang} setLang={setLang} />
       <main>
-        <HeroVideo />
+        <HeroVideo lang={lang} />
         <CompanySection lang={lang} />
         <BusinessSection lang={lang} />
         <TechnologySection lang={lang} />
