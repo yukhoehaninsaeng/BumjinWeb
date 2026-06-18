@@ -16,6 +16,7 @@ import {
   Menu,
   X,
   ChevronRight,
+  Download,
 } from "lucide-react";
 
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
@@ -725,16 +726,44 @@ function ContactSection({ lang }: { lang: Lang }) {
             </FadeIn>
 
             <FadeIn delay={0.1} className="space-y-4 mb-10">
-              {[
-                { icon: <Mail className="size-4" />, label: "bd@bumjin.co.kr" },
-                { icon: <Phone className="size-4" />, label: "031-493-9415" },
-                { icon: <MapPin className="size-4" />, label: "수원시 권선구 고색동, 경기도" },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center gap-3 text-gray-500">
-                  <span className="text-red-600 shrink-0">{item.icon}</span>
-                  <span className="text-[13px]">{item.label}</span>
+              <div className="flex items-center gap-3 text-gray-500">
+                <span className="text-red-600 shrink-0"><Mail className="size-4" /></span>
+                <span className="text-[13px]">bd@bumjin.co.kr</span>
+              </div>
+              <div className="flex items-start gap-3 text-gray-500">
+                <span className="text-red-600 shrink-0 mt-0.5"><Phone className="size-4" /></span>
+                <div className="text-[13px] space-y-1">
+                  <p><span className="text-gray-400 w-10 inline-block">전자</span> 031-493-9415</p>
+                  <p><span className="text-gray-400 w-10 inline-block">금형</span> 031-676-1461</p>
+                  <p><span className="text-gray-400 w-10 inline-block">성형</span> 031-210-4930</p>
                 </div>
-              ))}
+              </div>
+              <div className="flex items-center gap-3 text-gray-500">
+                <span className="text-red-600 shrink-0"><MapPin className="size-4" /></span>
+                <span className="text-[13px]">수원시 권선구 고색동, 경기도</span>
+              </div>
+            </FadeIn>
+
+            {/* Download buttons */}
+            <FadeIn delay={0.12} className="flex flex-col sm:flex-row gap-3 mb-10">
+              <a
+                href="https://drive.google.com/file/d/1AgTHbT-8cOA8aY0oUcxPmB6OSDs0g3Fw/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 border border-gray-300 text-gray-700 text-[13px] font-semibold hover:border-red-600 hover:text-red-600 transition-colors"
+              >
+                <Download className="size-3.5 shrink-0" />
+                Brochure Download
+              </a>
+              <a
+                href="https://drive.google.com/file/d/1OMeKEWeAUa3uC3UYUXJz3uirCXcg57UE/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 border border-gray-300 text-gray-700 text-[13px] font-semibold hover:border-red-600 hover:text-red-600 transition-colors"
+              >
+                <Download className="size-3.5 shrink-0" />
+                CES2025 Catalogue
+              </a>
             </FadeIn>
 
             <FadeIn delay={0.15}>
