@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { MapPin, Phone, ExternalLink, ArrowUpRight, ChevronDown } from "lucide-react";
+import { SiteHeader } from "@/components/ui/SiteHeader";
 
 /* ─── helpers ─── */
 
@@ -1021,64 +1022,6 @@ function LocationSection() {
 
 /* ─── HEADER ─── */
 
-function CompanyHeader() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", fn, { passive: true });
-    fn();
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
-
-  return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-white shadow-[0_1px_0_#E5E7EB]" : "bg-white/80 backdrop-blur-md"
-      }`}
-    >
-      <nav className="mx-auto max-w-7xl px-6 lg:px-10 h-16 flex items-center justify-between">
-        <Link href="/" className="shrink-0">
-          <Image
-            src="/bumjin%20icon.jpg"
-            alt="Bumjin Electronics"
-            width={160}
-            height={48}
-            priority
-            className="h-12 w-auto object-contain"
-          />
-        </Link>
-
-        <div className="hidden lg:flex items-center gap-8">
-          <span className="text-[13px] font-semibold text-gray-900 border-b border-gray-900 pb-0.5">
-            회사소개
-          </span>
-          {[
-            { label: "사업영역", href: "/#solutions" },
-            { label: "기술역량", href: "/#capabilities" },
-            { label: "글로벌 네트워크", href: "/#operations" },
-            { label: "주요 고객사", href: "/#clients" },
-          ].map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="text-[13px] font-medium text-gray-500 hover:text-gray-900 transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-
-        <Link href="/#contact">
-          <button className="text-[13px] font-semibold text-white bg-red-600 hover:bg-red-700 px-5 py-2 transition-colors">
-            문의하기
-          </button>
-        </Link>
-      </nav>
-    </header>
-  );
-}
-
 /* ─── PAGE HERO ─── */
 
 function PageHero() {
@@ -1198,7 +1141,7 @@ export default function CompanyPage() {
 
   return (
     <div className="bg-white text-gray-900 min-h-screen">
-      <CompanyHeader />
+      <SiteHeader />
       <PageHero />
       <SubNav active={activeSection} />
       <main>

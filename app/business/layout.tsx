@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { SiteHeader } from "@/components/ui/SiteHeader";
 import { BusinessHero } from "@/components/business/BusinessHero";
 import { BusinessNav } from "@/components/business/BusinessNav";
 
@@ -23,28 +22,9 @@ export default function BusinessLayout({
 }) {
   return (
     <div className="min-h-screen bg-white">
-      {/* Minimal top bar */}
-      <header className="absolute top-0 left-0 right-0 z-50 px-6 lg:px-16 pt-6">
-        <div className="mx-auto max-w-[1280px] flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-white/70 hover:text-white transition-colors text-[13px] font-medium"
-          >
-            <ArrowLeft className="size-4" />
-            홈으로
-          </Link>
-          <Link
-            href="/"
-            className="text-white/90 text-[15px] font-black tracking-tight"
-          >
-            BJ
-          </Link>
-        </div>
-      </header>
-
+      <SiteHeader />
       <BusinessHero />
       <BusinessNav />
-
       <main>{children}</main>
     </div>
   );

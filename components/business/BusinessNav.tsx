@@ -8,7 +8,7 @@ export function BusinessNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="sticky top-0 z-40 bg-white border-b border-[#E5E5E5]">
+    <nav className="sticky top-16 z-40 bg-white border-b border-[#E5E5E5]">
       <div className="mx-auto max-w-[1280px] px-6 lg:px-16">
         <div className="flex items-end overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {BUSINESS_DEPARTMENTS.map((dept) => {
