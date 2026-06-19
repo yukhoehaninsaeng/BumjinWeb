@@ -1120,7 +1120,7 @@ function HeroVideo({ lang }: { lang: Lang }) {
         >
           {/* Video */}
           <video
-            src="/Bumjin_Web_video_720p"
+            src="/Bumjin_Web_video_720p.mp4"
             autoPlay
             muted
             loop
