@@ -4,11 +4,16 @@ export interface Product {
   nameEn: string;
   description: string;
   icon: string;
+  image?: string;
 }
 
-export interface Process {
+export interface ProcessFlowItem {
   step: string;
   title: string;
+  description?: string;
+}
+
+export interface Process extends ProcessFlowItem {
   description: string;
 }
 
@@ -34,7 +39,7 @@ export interface Department {
   title: string;
   description: string;
   products?: Product[];
-  odmFlow?: string[];
+  odmFlow?: ProcessFlowItem[];
   odmTitle?: string;
   odmBody?: string;
   processes?: Process[];

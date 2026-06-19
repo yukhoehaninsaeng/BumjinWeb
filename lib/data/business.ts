@@ -20,12 +20,12 @@ export const BUSINESS_DEPARTMENTS: Department[] = [
     odmBody:
       "제조자 개발생산(Original Development Manufacturing). 고객이 원하는 제품을 기획·설계부터 양산까지 범진전자가 전 과정을 책임집니다.",
     odmFlow: [
-      "제품 기획",
-      "회로/기구 설계",
-      "시제품",
-      "양산 승인",
-      "생산",
-      "출하",
+      { step: "01", title: "제품 기획" },
+      { step: "02", title: "회로/기구 설계" },
+      { step: "03", title: "시제품" },
+      { step: "04", title: "양산 승인" },
+      { step: "05", title: "생산" },
+      { step: "06", title: "출하" },
     ],
     products: [
       {

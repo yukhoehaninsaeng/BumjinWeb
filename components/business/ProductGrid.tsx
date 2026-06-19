@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
@@ -38,40 +39,49 @@ const ICON_MAP: Record<string, LucideIcon> = {
 
 function ProductCard({ product, index }: { product: Product; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const inView = useInView(ref, { once: true, margin: "-40px" });
   const Icon = ICON_MAP[product.icon] ?? Speaker;
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        duration: 0.7,
-        delay: (index % 2) * 0.08,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-      className="group border border-[#E5E5E5] rounded-xl p-6 hover:border-[#C0392B] transition-all duration-300 relative overflow-hidden bg-white cursor-default"
+      initial={{ opacity: 0 }}
+      animate={inView ? { opacity: 1 } : {}}
+      transition={{ duration: 0.5, delay: (index % 3) * 0.07 }}
+      className="group bg-white border-r border-b border-[#E5E5E5] flex flex-col cursor-default"
     >
-      {/* Top accent line on hover */}
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#C0392B] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-
-      <div className="mb-5 inline-flex items-center justify-center w-11 h-11 rounded-lg bg-[#F5F5F3] group-hover:bg-red-50 transition-colors">
-        <Icon className="size-5 text-[#666666] group-hover:text-[#C0392B] transition-colors" />
+      {/* Image area */}
+      <div className="relative aspect-[4/3] bg-[#F6F6F4] overflow-hidden">
+        {product.image ? (
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Icon className="size-14 text-[#D0D0D0] transition-colors duration-300 group-hover:text-[#C0392B]/30" />
+          </div>
+        )}
       </div>
 
-      <p
-        className="text-[10px] font-medium tracking-[2px] uppercase text-[#999999] mb-1.5"
-        style={{ fontFamily: "Inter, sans-serif" }}
-      >
-        {product.nameEn}
-      </p>
-      <h3 className="text-[15px] font-medium text-[#111111] mb-2">
-        {product.name}
-      </h3>
-      <p className="text-[13px] font-light text-[#666666] leading-relaxed">
-        {product.description}
-      </p>
+      {/* Content */}
+      <div className="p-5 flex flex-col gap-1">
+        <p
+          className="text-[11px] font-semibold text-[#C0392B] tracking-[0.5px]"
+          style={{ fontFamily: "Inter, sans-serif" }}
+        >
+          {product.nameEn}
+        </p>
+        <h3 className="text-[15px] font-semibold text-[#111111] leading-snug">
+          {product.name}
+        </h3>
+        <p className="text-[12px] text-[#999999] font-light leading-relaxed">
+          {product.description}
+        </p>
+      </div>
     </motion.div>
   );
 }
@@ -85,10 +95,10 @@ export function ProductGrid({
 }) {
   return (
     <div
-      className={`grid gap-4 ${
+      className={`grid border-l border-t border-[#E5E5E5] ${
         columns === 3
-          ? "sm:grid-cols-2 lg:grid-cols-3"
-          : "sm:grid-cols-2"
+          ? "grid-cols-2 lg:grid-cols-3"
+          : "grid-cols-1 sm:grid-cols-2"
       }`}
     >
       {products.map((product, i) => (

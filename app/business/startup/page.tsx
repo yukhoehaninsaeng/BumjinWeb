@@ -3,11 +3,11 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { BUSINESS_DEPARTMENTS } from "@/lib/data/business";
-import { ProcessSteps } from "@/components/business/ProcessSteps";
+import { ProcessFlow } from "@/components/business/ProcessFlow";
 import { SuccessCases } from "@/components/business/SuccessCases";
 import { ContactBand } from "@/components/business/ContactBand";
 
-function FadeIn({
+function Reveal({
   children,
   delay = 0,
   className,
@@ -21,9 +21,9 @@ function FadeIn({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}
@@ -35,92 +35,98 @@ export default function StartupPage() {
   const dept = BUSINESS_DEPARTMENTS.find((d) => d.id === "startup")!;
 
   return (
-    <div className="mx-auto max-w-[1280px] px-6 lg:px-16 py-16 lg:py-24 space-y-20 lg:space-y-28">
-      {/* Overview */}
-      <section>
-        <FadeIn>
-          <p
-            className="text-[10px] font-medium tracking-[4px] uppercase text-[#C0392B] mb-5"
-            style={{ fontFamily: "Inter, sans-serif" }}
-          >
-            {dept.index} — {dept.labelEn}
-          </p>
-        </FadeIn>
-        <FadeIn delay={0.06}>
-          <p
-            className="text-[12px] font-medium tracking-[3px] uppercase text-[#999999] mb-4"
-            style={{ fontFamily: "Inter, sans-serif" }}
-          >
-            {dept.tagline}
-          </p>
-        </FadeIn>
-        <FadeIn delay={0.1}>
-          <h2
-            className="font-black text-[#111111] leading-[1.1] tracking-tight mb-7"
-            style={{ fontSize: "clamp(32px, 5vw, 60px)" }}
-          >
-            {dept.title.split("\n").map((line, i) => (
-              <span key={i}>
-                {line}
-                {i < dept.title.split("\n").length - 1 && <br />}
-              </span>
-            ))}
-          </h2>
-        </FadeIn>
-        <FadeIn delay={0.16} className="max-w-2xl">
-          <p className="text-[15px] font-light text-[#666666] leading-[1.9]">
-            {dept.description}
-          </p>
-        </FadeIn>
+    <div className="mx-auto max-w-[1280px] px-6 lg:px-16">
+
+      {/* ── Overview ── */}
+      <section className="pt-16 lg:pt-24 pb-16 lg:pb-20">
+        <div className="grid lg:grid-cols-[3fr_2fr] gap-10 lg:gap-16 items-start">
+          <div>
+            <Reveal>
+              <p
+                className="text-[11px] font-medium tracking-[3px] uppercase text-[#C0392B] mb-6"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                {dept.index} &mdash; {dept.labelEn}
+              </p>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <h2
+                className="font-black text-[#111111] leading-[1.05] tracking-tight"
+                style={{ fontSize: "clamp(38px, 6vw, 76px)" }}
+              >
+                {dept.title.split("\n").map((line, i, arr) => (
+                  <span key={i}>
+                    {line}
+                    {i < arr.length - 1 && <br />}
+                  </span>
+                ))}
+              </h2>
+            </Reveal>
+          </div>
+
+          <div className="lg:pt-20">
+            <Reveal delay={0.14}>
+              <p
+                className="text-[11px] font-medium tracking-[2px] uppercase text-[#CCCCCC] mb-5"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                {dept.tagline}
+              </p>
+              <p className="text-[15px] font-light text-[#666666] leading-[1.9]">
+                {dept.description}
+              </p>
+            </Reveal>
+          </div>
+        </div>
       </section>
 
-      {/* Process timeline */}
+      {/* ── Process ─ unified editorial grid (same style as ODM) ── */}
       {dept.processes && (
-        <section>
-          <FadeIn>
-            <p
-              className="text-[10px] font-medium tracking-[4px] uppercase text-[#999999] mb-3"
-              style={{ fontFamily: "Inter, sans-serif" }}
-            >
-              How We Work
-            </p>
-            <h3 className="text-[24px] lg:text-[30px] font-bold text-[#111111] mb-10">
-              4단계 협업 프로세스
-            </h3>
-          </FadeIn>
-          <ProcessSteps processes={dept.processes} />
+        <section className="border-t-2 border-[#111111] pt-12 pb-16 lg:pb-24">
+          <Reveal>
+            <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-6 mb-10">
+              <span
+                className="font-black text-[#111111] leading-none tracking-[-2px] select-none"
+                style={{ fontSize: "clamp(48px, 7vw, 96px)" }}
+              >
+                Process
+              </span>
+              <div className="sm:pb-2">
+                <p className="text-[16px] font-medium text-[#333333] leading-snug">4단계 협업 프로세스</p>
+                <p
+                  className="text-[13px] text-[#999999] font-light"
+                  style={{ fontFamily: "Inter, sans-serif" }}
+                >
+                  From Idea to Mass Production
+                </p>
+              </div>
+            </div>
+          </Reveal>
+
+          <ProcessFlow items={dept.processes} />
         </section>
       )}
 
-      {/* Success cases */}
+      {/* ── Success Cases ── */}
       {dept.successCases && (
-        <section>
-          <FadeIn>
-            <p
-              className="text-[10px] font-medium tracking-[4px] uppercase text-[#999999] mb-3"
-              style={{ fontFamily: "Inter, sans-serif" }}
-            >
-              Success Cases
-            </p>
-            <h3 className="text-[24px] lg:text-[30px] font-bold text-[#111111] mb-8">
-              성공사례
-            </h3>
-          </FadeIn>
+        <section className="pb-16 lg:pb-24">
+          <Reveal>
+            <div className="flex items-center gap-6 mb-8">
+              <h3 className="text-[26px] lg:text-[32px] font-bold text-[#111111] shrink-0">
+                성공사례
+              </h3>
+              <div className="flex-1 h-px bg-[#E5E5E5]" />
+            </div>
+          </Reveal>
           <SuccessCases cases={dept.successCases} />
         </section>
       )}
 
-      {/* Contact */}
-      <section>
-        <FadeIn>
-          <p
-            className="text-[10px] font-medium tracking-[4px] uppercase text-[#999999] mb-6"
-            style={{ fontFamily: "Inter, sans-serif" }}
-          >
-            Contact
-          </p>
+      {/* ── Contact ── */}
+      <section className="pb-20 lg:pb-28">
+        <Reveal>
           <ContactBand contacts={dept.contacts} />
-        </FadeIn>
+        </Reveal>
       </section>
     </div>
   );
