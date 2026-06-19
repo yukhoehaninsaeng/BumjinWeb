@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, useEffect } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { Fragment, useRef, useState, useEffect } from "react";
+import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
 import {
+  type LucideIcon,
   ArrowUpRight,
   ChevronDown,
+  ChevronRight,
   Globe2,
   Shield,
   BadgeCheck,
@@ -15,8 +17,22 @@ import {
   ExternalLink,
   Menu,
   X,
-  ChevronRight,
   Download,
+  Target,
+  PenTool,
+  Settings2,
+  Wrench,
+  ShieldCheck,
+  Package,
+  CornerDownLeft,
+  Waves,
+  Activity,
+  Speaker,
+  Zap,
+  Cpu,
+  Layers,
+  Music,
+  Award,
 } from "lucide-react";
 
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
@@ -428,52 +444,103 @@ function BusinessSection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ─── CAPABILITIES — 2-col list ─── */
+/* ─── CAPABILITIES — Filtering Tabs ─── */
 
-const CAPABILITIES = [
-  "DSP Engineering & Acoustic Tuning",
-  "Custom Driver Manufacturing",
-  "Dolby Atmos / DTS:X Certification",
-  "Class-D & Class-AB Amplifier Design",
-  "Wi-Fi 6 & Bluetooth 5.3 Integration",
-  "HDMI eARC / HDMI 2.1 Modules",
-  "In-house CNC & EDM Tooling",
-  "SMT Assembly & AOI Verification",
-  "Hi-Res Audio Certification",
-  "AirPlay 2 / Chromecast Integration",
-  "Anechoic Chamber Measurement",
-  "ISO 9001 / IATF 16949 QMS",
+type CapCategory = "all" | "acoustic" | "manufacturing" | "certification";
+
+interface CapItem {
+  id: string;
+  category: Exclude<CapCategory, "all">;
+  title: string;
+  desc: string;
+  icon: LucideIcon;
+}
+
+const CAPABILITIES_DATA: CapItem[] = [
+  { id: "c1",  category: "acoustic",       title: "DSP 엔지니어링 & 음향 튜닝",     desc: "24비트 DSP 알고리즘 설계, 무향실 측정, 목표 커브 매칭으로 정밀 음색 구현.",          icon: Waves      },
+  { id: "c2",  category: "acoustic",       title: "커스텀 드라이버 제조",            desc: "우퍼·트위터 맞춤 설계, 마그넷 최적화, 보이스코일 와인딩 내재화.",                   icon: Speaker    },
+  { id: "c3",  category: "acoustic",       title: "Dolby Atmos / DTS:X 인증",      desc: "공간음향 렌더링 파이프라인 구축 및 Dolby·DTS 공식 인증 라이선스 취득.",             icon: Activity   },
+  { id: "c4",  category: "acoustic",       title: "AirPlay 2 / Chromecast 연동",   desc: "Wi-Fi 멀티룸 스트리밍 모듈 통합 및 iOS·Android 전 플랫폼 호환성 검증.",            icon: Zap        },
+  { id: "c5",  category: "manufacturing",  title: "Class-D & Class-AB 앰프 설계",  desc: "고효율 D급 앰프 및 저왜율 AB급 앰프 고객사 사양 맞춤 설계.",                       icon: Cpu        },
+  { id: "c6",  category: "manufacturing",  title: "Wi-Fi 6 & Bluetooth 5.3 통합", desc: "최신 무선 모듈 통합, 레이턴시 최적화, 각국 RF 공인 시험 일괄 지원.",               icon: Layers     },
+  { id: "c7",  category: "manufacturing",  title: "인하우스 CNC & EDM 금형",        desc: "자체 NC·방전 가공 설비로 리드타임 업계 평균 대비 40% 단축 달성.",                  icon: Settings2  },
+  { id: "c8",  category: "manufacturing",  title: "SMT 실장 & AOI 검사",           desc: "고속 SMT 라인(0201 부품 대응), 자동 광학검사 100% 전수 적용.",                    icon: Wrench     },
+  { id: "c9",  category: "certification",  title: "Hi-Res Audio 인증",             desc: "일본음향협회 기준 40kHz 이상 재생 능력 검증 및 로고 라이선싱 취득.",                icon: Music      },
+  { id: "c10", category: "certification",  title: "HDMI eARC / HDMI 2.1 모듈",    desc: "최신 HDMI 규격 전면 대응, eARC 음성 패스스루 회로 자체 설계.",                     icon: Award      },
+  { id: "c11", category: "certification",  title: "무향실 측정",                   desc: "자체 운영 무향실에서 FR·THD·방향성·지향성 전 항목 정밀 측정.",                    icon: ShieldCheck },
+  { id: "c12", category: "certification",  title: "ISO 9001 / IATF 16949 QMS",    desc: "전사 품질경영시스템 인증 유지, 자동차 전장 품질 기준 완전 대응.",                   icon: BadgeCheck },
+];
+
+const CAP_TABS: { key: CapCategory; label: string }[] = [
+  { key: "all",           label: "전체"     },
+  { key: "acoustic",      label: "음향 설계" },
+  { key: "manufacturing", label: "제조"     },
+  { key: "certification", label: "품질 인증" },
 ];
 
 function TechnologySection({ lang }: { lang: Lang }) {
   const t = translations[lang].technology;
+  const [activeTab, setActiveTab] = useState<CapCategory>("all");
+
+  const filtered =
+    activeTab === "all"
+      ? CAPABILITIES_DATA
+      : CAPABILITIES_DATA.filter((c) => c.category === activeTab);
 
   return (
     <section id="capabilities" className="bg-white py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-28 items-start">
-          <FadeIn>
-            <SectionLabel>{t.label}</SectionLabel>
+        <FadeIn>
+          <SectionLabel>{t.label}</SectionLabel>
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
             <h2
-              className="font-black text-gray-900 leading-[1.0] tracking-tight mb-6"
+              className="font-black text-gray-900 leading-[1.0] tracking-tight"
               style={{ fontSize: "clamp(34px, 4.2vw, 60px)" }}
             >
               {t.heading}
             </h2>
-            <p className="text-gray-500 text-[15px] leading-relaxed">{t.subtitle}</p>
-          </FadeIn>
-
-          <FadeIn delay={0.15}>
-            <div className="grid grid-cols-1 sm:grid-cols-2">
-              {CAPABILITIES.map((cap, i) => (
-                <div key={i} className="flex items-center gap-3 py-3.5 border-b border-gray-100">
-                  <div className="w-1 h-1 rounded-full bg-red-600 shrink-0" />
-                  <span className="text-gray-700 text-[13px]">{cap}</span>
-                </div>
+            <div className="flex flex-wrap gap-1.5">
+              {CAP_TABS.map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`px-4 py-2 text-[12px] font-semibold tracking-wide transition-all ${
+                    activeTab === tab.key
+                      ? "bg-[#111111] text-white"
+                      : "border border-gray-200 text-gray-500 hover:border-gray-900 hover:text-gray-900"
+                  }`}
+                >
+                  {tab.label}
+                </button>
               ))}
             </div>
-          </FadeIn>
-        </div>
+          </div>
+        </FadeIn>
+
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((cap) => {
+              const Icon = cap.icon;
+              return (
+                <motion.div
+                  key={cap.id}
+                  layout
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.94 }}
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  className="border border-[#E8E8E8] p-7 group hover:border-gray-300 transition-colors"
+                >
+                  <div className="w-10 h-10 bg-[#F6F6F4] flex items-center justify-center mb-5 group-hover:bg-red-50 transition-colors">
+                    <Icon className="size-5 text-gray-400 group-hover:text-[#C0392B] transition-colors" />
+                  </div>
+                  <h3 className="text-[14px] font-bold text-gray-900 mb-2 leading-snug">{cap.title}</h3>
+                  <p className="text-[12px] text-gray-400 leading-relaxed">{cap.desc}</p>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );
@@ -528,24 +595,127 @@ function GlobalSection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ─── PROCESS — horizontal grid ─── */
+/* ─── PROCESS — Interactive Grid ─── */
 
-const PROCESS_STEPS = [
-  { step: "01", title: "Design & Engineering", body: "Co-development with client R&D. Acoustic modelling, PCB review, industrial design." },
-  { step: "02", title: "Tooling & Mold", body: "In-house CNC & EDM mold fab. Lead times 40% below industry average." },
-  { step: "03", title: "Component & SMT", body: "Dual-source procurement. High-speed SMT with 0201 accuracy & AOI." },
-  { step: "04", title: "Assembly & Calibration", body: "Robotic assembly. 100% end-of-line acoustic calibration & DSP flash." },
-  { step: "05", title: "QC & Compliance", body: "AQL sampling, CE/FCC/UL compliance, brand-specific packaging." },
-  { step: "06", title: "Global Logistics", body: "Air, sea & rail from 6 regional hubs. Direct 3PL integration." },
+interface ProcessStep {
+  step: string;
+  title: string;
+  titleEn: string;
+  icon: LucideIcon;
+  detail: string;
+}
+
+const PROCESS_STEPS: ProcessStep[] = [
+  {
+    step: "01", title: "기획", titleEn: "Planning", icon: Target,
+    detail: "클라이언트 R&D팀과 공동으로 제품 기획 단계를 진행합니다. 시장 조사, 타겟 사양 정의, 음향 모델링, PCB 구성 검토, 산업 디자인 방향 수립까지 전 과정을 지원합니다.",
+  },
+  {
+    step: "02", title: "설계", titleEn: "Engineering", icon: PenTool,
+    detail: "회로 설계(PCB 레이아웃, EMC 최적화), 기구 설계(3D CAD), 음향 설계(FEA 시뮬레이션)를 통합적으로 수행합니다. 시제품 제작 전 DFM·DFA 검토를 완료합니다.",
+  },
+  {
+    step: "03", title: "사출", titleEn: "Molding", icon: Settings2,
+    detail: "자체 CNC 및 EDM 설비로 금형을 제작합니다. 리드타임은 업계 평균 대비 40% 단축되며 PP·ABS·PC 등 다양한 수지 재료를 지원합니다. 게이트 위치 최적화로 싱크·워프를 최소화합니다.",
+  },
+  {
+    step: "04", title: "조립", titleEn: "Assembly", icon: Wrench,
+    detail: "고속 SMT 라인(0201 대응)과 AOI 자동광학검사를 거쳐 PCB를 실장합니다. 로봇 자동화 조립 라인에서 드라이버·앰프·DSP 모듈을 통합하고 100% 라인엔드 음향 캘리브레이션을 수행합니다.",
+  },
+  {
+    step: "05", title: "품질", titleEn: "Quality", icon: ShieldCheck,
+    detail: "AQL 샘플링 검사, CE·FCC·UL 인증 대응, 고객사별 맞춤 패키징을 진행합니다. ISO 9001 / IATF 16949 품질경영 시스템을 기반으로 전수 검사와 신뢰성 시험을 병행합니다.",
+  },
+  {
+    step: "06", title: "물류", titleEn: "Logistics", icon: Package,
+    detail: "6개 거점(한국·중국·베트남·폴란드·미국·일본)에서 항공·해상·철도를 활용한 글로벌 배송 네트워크를 운영합니다. 3PL 직접 연동 및 실시간 재고 추적 시스템을 제공합니다.",
+  },
 ];
+
+function ProcessCard({ step, onClick }: { step: ProcessStep; onClick: () => void }) {
+  const Icon = step.icon;
+  return (
+    <motion.div
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      onClick={onClick}
+      className="flex-1 border border-[#E5E5E5] p-8 cursor-pointer group hover:border-gray-300 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] transition-all duration-200"
+    >
+      <div className="flex items-start justify-between mb-6">
+        <p className="text-[11px] font-mono text-[#C0392B] tracking-wider">{step.step}</p>
+        <Icon className="size-5 text-gray-200 group-hover:text-[#C0392B] transition-colors" />
+      </div>
+      <p className="text-[17px] font-bold text-[#111111] mb-1">{step.title}</p>
+      <p
+        className="text-[10px] font-medium text-[#CCCCCC] tracking-[2.5px] uppercase"
+        style={{ fontFamily: "Inter, sans-serif" }}
+      >
+        {step.titleEn}
+      </p>
+      <p className="mt-5 text-[11px] text-gray-300 group-hover:text-gray-400 transition-colors">
+        클릭하여 상세 보기 →
+      </p>
+    </motion.div>
+  );
+}
+
+function ProcessModal({ step, onClose }: { step: ProcessStep; onClose: () => void }) {
+  const Icon = step.icon;
+  return (
+    <>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="fixed inset-0 bg-black/40 z-[60] backdrop-blur-sm cursor-pointer"
+        onClick={onClose}
+      />
+      <motion.div
+        initial={{ opacity: 0, y: 24, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 24, scale: 0.97 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-md bg-white z-[61] p-8 shadow-2xl"
+      >
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <p className="text-[11px] font-mono text-[#C0392B] tracking-wider mb-2">{step.step}</p>
+            <h3 className="text-[26px] font-black text-[#111111] leading-tight">{step.title}</h3>
+            <p
+              className="text-[10px] font-medium text-[#CCCCCC] tracking-[2.5px] uppercase mt-1"
+              style={{ fontFamily: "Inter, sans-serif" }}
+            >
+              {step.titleEn}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1 text-gray-300 hover:text-gray-900 transition-colors shrink-0"
+          >
+            <X className="size-5" />
+          </button>
+        </div>
+        <div className="w-12 h-12 bg-[#F6F6F4] flex items-center justify-center mb-6">
+          <Icon className="size-6 text-[#C0392B]" />
+        </div>
+        <p className="text-gray-600 text-[14px] leading-[1.8]">{step.detail}</p>
+      </motion.div>
+    </>
+  );
+}
 
 function ProcessSection({ lang }: { lang: Lang }) {
   const t = translations[lang].process;
+  const [activeStep, setActiveStep] = useState<ProcessStep | null>(null);
+
+  const row1 = PROCESS_STEPS.slice(0, 3);
+  const row2 = PROCESS_STEPS.slice(3, 6);
 
   return (
     <section className="bg-white py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between pb-10 border-b border-gray-200 mb-0">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between pb-10 border-b border-gray-200 mb-12">
           <div>
             <SectionLabel>{t.label}</SectionLabel>
             <h2
@@ -555,24 +725,59 @@ function ProcessSection({ lang }: { lang: Lang }) {
               {t.heading}
             </h2>
           </div>
-          <a href="#contact" className="hidden lg:inline-flex items-center gap-2 text-[13px] font-bold text-gray-700 border border-gray-300 hover:border-gray-900 px-6 py-3 transition-colors mt-4 lg:mt-0">
+          <a
+            href="#contact"
+            className="hidden lg:inline-flex items-center gap-2 text-[13px] font-bold text-gray-700 border border-gray-300 hover:border-gray-900 px-6 py-3 transition-colors mt-4 lg:mt-0"
+          >
             {t.cta}
             <ArrowUpRight className="size-4" />
           </a>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-6 divide-x divide-gray-100">
-          {PROCESS_STEPS.map((step, i) => (
-            <FadeIn key={step.step} delay={i * 0.06}>
-              <div className="pt-8 pb-4 pr-4 lg:pr-6 pl-4 first:pl-0">
-                <p className="text-[11px] font-mono text-red-600 mb-4 tracking-wider">{step.step}</p>
-                <p className="text-[13px] font-bold text-gray-900 mb-2 leading-snug">{step.title}</p>
-                <p className="text-[12px] text-gray-400 leading-relaxed">{step.body}</p>
-              </div>
-            </FadeIn>
+        {/* Desktop: 2 rows of 3 with flow arrows */}
+        <div className="hidden lg:flex flex-col">
+          <div className="flex items-stretch">
+            {row1.map((step, i) => (
+              <Fragment key={step.step}>
+                <ProcessCard step={step} onClick={() => setActiveStep(step)} />
+                {i < 2 && (
+                  <div className="flex items-center justify-center w-8 shrink-0">
+                    <ChevronRight className="size-4 text-gray-200" />
+                  </div>
+                )}
+              </Fragment>
+            ))}
+          </div>
+          <div className="flex justify-end items-center py-3">
+            <CornerDownLeft className="size-4 text-gray-200" />
+          </div>
+          <div className="flex items-stretch">
+            {row2.map((step, i) => (
+              <Fragment key={step.step}>
+                <ProcessCard step={step} onClick={() => setActiveStep(step)} />
+                {i < 2 && (
+                  <div className="flex items-center justify-center w-8 shrink-0">
+                    <ChevronRight className="size-4 text-gray-200" />
+                  </div>
+                )}
+              </Fragment>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile: single column */}
+        <div className="lg:hidden grid grid-cols-1 gap-3">
+          {PROCESS_STEPS.map((step) => (
+            <ProcessCard key={step.step} step={step} onClick={() => setActiveStep(step)} />
           ))}
         </div>
       </div>
+
+      <AnimatePresence>
+        {activeStep && (
+          <ProcessModal step={activeStep} onClose={() => setActiveStep(null)} />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
