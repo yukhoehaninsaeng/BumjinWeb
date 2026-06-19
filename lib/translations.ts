@@ -93,7 +93,7 @@ export const translations = {
     },
     process: {
       label: "제조 프로세스",
-      heading: "개념에서",
+      heading: "End-to-End ODM Process",
       headingAccent: "대량 생산까지.",
       subtitle:
         "기획부터 출하까지 6단계의 턴키 파이프라인으로 프리미엄 오디오 제품을 완성합니다.",
