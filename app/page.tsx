@@ -601,6 +601,7 @@ interface ProcessStep {
   step: string;
   title: string;
   titleEn: string;
+  body: string;
   icon: LucideIcon;
   detail: string;
 }
@@ -608,26 +609,32 @@ interface ProcessStep {
 const PROCESS_STEPS: ProcessStep[] = [
   {
     step: "01", title: "기획", titleEn: "Planning", icon: Target,
+    body: "R&D 공동 기획, 시장 조사, 음향 모델링, 산업 디자인 방향 수립.",
     detail: "클라이언트 R&D팀과 공동으로 제품 기획 단계를 진행합니다. 시장 조사, 타겟 사양 정의, 음향 모델링, PCB 구성 검토, 산업 디자인 방향 수립까지 전 과정을 지원합니다.",
   },
   {
     step: "02", title: "설계", titleEn: "Engineering", icon: PenTool,
+    body: "PCB·기구·음향 통합 설계. DFM·DFA 검토 완료 후 시제품 제작.",
     detail: "회로 설계(PCB 레이아웃, EMC 최적화), 기구 설계(3D CAD), 음향 설계(FEA 시뮬레이션)를 통합적으로 수행합니다. 시제품 제작 전 DFM·DFA 검토를 완료합니다.",
   },
   {
     step: "03", title: "사출", titleEn: "Molding", icon: Settings2,
+    body: "자체 CNC·EDM 금형. 리드타임 업계 평균 대비 40% 단축.",
     detail: "자체 CNC 및 EDM 설비로 금형을 제작합니다. 리드타임은 업계 평균 대비 40% 단축되며 PP·ABS·PC 등 다양한 수지 재료를 지원합니다. 게이트 위치 최적화로 싱크·워프를 최소화합니다.",
   },
   {
     step: "04", title: "조립", titleEn: "Assembly", icon: Wrench,
+    body: "고속 SMT·AOI 검사. 로봇 자동 조립, 100% 음향 캘리브레이션.",
     detail: "고속 SMT 라인(0201 대응)과 AOI 자동광학검사를 거쳐 PCB를 실장합니다. 로봇 자동화 조립 라인에서 드라이버·앰프·DSP 모듈을 통합하고 100% 라인엔드 음향 캘리브레이션을 수행합니다.",
   },
   {
     step: "05", title: "품질", titleEn: "Quality", icon: ShieldCheck,
+    body: "AQL 샘플링, CE·FCC·UL 인증, ISO 9001 / IATF 16949 준수.",
     detail: "AQL 샘플링 검사, CE·FCC·UL 인증 대응, 고객사별 맞춤 패키징을 진행합니다. ISO 9001 / IATF 16949 품질경영 시스템을 기반으로 전수 검사와 신뢰성 시험을 병행합니다.",
   },
   {
     step: "06", title: "물류", titleEn: "Logistics", icon: Package,
+    body: "6개 거점 항공·해상·철도 네트워크. 3PL 연동·실시간 추적.",
     detail: "6개 거점(한국·중국·베트남·폴란드·미국·일본)에서 항공·해상·철도를 활용한 글로벌 배송 네트워크를 운영합니다. 3PL 직접 연동 및 실시간 재고 추적 시스템을 제공합니다.",
   },
 ];
@@ -636,24 +643,17 @@ function ProcessCard({ step, onClick }: { step: ProcessStep; onClick: () => void
   const Icon = step.icon;
   return (
     <motion.div
-      whileHover={{ y: -6 }}
+      whileHover={{ y: -4 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
       onClick={onClick}
-      className="flex-1 border border-[#E5E5E5] p-8 cursor-pointer group hover:border-gray-300 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] transition-all duration-200"
+      className="pt-8 pb-6 pr-4 lg:pr-6 pl-4 first:pl-0 cursor-pointer group border-t-2 border-transparent hover:border-[#C0392B] transition-[border-color] duration-200"
     >
-      <div className="flex items-start justify-between mb-6">
-        <p className="text-[11px] font-mono text-[#C0392B] tracking-wider">{step.step}</p>
-        <Icon className="size-5 text-gray-200 group-hover:text-[#C0392B] transition-colors" />
-      </div>
-      <p className="text-[17px] font-bold text-[#111111] mb-1">{step.title}</p>
-      <p
-        className="text-[10px] font-medium text-[#CCCCCC] tracking-[2.5px] uppercase"
-        style={{ fontFamily: "Inter, sans-serif" }}
-      >
-        {step.titleEn}
-      </p>
-      <p className="mt-5 text-[11px] text-gray-300 group-hover:text-gray-400 transition-colors">
-        클릭하여 상세 보기 →
+      <p className="text-[11px] font-mono text-red-600 mb-4 tracking-wider">{step.step}</p>
+      <Icon className="size-4 text-gray-300 group-hover:text-[#C0392B] transition-colors mb-3" />
+      <p className="text-[13px] font-bold text-gray-900 mb-2 leading-snug">{step.title}</p>
+      <p className="text-[12px] text-gray-400 leading-relaxed">{step.body}</p>
+      <p className="text-[11px] text-[#C0392B] mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        상세 보기 →
       </p>
     </motion.div>
   );
@@ -709,13 +709,10 @@ function ProcessSection({ lang }: { lang: Lang }) {
   const t = translations[lang].process;
   const [activeStep, setActiveStep] = useState<ProcessStep | null>(null);
 
-  const row1 = PROCESS_STEPS.slice(0, 3);
-  const row2 = PROCESS_STEPS.slice(3, 6);
-
   return (
     <section className="bg-white py-28 lg:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between pb-10 border-b border-gray-200 mb-12">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between pb-10 border-b border-gray-200 mb-0">
           <div>
             <SectionLabel>{t.label}</SectionLabel>
             <h2
@@ -734,39 +731,7 @@ function ProcessSection({ lang }: { lang: Lang }) {
           </a>
         </div>
 
-        {/* Desktop: 2 rows of 3 with flow arrows */}
-        <div className="hidden lg:flex flex-col">
-          <div className="flex items-stretch">
-            {row1.map((step, i) => (
-              <Fragment key={step.step}>
-                <ProcessCard step={step} onClick={() => setActiveStep(step)} />
-                {i < 2 && (
-                  <div className="flex items-center justify-center w-8 shrink-0">
-                    <ChevronRight className="size-4 text-gray-200" />
-                  </div>
-                )}
-              </Fragment>
-            ))}
-          </div>
-          <div className="flex justify-end items-center py-3">
-            <CornerDownLeft className="size-4 text-gray-200" />
-          </div>
-          <div className="flex items-stretch">
-            {row2.map((step, i) => (
-              <Fragment key={step.step}>
-                <ProcessCard step={step} onClick={() => setActiveStep(step)} />
-                {i < 2 && (
-                  <div className="flex items-center justify-center w-8 shrink-0">
-                    <ChevronRight className="size-4 text-gray-200" />
-                  </div>
-                )}
-              </Fragment>
-            ))}
-          </div>
-        </div>
-
-        {/* Mobile: single column */}
-        <div className="lg:hidden grid grid-cols-1 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-6 divide-x divide-gray-100">
           {PROCESS_STEPS.map((step) => (
             <ProcessCard key={step.step} step={step} onClick={() => setActiveStep(step)} />
           ))}
