@@ -27,6 +27,11 @@ import type {
   ProductContent,
   CompanyContent,
   LocationData,
+  VisionMeaningItem,
+  CoreValueItem,
+  SubsidiaryItem,
+  HistoryEntry,
+  HistoryEvent,
 } from "@/lib/content-store";
 import { BUSINESS_DEPARTMENTS } from "@/lib/data/business";
 
@@ -556,9 +561,67 @@ const DEFAULT_LOCATIONS: LocationData[] = [
   },
 ];
 
+const DEFAULT_VISION_STATEMENT = '"범진은 고객과 범진人의 동행으로 성장한다."';
+
+const DEFAULT_VISION_MEANING: VisionMeaningItem[] = [
+  { term: "범진은", desc: "글로벌 범진 전체를 의미하며, 모든 사업과 성장의 중심이 되는 우리 모두를 뜻합니다." },
+  { term: "고객은", desc: "고객, 협력사, 주주 등 범진과 함께하는 모든 파트너를 의미합니다." },
+  { term: "범진인은", desc: "범진의 모든 사업을 이끌어가는 구성원 전체를 의미합니다." },
+  { term: "동행으로는", desc: "핵심가치의 실천을 통해 고객을 감동시키고 일류 경쟁력을 확보하는 것을 의미합니다." },
+  { term: "성장한다는", desc: "도전과 혁신을 통한 지속성장으로 백년기업을 추구하고 구성원의 행복과 가치를 실현하는 것을 의미합니다." },
+];
+
+const DEFAULT_CORE_VALUES: CoreValueItem[] = [
+  { num: "01", title: "고객 최우선", en: "Customer First", body: "최고의 제품과 최상의 서비스를 제공하는 것을 최우선으로 하며, 범진의 모든 가치 중심에 고객을 두고 고객감동 문화를 만들어갑니다." },
+  { num: "02", title: "인재존중과 열린 조직문화", en: "People & Culture", body: "기업의 기본은 사람이라는 신념 아래 우수한 인재를 육성하고, 구성원들이 열정과 꿈을 펼칠 수 있는 행복한 회사를 만들어갑니다." },
+  { num: "03", title: "도전과 실행", en: "Challenge & Execution", body: "급변하는 글로벌 경영환경 속에서도 기존의 틀을 뛰어넘는 차별화된 아이디어와 창의적인 실행력으로 목표를 달성합니다." },
+  { num: "04", title: "열린 소통과 협력", en: "Communication & Partnership", body: "고객, 협력사, 그리고 내부 조직 간의 원활한 소통과 협력을 통해 조직 발전의 시너지 효과를 창출합니다." },
+  { num: "05", title: "투명·정도경영", en: "Integrity Management", body: "고객과 구성원의 신뢰를 바탕으로 투명경영과 준법경영을 실천하며, 사회적 책임을 다하는 지속가능한 기업으로 성장합니다." },
+];
+
+const DEFAULT_SUBSIDIARIES: SubsidiaryItem[] = [
+  {
+    name: "범진전자", en: "Bumjin Electronics",
+    tagline: "글로벌 전자제품 통합 제조 솔루션",
+    desc: "범진전자는 글로벌 전자제품 제조 전문 기업으로 연구개발부터 생산, 품질관리까지 통합 제조 솔루션을 제공합니다.",
+    locations: ["범진전자 (한국)", "범진전자 중국", "범진전자 베트남", "범진전자 인도네시아"],
+    revenue: "3,578억", employees: "2,150", productsLabel: "주력 제품",
+    products: ["Sound Bar", "Speaker", "Home Theater"],
+    roles: ["전자제품 연구개발", "ODM/OEM 생산", "글로벌 생산 및 품질관리"],
+    dark: true,
+  },
+  {
+    name: "범진IND", en: "Bumjin IND",
+    tagline: "정밀 금형·사출성형 핵심 부품 공급",
+    desc: "범진IND는 금형 설계·제작 및 사출성형 분야의 전문 기업으로 생활가전과 자동차 산업에 필요한 핵심 부품을 공급하고 있습니다.",
+    locations: ["범진IND 금형·성형사업장", "범진IND 멕시코", "범진IND 헝가리"],
+    revenue: "2,069억", employees: "1,200", productsLabel: "주력 사업",
+    products: ["금형 설계·제작", "생활가전 사출성형", "자동차 부품 사출성형"],
+    roles: ["정밀 금형 개발", "사출성형 생산", "글로벌 제조 지원"],
+    dark: false,
+  },
+];
+
+const DEFAULT_HISTORY_DATA: HistoryEntry[] = [
+  { year: "2023", events: [{ month: "02", text: "DENON 거래 개시 (AV Receiver 생산)" }] },
+  { year: "2019", events: [{ month: "10", text: "범진전자베트남 유한공사 설립" }] },
+  { year: "2018", events: [{ month: "01", text: "멀티미디어연구소 설립 (사운드바 자체 개발)" }] },
+  { year: "2017", events: [{ month: "12", text: "범진 신사옥 신축 완공" }] },
+  { year: "2016", events: [{ month: "12", text: "제53회 무역의 날 3,000만불 수출의 탑 수상" }] },
+  { year: "2015", events: [{ month: "12", text: "블루투스 스피커 출시 (자사 브랜드 : TONN)" }] },
+  { year: "2014", events: [{ month: "12", text: "삼성전자(주) 자랑스런 삼성인상 특별상 수상" }, { month: "08", text: "헝가리범진전자 KFT 설립" }, { month: "02", text: "삼성전자(주) 올해의 강소기업 인증" }] },
+  { year: "2013", events: [{ month: "07", text: "범진아이엔디(주) 수원공장 신축 이전" }] },
+  { year: "2011", events: [{ month: "11", text: "제48회 무역의 날 500만불 수출의 탑 수상" }] },
+  { year: "2010", events: [{ month: "04", text: "범진전자 인도네시아 설립 (스피커시스템, 사출)" }] },
+  { year: "2008", events: [{ month: "09", text: "범진시엔엘(주) 기업부설연구소 인증" }, { month: "08", text: "범진시엔엘(주) 안산공장 신축 이전" }, { month: "01", text: "천진범진전자유한공사 설립" }] },
+  { year: "2007", events: [{ month: "09", text: "범진공업(주) 기업부설연구소 인증" }] },
+  { year: "2005", events: [{ month: "04", text: "범진공업(주) 성형사업부 설립" }] },
+  { year: "2004", events: [{ month: "08", text: "중국범진전자유한공사 설립 (스피커시스템)" }, { month: "05", text: "범진전자(주) 설립 (스피커시스템)" }] },
+  { year: "1991", events: [{ month: "10", text: "범진공업사 설립 (금형, 서울 영등포 소재)" }] },
+];
+
 function initCompany(stored: CompanyContent | null): CompanyContent {
-  if (stored) return stored;
-  return {
+  const defaults: CompanyContent = {
     overviewHeadline: "도전과 혁신,\n사람과 고객\n중심의 기업.",
     overviewIntro:
       "범진은 글로벌 전자·제조 전문 기업으로, 음향기기와 금형·사출 분야에서 30년 이상의 기술력과 신뢰를 축적해 왔습니다.",
@@ -566,11 +629,30 @@ function initCompany(stored: CompanyContent | null): CompanyContent {
       '"도전과 혁신, 인재와 고객 중심의 가치 실현을 통해 지속 가능한 성장을 만들어가는 기업"',
     ceoOpening: DEFAULT_CEO_OPENING,
     ceoParagraphs: DEFAULT_CEO_PARAGRAPHS,
+    visionStatement: DEFAULT_VISION_STATEMENT,
+    visionMeaning: DEFAULT_VISION_MEANING,
+    coreValues: DEFAULT_CORE_VALUES,
+    subsidiaries: DEFAULT_SUBSIDIARIES,
+    historyData: DEFAULT_HISTORY_DATA,
     locations: DEFAULT_LOCATIONS,
+  };
+  if (!stored) return defaults;
+  return {
+    overviewHeadline: stored.overviewHeadline ?? defaults.overviewHeadline,
+    overviewIntro: stored.overviewIntro ?? defaults.overviewIntro,
+    coreMessage: stored.coreMessage ?? defaults.coreMessage,
+    ceoOpening: stored.ceoOpening ?? defaults.ceoOpening,
+    ceoParagraphs: stored.ceoParagraphs ?? defaults.ceoParagraphs,
+    visionStatement: stored.visionStatement ?? defaults.visionStatement,
+    visionMeaning: stored.visionMeaning ?? defaults.visionMeaning,
+    coreValues: stored.coreValues ?? defaults.coreValues,
+    subsidiaries: stored.subsidiaries ?? defaults.subsidiaries,
+    historyData: stored.historyData ?? defaults.historyData,
+    locations: stored.locations ?? defaults.locations,
   };
 }
 
-type CompanyTab = "overview" | "ceo" | "location";
+type CompanyTab = "overview" | "ceo" | "vision" | "group" | "history" | "location";
 
 function CompanyEditor({
   content,
@@ -581,50 +663,131 @@ function CompanyEditor({
 }) {
   const [tab, setTab] = useState<CompanyTab>("overview");
   const [editingLoc, setEditingLoc] = useState<number | null>(null);
+  const [editingGroup, setEditingGroup] = useState<number | null>(null);
+  const [editingYear, setEditingYear] = useState<number | null>(null);
+  const [editingVM, setEditingVM] = useState<number | null>(null);
+  const [editingCV, setEditingCV] = useState<number | null>(null);
 
   function set<K extends keyof CompanyContent>(key: K, value: CompanyContent[K]) {
     onChange({ ...content, [key]: value });
   }
 
+  // CEO
   function updateParagraph(i: number, value: string) {
     const updated = [...(content.ceoParagraphs ?? DEFAULT_CEO_PARAGRAPHS)];
     updated[i] = value;
     set("ceoParagraphs", updated);
   }
-
   function addParagraph() {
     set("ceoParagraphs", [...(content.ceoParagraphs ?? DEFAULT_CEO_PARAGRAPHS), ""]);
   }
-
   function deleteParagraph(i: number) {
-    const updated = (content.ceoParagraphs ?? DEFAULT_CEO_PARAGRAPHS).filter((_, j) => j !== i);
-    set("ceoParagraphs", updated);
+    set("ceoParagraphs", (content.ceoParagraphs ?? DEFAULT_CEO_PARAGRAPHS).filter((_, j) => j !== i));
   }
 
+  // Location
   function updateLocation(i: number, data: Partial<LocationData>) {
-    const updated = (content.locations ?? DEFAULT_LOCATIONS).map((l, j) =>
-      j === i ? { ...l, ...data } : l
-    );
-    set("locations", updated);
+    set("locations", (content.locations ?? DEFAULT_LOCATIONS).map((l, j) => j === i ? { ...l, ...data } : l));
+  }
+  function addLocation() {
+    const locs = content.locations ?? DEFAULT_LOCATIONS;
+    set("locations", [...locs, { name: "새 사업장", type: "사업장 유형", address: "주소를 입력하세요", phone: "000-000-0000", note: "" }]);
+    setEditingLoc(locs.length);
+  }
+  function deleteLocation(i: number) {
+    set("locations", (content.locations ?? DEFAULT_LOCATIONS).filter((_, j) => j !== i));
+    if (editingLoc === i) setEditingLoc(null);
+  }
+
+  // Vision Meaning
+  function updateVisionMeaning(i: number, data: Partial<VisionMeaningItem>) {
+    set("visionMeaning", (content.visionMeaning ?? DEFAULT_VISION_MEANING).map((v, j) => j === i ? { ...v, ...data } : v));
+  }
+  function addVisionMeaning() {
+    const vm = content.visionMeaning ?? DEFAULT_VISION_MEANING;
+    set("visionMeaning", [...vm, { term: "새 용어", desc: "설명을 입력하세요" }]);
+    setEditingVM(vm.length);
+  }
+  function deleteVisionMeaning(i: number) {
+    set("visionMeaning", (content.visionMeaning ?? DEFAULT_VISION_MEANING).filter((_, j) => j !== i));
+    if (editingVM === i) setEditingVM(null);
+  }
+
+  // Core Values
+  function updateCoreValue(i: number, data: Partial<CoreValueItem>) {
+    set("coreValues", (content.coreValues ?? DEFAULT_CORE_VALUES).map((c, j) => j === i ? { ...c, ...data } : c));
+  }
+  function addCoreValue() {
+    const cv = content.coreValues ?? DEFAULT_CORE_VALUES;
+    set("coreValues", [...cv, { num: String(cv.length + 1).padStart(2, "0"), title: "새 핵심가치", en: "New Core Value", body: "설명을 입력하세요" }]);
+    setEditingCV(cv.length);
+  }
+  function deleteCoreValue(i: number) {
+    set("coreValues", (content.coreValues ?? DEFAULT_CORE_VALUES).filter((_, j) => j !== i));
+    if (editingCV === i) setEditingCV(null);
+  }
+
+  // Subsidiaries
+  function updateSubsidiary(i: number, data: Partial<SubsidiaryItem>) {
+    set("subsidiaries", (content.subsidiaries ?? DEFAULT_SUBSIDIARIES).map((s, j) => j === i ? { ...s, ...data } : s));
+  }
+  function addSubsidiary() {
+    const subs = content.subsidiaries ?? DEFAULT_SUBSIDIARIES;
+    set("subsidiaries", [...subs, { name: "새 계열사", en: "New Subsidiary", tagline: "", desc: "", locations: [], revenue: "0억", employees: "0", productsLabel: "주력 제품", products: [], roles: [], dark: false }]);
+    setEditingGroup(subs.length);
+  }
+  function deleteSubsidiary(i: number) {
+    set("subsidiaries", (content.subsidiaries ?? DEFAULT_SUBSIDIARIES).filter((_, j) => j !== i));
+    if (editingGroup === i) setEditingGroup(null);
+  }
+
+  // History
+  function updateHistoryYear(i: number, year: string) {
+    set("historyData", (content.historyData ?? DEFAULT_HISTORY_DATA).map((h, j) => j === i ? { ...h, year } : h));
+  }
+  function addHistoryYear() {
+    const hd = content.historyData ?? DEFAULT_HISTORY_DATA;
+    set("historyData", [{ year: String(new Date().getFullYear()), events: [{ month: "01", text: "" }] }, ...hd]);
+    setEditingYear(0);
+  }
+  function deleteHistoryYear(i: number) {
+    set("historyData", (content.historyData ?? DEFAULT_HISTORY_DATA).filter((_, j) => j !== i));
+    if (editingYear === i) setEditingYear(null);
+  }
+  function updateHistoryEvent(yi: number, ei: number, data: Partial<HistoryEvent>) {
+    set("historyData", (content.historyData ?? DEFAULT_HISTORY_DATA).map((h, i) =>
+      i !== yi ? h : { ...h, events: h.events.map((ev, j) => j === ei ? { ...ev, ...data } : ev) }
+    ));
+  }
+  function addHistoryEvent(yi: number) {
+    set("historyData", (content.historyData ?? DEFAULT_HISTORY_DATA).map((h, i) =>
+      i !== yi ? h : { ...h, events: [...h.events, { month: "01", text: "" }] }
+    ));
+  }
+  function deleteHistoryEvent(yi: number, ei: number) {
+    set("historyData", (content.historyData ?? DEFAULT_HISTORY_DATA).map((h, i) =>
+      i !== yi ? h : { ...h, events: h.events.filter((_, j) => j !== ei) }
+    ));
   }
 
   const companyTabs: { id: CompanyTab; label: string }[] = [
     { id: "overview", label: "개요" },
     { id: "ceo",      label: "CEO 인사말" },
+    { id: "vision",   label: "비전" },
+    { id: "group",    label: "범진" },
+    { id: "history",  label: "연혁" },
     { id: "location", label: "찾아오시는 길" },
   ];
 
   return (
     <div className="space-y-5">
-      <div className="flex gap-1 bg-gray-100 p-1 w-fit">
+      <div className="flex flex-wrap gap-1 bg-gray-100 p-1">
         {companyTabs.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
             className={`px-4 py-2 text-[12px] font-semibold transition-colors ${
-              tab === t.id
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-500 hover:text-gray-700"
+              tab === t.id ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
             }`}
           >
             {t.label}
@@ -634,69 +797,29 @@ function CompanyEditor({
 
       {tab === "overview" && (
         <div className="space-y-5">
-          <Field
-            label="대제목 (줄바꿈은 \\n 입력)"
-            value={content.overviewHeadline ?? ""}
-            onChange={(v) => set("overviewHeadline", v)}
-            multiline
-            rows={3}
-            hint="두 번째 줄은 빨간색으로 표시됩니다"
-          />
-          <Field
-            label="소개 문구"
-            value={content.overviewIntro ?? ""}
-            onChange={(v) => set("overviewIntro", v)}
-            multiline
-            rows={3}
-          />
-          <Field
-            label="Core Message"
-            value={content.coreMessage ?? ""}
-            onChange={(v) => set("coreMessage", v)}
-            multiline
-            rows={2}
-          />
+          <Field label="대제목 (줄바꿈은 \\n 입력)" value={content.overviewHeadline ?? ""} onChange={(v) => set("overviewHeadline", v)} multiline rows={3} hint="두 번째 줄은 빨간색으로 표시됩니다" />
+          <Field label="소개 문구" value={content.overviewIntro ?? ""} onChange={(v) => set("overviewIntro", v)} multiline rows={3} />
+          <Field label="Core Message" value={content.coreMessage ?? ""} onChange={(v) => set("coreMessage", v)} multiline rows={2} />
         </div>
       )}
 
       {tab === "ceo" && (
         <div className="space-y-5">
-          <Field
-            label="CEO 인사말 첫 문장 (굵게 표시)"
-            value={content.ceoOpening ?? DEFAULT_CEO_OPENING}
-            onChange={(v) => set("ceoOpening", v)}
-            multiline
-            rows={2}
-          />
+          <Field label="CEO 인사말 첫 문장 (굵게 표시)" value={content.ceoOpening ?? DEFAULT_CEO_OPENING} onChange={(v) => set("ceoOpening", v)} multiline rows={2} />
           <div className="space-y-2">
-            <p className="text-[10px] font-bold text-gray-500 tracking-[2px] uppercase">
-              본문 단락
-            </p>
+            <p className="text-[10px] font-bold text-gray-500 tracking-[2px] uppercase">본문 단락</p>
             {(content.ceoParagraphs ?? DEFAULT_CEO_PARAGRAPHS).map((para, i) => (
               <div key={i} className="border border-gray-200 p-3 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-mono text-gray-400">단락 {i + 1}</span>
-                  <button
-                    type="button"
-                    onClick={() => deleteParagraph(i)}
-                    className="flex items-center gap-1 text-[10px] text-red-400 hover:text-red-600 transition-colors"
-                  >
+                  <button type="button" onClick={() => deleteParagraph(i)} className="flex items-center gap-1 text-[10px] text-red-400 hover:text-red-600">
                     <Trash2 className="size-3" /> 삭제
                   </button>
                 </div>
-                <textarea
-                  value={para}
-                  onChange={(e) => updateParagraph(i, e.target.value)}
-                  rows={3}
-                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-[12px] px-3 py-2.5 focus:outline-none focus:border-red-400 transition-colors resize-y font-mono"
-                />
+                <textarea value={para} onChange={(e) => updateParagraph(i, e.target.value)} rows={3} className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-[12px] px-3 py-2.5 focus:outline-none focus:border-red-400 resize-y font-mono" />
               </div>
             ))}
-            <button
-              type="button"
-              onClick={addParagraph}
-              className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-gray-300 hover:border-gray-500 text-[12px] text-gray-500 hover:text-gray-900 transition-colors"
-            >
+            <button type="button" onClick={addParagraph} className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-gray-300 hover:border-gray-500 text-[12px] text-gray-500 hover:text-gray-900 transition-colors">
               <Plus className="size-3.5" /> 단락 추가
             </button>
           </div>
@@ -706,21 +829,195 @@ function CompanyEditor({
         </div>
       )}
 
+      {tab === "vision" && (
+        <div className="space-y-6">
+          <Field label="비전 선언문" value={content.visionStatement ?? DEFAULT_VISION_STATEMENT} onChange={(v) => set("visionStatement", v)} multiline rows={2} />
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <p className="text-[10px] font-bold text-gray-500 tracking-[2px] uppercase">비전의 의미</p>
+              <span className="text-[10px] text-gray-400">{(content.visionMeaning ?? DEFAULT_VISION_MEANING).length}개</span>
+            </div>
+            {(content.visionMeaning ?? DEFAULT_VISION_MEANING).map((vm, i) => (
+              <div key={i} className="border border-gray-200">
+                <button type="button" onClick={() => setEditingVM(editingVM === i ? null : i)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 text-left">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="text-[12px] font-bold text-red-600 shrink-0">{vm.term}</span>
+                    <span className="text-[11px] text-gray-400 truncate">{vm.desc}</span>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button type="button" onClick={(e) => { e.stopPropagation(); deleteVisionMeaning(i); }} className="text-red-400 hover:text-red-600"><Trash2 className="size-3.5" /></button>
+                    {editingVM === i ? <ChevronUp className="size-4 text-gray-400" /> : <ChevronDown className="size-4 text-gray-400" />}
+                  </div>
+                </button>
+                {editingVM === i && (
+                  <div className="p-4 space-y-3">
+                    <Field label="용어" value={vm.term} onChange={(v) => updateVisionMeaning(i, { term: v })} />
+                    <Field label="설명" value={vm.desc} onChange={(v) => updateVisionMeaning(i, { desc: v })} multiline rows={2} />
+                  </div>
+                )}
+              </div>
+            ))}
+            <button type="button" onClick={addVisionMeaning} className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-gray-300 hover:border-gray-500 text-[12px] text-gray-500 hover:text-gray-900 transition-colors">
+              <Plus className="size-3.5" /> 의미 추가
+            </button>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <p className="text-[10px] font-bold text-gray-500 tracking-[2px] uppercase">핵심가치</p>
+              <span className="text-[10px] text-gray-400">{(content.coreValues ?? DEFAULT_CORE_VALUES).length}개</span>
+            </div>
+            {(content.coreValues ?? DEFAULT_CORE_VALUES).map((cv, i) => (
+              <div key={i} className="border border-gray-200">
+                <button type="button" onClick={() => setEditingCV(editingCV === i ? null : i)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 text-left">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="text-[10px] font-mono text-red-600 shrink-0">{cv.num}</span>
+                    <span className="text-[13px] font-semibold text-gray-900 truncate">{cv.title}</span>
+                    <span className="text-[11px] text-gray-400 hidden sm:block">{cv.en}</span>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button type="button" onClick={(e) => { e.stopPropagation(); deleteCoreValue(i); }} className="text-red-400 hover:text-red-600"><Trash2 className="size-3.5" /></button>
+                    {editingCV === i ? <ChevronUp className="size-4 text-gray-400" /> : <ChevronDown className="size-4 text-gray-400" />}
+                  </div>
+                </button>
+                {editingCV === i && (
+                  <div className="p-4 space-y-3">
+                    <div className="grid sm:grid-cols-3 gap-3">
+                      <Field label="번호" value={cv.num} onChange={(v) => updateCoreValue(i, { num: v })} hint="예: 01" />
+                      <Field label="제목 (한국어)" value={cv.title} onChange={(v) => updateCoreValue(i, { title: v })} />
+                      <Field label="제목 (영어)" value={cv.en} onChange={(v) => updateCoreValue(i, { en: v })} />
+                    </div>
+                    <Field label="설명" value={cv.body} onChange={(v) => updateCoreValue(i, { body: v })} multiline rows={2} />
+                  </div>
+                )}
+              </div>
+            ))}
+            <button type="button" onClick={addCoreValue} className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-gray-300 hover:border-gray-500 text-[12px] text-gray-500 hover:text-gray-900 transition-colors">
+              <Plus className="size-3.5" /> 핵심가치 추가
+            </button>
+          </div>
+        </div>
+      )}
+
+      {tab === "group" && (
+        <div className="space-y-2">
+          {(content.subsidiaries ?? DEFAULT_SUBSIDIARIES).map((sub, i) => (
+            <div key={i} className="border border-gray-200">
+              <button type="button" onClick={() => setEditingGroup(editingGroup === i ? null : i)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 text-left">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="text-[13px] font-semibold text-gray-900">{sub.name}</span>
+                  <span className="text-[11px] text-gray-400 hidden sm:block">{sub.en}</span>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button type="button" onClick={(e) => { e.stopPropagation(); deleteSubsidiary(i); }} className="text-red-400 hover:text-red-600"><Trash2 className="size-3.5" /></button>
+                  {editingGroup === i ? <ChevronUp className="size-4 text-gray-400" /> : <ChevronDown className="size-4 text-gray-400" />}
+                </div>
+              </button>
+              {editingGroup === i && (
+                <div className="p-4 space-y-4">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <Field label="회사명 (한국어)" value={sub.name} onChange={(v) => updateSubsidiary(i, { name: v })} />
+                    <Field label="회사명 (영어)" value={sub.en} onChange={(v) => updateSubsidiary(i, { en: v })} />
+                  </div>
+                  <Field label="태그라인" value={sub.tagline} onChange={(v) => updateSubsidiary(i, { tagline: v })} />
+                  <Field label="소개" value={sub.desc} onChange={(v) => updateSubsidiary(i, { desc: v })} multiline rows={3} />
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <Field label="매출" value={sub.revenue} onChange={(v) => updateSubsidiary(i, { revenue: v })} hint="예: 3,578억" />
+                    <Field label="임직원 수" value={sub.employees} onChange={(v) => updateSubsidiary(i, { employees: v })} />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-gray-500 tracking-[2px] uppercase">사업장 (줄바꿈으로 구분)</label>
+                    <textarea value={sub.locations.join("\n")} onChange={(e) => updateSubsidiary(i, { locations: e.target.value.split("\n").map(s => s.trim()).filter(Boolean) })} rows={3} className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-[12px] px-3 py-2.5 focus:outline-none focus:border-red-400 resize-y font-mono" />
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <Field label="제품 레이블" value={sub.productsLabel} onChange={(v) => updateSubsidiary(i, { productsLabel: v })} hint="예: 주력 제품" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-gray-500 tracking-[2px] uppercase">주력 제품/사업 (줄바꿈으로 구분)</label>
+                    <textarea value={sub.products.join("\n")} onChange={(e) => updateSubsidiary(i, { products: e.target.value.split("\n").map(s => s.trim()).filter(Boolean) })} rows={3} className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-[12px] px-3 py-2.5 focus:outline-none focus:border-red-400 resize-y font-mono" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-gray-500 tracking-[2px] uppercase">주요 역할 (줄바꿈으로 구분)</label>
+                    <textarea value={sub.roles.join("\n")} onChange={(e) => updateSubsidiary(i, { roles: e.target.value.split("\n").map(s => s.trim()).filter(Boolean) })} rows={3} className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-[12px] px-3 py-2.5 focus:outline-none focus:border-red-400 resize-y font-mono" />
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <label className="text-[10px] font-bold text-gray-500 tracking-[2px] uppercase">다크 테마</label>
+                    <button
+                      type="button"
+                      onClick={() => updateSubsidiary(i, { dark: !sub.dark })}
+                      className={`relative w-10 h-5 rounded-full transition-colors ${sub.dark ? "bg-gray-900" : "bg-gray-300"}`}
+                    >
+                      <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${sub.dark ? "left-5" : "left-0.5"}`} />
+                    </button>
+                    <span className="text-[11px] text-gray-500">{sub.dark ? "다크 배경" : "라이트 배경"}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+          <button type="button" onClick={addSubsidiary} className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-gray-300 hover:border-gray-500 text-[12px] text-gray-500 hover:text-gray-900 transition-colors">
+            <Plus className="size-3.5" /> 계열사 추가
+          </button>
+        </div>
+      )}
+
+      {tab === "history" && (
+        <div className="space-y-2">
+          <div className="flex justify-end">
+            <button type="button" onClick={addHistoryYear} className="flex items-center gap-2 py-2 px-4 bg-gray-900 text-white text-[12px] hover:bg-gray-700 transition-colors">
+              <Plus className="size-3.5" /> 연도 추가
+            </button>
+          </div>
+          {(content.historyData ?? DEFAULT_HISTORY_DATA).map((entry, i) => (
+            <div key={i} className="border border-gray-200">
+              <button type="button" onClick={() => setEditingYear(editingYear === i ? null : i)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 text-left">
+                <div className="flex items-center gap-3">
+                  <span className="text-[18px] font-black text-gray-900">{entry.year}</span>
+                  <span className="text-[11px] text-gray-400">{entry.events.length}개 항목</span>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button type="button" onClick={(e) => { e.stopPropagation(); deleteHistoryYear(i); }} className="text-red-400 hover:text-red-600"><Trash2 className="size-3.5" /></button>
+                  {editingYear === i ? <ChevronUp className="size-4 text-gray-400" /> : <ChevronDown className="size-4 text-gray-400" />}
+                </div>
+              </button>
+              {editingYear === i && (
+                <div className="p-4 space-y-4">
+                  <Field label="연도" value={entry.year} onChange={(v) => updateHistoryYear(i, v)} hint="예: 2023" />
+                  <div className="space-y-2">
+                    <p className="text-[10px] font-bold text-gray-500 tracking-[2px] uppercase">이벤트</p>
+                    {entry.events.map((ev, j) => (
+                      <div key={j} className="flex gap-2 items-center border border-gray-100 p-2 bg-gray-50">
+                        <input type="text" value={ev.month} onChange={(e) => updateHistoryEvent(i, j, { month: e.target.value })} placeholder="월" className="w-12 bg-white border border-gray-200 text-gray-900 text-[12px] px-2 py-1.5 focus:outline-none focus:border-red-400 font-mono text-center shrink-0" />
+                        <input type="text" value={ev.text} onChange={(e) => updateHistoryEvent(i, j, { text: e.target.value })} className="flex-1 bg-white border border-gray-200 text-gray-900 text-[12px] px-2 py-1.5 focus:outline-none focus:border-red-400 min-w-0" placeholder="내용을 입력하세요" />
+                        <button type="button" onClick={() => deleteHistoryEvent(i, j)} className="text-red-400 hover:text-red-600 shrink-0"><Trash2 className="size-3.5" /></button>
+                      </div>
+                    ))}
+                    <button type="button" onClick={() => addHistoryEvent(i)} className="w-full flex items-center justify-center gap-2 py-2 border border-dashed border-gray-300 hover:border-gray-500 text-[12px] text-gray-500 hover:text-gray-900 transition-colors">
+                      <Plus className="size-3.5" /> 이벤트 추가
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
       {tab === "location" && (
         <div className="space-y-3">
           {(content.locations ?? DEFAULT_LOCATIONS).map((loc, i) => (
             <div key={i} className="border border-gray-200">
-              <button
-                type="button"
-                onClick={() => setEditingLoc(editingLoc === i ? null : i)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
-              >
+              <button type="button" onClick={() => setEditingLoc(editingLoc === i ? null : i)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left">
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="text-[10px] font-mono text-[#C0392B]">{String(i + 1).padStart(2, "0")}</span>
                   <span className="text-[13px] font-semibold text-gray-900 truncate">{loc.name}</span>
                   <span className="text-[11px] text-gray-400 hidden sm:block">{loc.type}</span>
                 </div>
-                {editingLoc === i ? <ChevronUp className="size-4 text-gray-400" /> : <ChevronDown className="size-4 text-gray-400" />}
+                <div className="flex items-center gap-2 shrink-0">
+                  <button type="button" onClick={(e) => { e.stopPropagation(); deleteLocation(i); }} className="text-red-400 hover:text-red-600"><Trash2 className="size-3.5" /></button>
+                  {editingLoc === i ? <ChevronUp className="size-4 text-gray-400" /> : <ChevronDown className="size-4 text-gray-400" />}
+                </div>
               </button>
               {editingLoc === i && (
                 <div className="p-4 space-y-4">
@@ -728,12 +1025,7 @@ function CompanyEditor({
                     <Field label="사업장명" value={loc.name} onChange={(v) => updateLocation(i, { name: v })} />
                     <Field label="유형" value={loc.type} onChange={(v) => updateLocation(i, { type: v })} hint="예: 본사 · 전자사업장" />
                   </div>
-                  <Field
-                    label="주소"
-                    value={loc.address}
-                    onChange={(v) => updateLocation(i, { address: v })}
-                    hint="입력한 주소로 구글 지도가 자동 표시됩니다"
-                  />
+                  <Field label="주소" value={loc.address} onChange={(v) => updateLocation(i, { address: v })} hint="입력한 주소로 구글 지도가 자동 표시됩니다" />
                   <div className="grid sm:grid-cols-2 gap-4">
                     <Field label="전화번호" value={loc.phone} onChange={(v) => updateLocation(i, { phone: v })} />
                     <Field label="비고" value={loc.note} onChange={(v) => updateLocation(i, { note: v })} hint="예: 1호선 고색역 인근" />
@@ -742,6 +1034,9 @@ function CompanyEditor({
               )}
             </div>
           ))}
+          <button type="button" onClick={addLocation} className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-gray-300 hover:border-gray-500 text-[12px] text-gray-500 hover:text-gray-900 transition-colors">
+            <Plus className="size-3.5" /> 사업장 추가
+          </button>
           <p className="text-[11px] text-gray-400 bg-blue-50 border border-blue-100 p-3">
             💡 주소를 수정하면 구글 지도가 자동으로 해당 위치를 표시합니다.
           </p>

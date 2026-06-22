@@ -48,12 +48,53 @@ export interface LocationData {
   note: string;
 }
 
+export interface VisionMeaningItem {
+  term: string;
+  desc: string;
+}
+
+export interface CoreValueItem {
+  num: string;
+  title: string;
+  en: string;
+  body: string;
+}
+
+export interface SubsidiaryItem {
+  name: string;
+  en: string;
+  tagline: string;
+  desc: string;
+  locations: string[];
+  revenue: string;
+  employees: string;
+  productsLabel: string;
+  products: string[];
+  roles: string[];
+  dark: boolean;
+}
+
+export interface HistoryEvent {
+  month: string;
+  text: string;
+}
+
+export interface HistoryEntry {
+  year: string;
+  events: HistoryEvent[];
+}
+
 export interface CompanyContent {
   overviewHeadline?: string;
   overviewIntro?: string;
   coreMessage?: string;
   ceoOpening?: string;
   ceoParagraphs?: string[];
+  visionStatement?: string;
+  visionMeaning?: VisionMeaningItem[];
+  coreValues?: CoreValueItem[];
+  subsidiaries?: SubsidiaryItem[];
+  historyData?: HistoryEntry[];
   locations?: LocationData[];
 }
 

@@ -7,6 +7,7 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { MapPin, Phone, ExternalLink, ArrowUpRight, ChevronDown } from "lucide-react";
 import { SiteHeader } from "@/components/ui/SiteHeader";
 import { useAdminContent } from "@/lib/hooks/useAdminContent";
+import type { VisionMeaningItem, CoreValueItem, SubsidiaryItem, HistoryEntry } from "@/lib/content-store";
 
 /* ─── helpers ─── */
 
@@ -501,7 +502,19 @@ const CORE_VALUES = [
   { num: "05", title: "투명·정도경영", en: "Integrity Management", body: "고객과 구성원의 신뢰를 바탕으로 투명경영과 준법경영을 실천하며, 사회적 책임을 다하는 지속가능한 기업으로 성장합니다." },
 ];
 
-function VisionSection() {
+function VisionSection({
+  visionStatement,
+  visionMeaning: visionMeaningProp,
+  coreValues: coreValuesProp,
+}: {
+  visionStatement?: string;
+  visionMeaning?: VisionMeaningItem[];
+  coreValues?: CoreValueItem[];
+}) {
+  const vm = visionMeaningProp ?? VISION_MEANING;
+  const cv = coreValuesProp ?? CORE_VALUES;
+  const statement = visionStatement ?? '"범진은 고객과 범진人의 동행으로 성장한다."';
+
   return (
     <section id="vision" className="bg-white">
       {/* Full-bleed Vision statement */}
@@ -524,7 +537,7 @@ function VisionSection() {
               className="font-black text-white leading-[1.05] tracking-tight max-w-3xl"
               style={{ fontSize: "clamp(32px, 5vw, 72px)" }}
             >
-              "범진은 고객과 범진人의 동행으로 성장한다."
+              {statement}
             </p>
           </FadeIn>
           <FadeIn delay={0.16} className="mt-10 max-w-2xl">
@@ -569,9 +582,9 @@ function VisionSection() {
             <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
               비전의 의미
             </p>
-            {VISION_MEANING.map((item, i) => (
+            {vm.map((item, i) => (
               <motion.div
-                key={item.term}
+                key={i}
                 initial={{ opacity: 0, x: -10 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -591,7 +604,7 @@ function VisionSection() {
             <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
               핵심가치
             </p>
-            {CORE_VALUES.map((item, i) => (
+            {cv.map((item, i) => (
               <motion.div
                 key={item.num}
                 initial={{ opacity: 0, y: 10 }}
@@ -648,7 +661,8 @@ const SUBSIDIARIES = [
   },
 ];
 
-function GroupSection() {
+function GroupSection({ subsidiaries }: { subsidiaries?: SubsidiaryItem[] }) {
+  const data = subsidiaries ?? SUBSIDIARIES;
   return (
     <section id="group" className="bg-white">
       <div className="border-t border-gray-100 mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-16 lg:pt-36 lg:pb-20">
@@ -668,7 +682,7 @@ function GroupSection() {
       </div>
 
       {/* Subsidiaries — alternating full-bleed layout */}
-      {SUBSIDIARIES.map((sub, si) => (
+      {data.map((sub, si) => (
         <motion.div
           key={sub.name}
           initial={{ opacity: 0 }}
@@ -846,7 +860,8 @@ const HISTORY_DATA = [
   { year: "1991", events: [{ month: "10", text: "범진공업사 설립 (금형, 서울 영등포 소재)" }] },
 ];
 
-function HistorySection() {
+function HistorySection({ historyData }: { historyData?: HistoryEntry[] }) {
+  const data = historyData ?? HISTORY_DATA;
   return (
     <section id="history" className="bg-white border-t border-gray-100">
       {/* Header */}
@@ -877,7 +892,7 @@ function HistorySection() {
           {/* Line */}
           <div className="absolute left-0 lg:left-[120px] top-0 bottom-0 w-px bg-gray-100" />
 
-          {HISTORY_DATA.map((entry, i) => (
+          {data.map((entry, i) => (
             <motion.div
               key={entry.year}
               initial={{ opacity: 0, y: 12 }}
@@ -1182,9 +1197,13 @@ export default function CompanyPage() {
           ceoParagraphs={co?.ceoParagraphs}
           ceoPhoto={images["company-ceo"]}
         />
-        <VisionSection />
-        <GroupSection />
-        <HistorySection />
+        <VisionSection
+          visionStatement={co?.visionStatement}
+          visionMeaning={co?.visionMeaning}
+          coreValues={co?.coreValues}
+        />
+        <GroupSection subsidiaries={co?.subsidiaries} />
+        <HistorySection historyData={co?.historyData} />
         <LocationSection locations={co?.locations} />
       </main>
       <CompanyFooter />
