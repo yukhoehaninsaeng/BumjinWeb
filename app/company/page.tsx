@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { MapPin, Phone, ExternalLink, ArrowUpRight, ChevronDown } from "lucide-react";
 import { SiteHeader } from "@/components/ui/SiteHeader";
+import { useAdminContent } from "@/lib/hooks/useAdminContent";
 
 /* ─── helpers ─── */
 
@@ -105,7 +106,15 @@ const MOTTO_ITEMS = [
   },
 ];
 
-function OverviewSection() {
+function OverviewSection({ headline, intro, coreMessage }: { headline?: string; intro?: string; coreMessage?: string }) {
+  const defaultHeadline = ["도전과 혁신,", "사람과 고객", "중심의 기업."];
+  const defaultIntro = "범진은 글로벌 전자·제조 전문 기업으로, 음향기기와 금형·사출 분야에서 30년 이상의 기술력과 신뢰를 축적해 왔습니다.";
+  const defaultCoreMessage = '"도전과 혁신, 인재와 고객 중심의 가치 실현을 통해 지속 가능한 성장을 만들어가는 기업"';
+
+  const headlineLines = headline
+    ? headline.split("\n")
+    : defaultHeadline;
+
   return (
     <section id="overview" className="bg-white">
       {/* Intro */}
@@ -120,17 +129,17 @@ function OverviewSection() {
             className="font-black text-gray-900 leading-[0.95] tracking-tight mb-12 lg:mb-16"
             style={{ fontSize: "clamp(48px, 7vw, 110px)" }}
           >
-            도전과 혁신,
-            <br />
-            <span className="text-red-600">사람과 고객</span>
-            <br />
-            중심의 기업.
+            {headlineLines.map((line, i) => (
+              <span key={i}>
+                {i === 1 ? <span className="text-red-600">{line}</span> : line}
+                {i < headlineLines.length - 1 && <br />}
+              </span>
+            ))}
           </h2>
         </FadeIn>
         <FadeIn delay={0.16} className="max-w-xl">
           <p className="text-gray-500 text-[15px] leading-relaxed">
-            범진은 글로벌 전자·제조 전문 기업으로, 음향기기와 금형·사출 분야에서
-            30년 이상의 기술력과 신뢰를 축적해 왔습니다.
+            {intro ?? defaultIntro}
           </p>
         </FadeIn>
       </div>
@@ -284,7 +293,7 @@ function OverviewSection() {
                   lineHeight: 1.75,
                 }}
               >
-                "도전과 혁신, 인재와 고객 중심의 가치 실현을 통해 지속 가능한 성장을 만들어가는 기업"
+                {coreMessage ?? defaultCoreMessage}
               </p>
             </div>
           </div>
@@ -343,7 +352,10 @@ const MGMT_PHILOSOPHY = [
   },
 ];
 
-function CEOSection() {
+function CEOSection({ ceoOpening, ceoParagraphs, ceoPhoto }: { ceoOpening?: string; ceoParagraphs?: string[]; ceoPhoto?: string }) {
+  const opening = ceoOpening ?? CEO_PARAGRAPHS[0];
+  const paragraphs = ceoParagraphs ?? CEO_PARAGRAPHS.slice(1);
+
   return (
     <section id="ceo" className="bg-white">
       {/* Large pull-quote header */}
@@ -373,15 +385,19 @@ function CEOSection() {
           {/* Photo */}
           <FadeIn className="lg:col-span-2">
             <div className="bg-gray-100 aspect-[3/4] relative overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span
-                  aria-hidden
-                  className="font-black text-gray-200 select-none"
-                  style={{ fontSize: "clamp(140px, 22vw, 240px)" }}
-                >
-                  B
-                </span>
-              </div>
+              {ceoPhoto ? (
+                <Image src={ceoPhoto} alt="CEO" fill className="object-cover" />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span
+                    aria-hidden
+                    className="font-black text-gray-200 select-none"
+                    style={{ fontSize: "clamp(140px, 22vw, 240px)" }}
+                  >
+                    B
+                  </span>
+                </div>
+              )}
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-900/70 to-transparent">
                 <p className="text-[18px] font-black text-white">대표이사</p>
                 <p className="text-[12px] text-white/55 mt-0.5">
@@ -398,10 +414,10 @@ function CEOSection() {
               className="font-bold text-gray-900 leading-snug mb-10"
               style={{ fontSize: "clamp(18px, 2vw, 26px)" }}
             >
-              {CEO_PARAGRAPHS[0]}
+              {opening}
             </p>
             <div className="space-y-5">
-              {CEO_PARAGRAPHS.slice(1).map((para, i) => (
+              {paragraphs.map((para, i) => (
                 <p key={i} className="text-[14px] text-gray-600 leading-[1.85]">
                   {para}
                 </p>
@@ -920,7 +936,6 @@ const LOCATION_DATA = [
     address: "경기도 수원시 권선구 산업로155번길 217 (고색동)",
     phone: "031-493-9415",
     note: "1호선 고색역 인근",
-    mapUrl: "https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EC%88%98%EC%9B%90%EC%8B%9C%20%EA%B6%8C%EC%84%A0%EA%B5%AC%20%EC%82%B0%EC%97%85%EB%A1%9C155%EB%B2%88%EA%B8%B8%20217",
   },
   {
     name: "범진IND 금형사업장",
@@ -928,7 +943,6 @@ const LOCATION_DATA = [
     address: "경기도 수원시 권선구 고색동",
     phone: "031-676-1461",
     note: "금형 설계 및 제작 전문 사업장",
-    mapUrl: "https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EC%88%98%EC%9B%90%EC%8B%9C%20%EA%B6%8C%EC%84%A0%EA%B5%AC%20%EA%B3%A0%EC%83%89%EB%8F%99",
   },
   {
     name: "범진IND 성형사업장",
@@ -936,11 +950,12 @@ const LOCATION_DATA = [
     address: "경기도 안성시",
     phone: "031-210-4930",
     note: "생활가전·자동차 부품 사출성형",
-    mapUrl: "https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EC%95%88%EC%84%B1%EC%8B%9C",
   },
 ];
 
-function LocationSection() {
+function LocationSection({ locations }: { locations?: typeof LOCATION_DATA }) {
+  const locs = locations ?? LOCATION_DATA;
+
   return (
     <section id="location" className="bg-gray-950">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-20 lg:pt-36 lg:pb-24">
@@ -966,20 +981,29 @@ function LocationSection() {
 
       <div className="mx-auto max-w-7xl px-6 lg:px-10 pb-28 lg:pb-36">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-white/10">
-          {LOCATION_DATA.map((loc, i) => (
+          {locs.map((loc, i) => (
             <FadeIn key={loc.name} delay={i * 0.08}>
               <div className="bg-gray-950 p-8 lg:p-10 h-full flex flex-col group hover:bg-gray-900 transition-colors duration-300">
-                {/* Map placeholder */}
-                <div className="aspect-video bg-gray-900 group-hover:bg-gray-800 transition-colors relative overflow-hidden mb-8 flex items-center justify-center">
-                  <MapPin className="size-8 text-gray-700 group-hover:text-red-600 transition-colors" />
-                  <div className="absolute inset-0 grid-lines opacity-[0.06]" />
+                {/* Google Maps embed */}
+                <div className="aspect-video relative overflow-hidden mb-8">
+                  <iframe
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(loc.address)}&output=embed&hl=ko&z=16`}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={loc.name}
+                    className="grayscale-[30%]"
+                  />
                   <a
-                    href={loc.mapUrl}
+                    href={`https://maps.google.com/maps?q=${encodeURIComponent(loc.address)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="absolute bottom-3 right-3 flex items-center gap-1.5 text-[10px] font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors px-3 py-1.5"
+                    className="absolute bottom-3 right-3 flex items-center gap-1.5 text-[10px] font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors px-3 py-1.5 z-10"
                   >
-                    지도 보기 <ExternalLink className="size-2.5" />
+                    크게 보기 <ExternalLink className="size-2.5" />
                   </a>
                 </div>
 
@@ -1124,6 +1148,9 @@ function CompanyFooter() {
 
 export default function CompanyPage() {
   const [activeSection, setActiveSection] = useState("overview");
+  const adminContent = useAdminContent();
+  const co = adminContent?.company ?? null;
+  const images = adminContent?.images ?? {};
 
   useEffect(() => {
     const els = SUB_NAV.map(({ id }) => document.getElementById(id)).filter(Boolean);
@@ -1145,12 +1172,20 @@ export default function CompanyPage() {
       <PageHero />
       <SubNav active={activeSection} />
       <main>
-        <OverviewSection />
-        <CEOSection />
+        <OverviewSection
+          headline={co?.overviewHeadline}
+          intro={co?.overviewIntro}
+          coreMessage={co?.coreMessage}
+        />
+        <CEOSection
+          ceoOpening={co?.ceoOpening}
+          ceoParagraphs={co?.ceoParagraphs}
+          ceoPhoto={images["company-ceo"]}
+        />
         <VisionSection />
         <GroupSection />
         <HistorySection />
-        <LocationSection />
+        <LocationSection locations={co?.locations} />
       </main>
       <CompanyFooter />
     </div>

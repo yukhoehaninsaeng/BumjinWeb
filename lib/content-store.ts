@@ -40,6 +40,23 @@ export interface DeptContent {
   products?: ProductContent[];
 }
 
+export interface LocationData {
+  name: string;
+  type: string;
+  address: string;
+  phone: string;
+  note: string;
+}
+
+export interface CompanyContent {
+  overviewHeadline?: string;
+  overviewIntro?: string;
+  coreMessage?: string;
+  ceoOpening?: string;
+  ceoParagraphs?: string[];
+  locations?: LocationData[];
+}
+
 export interface SiteContent {
   home: {
     processSteps: ProcessStepContent[] | null;
@@ -50,12 +67,14 @@ export interface SiteContent {
     molding: DeptContent | null;
     startup: DeptContent | null;
   };
+  company: CompanyContent | null;
   images: Record<string, string>;
 }
 
 const DEFAULT: SiteContent = {
   home: { processSteps: null, capabilities: null },
   business: { electronics: null, molding: null, startup: null },
+  company: null,
   images: {},
 };
 

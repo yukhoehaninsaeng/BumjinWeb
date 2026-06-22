@@ -17,6 +17,7 @@ import {
   EyeOff,
   Plus,
   Trash2,
+  Building2,
 } from "lucide-react";
 import type {
   SiteContent,
@@ -24,6 +25,8 @@ import type {
   CapabilityContent,
   DeptContent,
   ProductContent,
+  CompanyContent,
+  LocationData,
 } from "@/lib/content-store";
 import { BUSINESS_DEPARTMENTS } from "@/lib/data/business";
 
@@ -516,9 +519,241 @@ function DeptEditor({
   );
 }
 
+/* ── 회사 소개 에디터 ───────────────────────── */
+
+const DEFAULT_CEO_OPENING =
+  "범진은 고객의 행복한 삶이라는 가치 실현을 위해 끊임없이 도전하며 성장해 왔습니다.";
+
+const DEFAULT_CEO_PARAGRAPHS = [
+  "1991년 창립 이후 범진은 견고한 기술력과 투명한 경영을 바탕으로 국내 시장에서 경쟁력을 확보하고, 세계 각국에 생산기지를 구축하며 음향기기 및 금형·사출 분야의 전문 기업으로 성장해 왔습니다. 모두가 불가능하다고 했던 꿈을 현실로 만들어 온 지난 시간처럼, 범진은 미래를 향한 도전을 멈추지 않을 것입니다.",
+  "범진은 단순한 외형적 성장에 만족하지 않습니다. 지속적인 투자와 연구개발을 통해 고객에게 더 큰 가치를 제공하고, 글로벌 시장에서 신뢰받는 기업으로 자리매김하기 위해 최선을 다하고 있습니다. 고객의 성공이 곧 우리의 성공이라는 믿음 아래 최고의 품질과 혁신적인 기술로 고객 만족을 실현해 나가겠습니다.",
+  "또한 범진은 고객, 임직원, 협력사와 함께 성장하는 기업을 지향합니다. 신뢰와 투명성을 바탕으로 정도경영을 실천하며, 인재를 소중히 여기고 사회적 책임을 다하는 기업으로서 지속 가능한 미래를 만들어 가겠습니다.",
+  "저희 임직원 모두는 현재의 자부심을 지키며 미래에 대한 확고한 비전으로 새로운 내일을 향해 나아가겠습니다.",
+  "앞으로도 범진의 도전과 성장에 변함없는 관심과 성원을 부탁드립니다.",
+];
+
+const DEFAULT_LOCATIONS: LocationData[] = [
+  {
+    name: "범진전자 수원사업장",
+    type: "본사 · 전자사업장",
+    address: "경기도 수원시 권선구 산업로155번길 217 (고색동)",
+    phone: "031-493-9415",
+    note: "1호선 고색역 인근",
+  },
+  {
+    name: "범진IND 금형사업장",
+    type: "금형 제조",
+    address: "경기도 수원시 권선구 고색동",
+    phone: "031-676-1461",
+    note: "금형 설계 및 제작 전문 사업장",
+  },
+  {
+    name: "범진IND 성형사업장",
+    type: "사출성형 제조",
+    address: "경기도 안성시",
+    phone: "031-210-4930",
+    note: "생활가전·자동차 부품 사출성형",
+  },
+];
+
+function initCompany(stored: CompanyContent | null): CompanyContent {
+  if (stored) return stored;
+  return {
+    overviewHeadline: "도전과 혁신,\n사람과 고객\n중심의 기업.",
+    overviewIntro:
+      "범진은 글로벌 전자·제조 전문 기업으로, 음향기기와 금형·사출 분야에서 30년 이상의 기술력과 신뢰를 축적해 왔습니다.",
+    coreMessage:
+      '"도전과 혁신, 인재와 고객 중심의 가치 실현을 통해 지속 가능한 성장을 만들어가는 기업"',
+    ceoOpening: DEFAULT_CEO_OPENING,
+    ceoParagraphs: DEFAULT_CEO_PARAGRAPHS,
+    locations: DEFAULT_LOCATIONS,
+  };
+}
+
+type CompanyTab = "overview" | "ceo" | "location";
+
+function CompanyEditor({
+  content,
+  onChange,
+}: {
+  content: CompanyContent;
+  onChange: (c: CompanyContent) => void;
+}) {
+  const [tab, setTab] = useState<CompanyTab>("overview");
+  const [editingLoc, setEditingLoc] = useState<number | null>(null);
+
+  function set<K extends keyof CompanyContent>(key: K, value: CompanyContent[K]) {
+    onChange({ ...content, [key]: value });
+  }
+
+  function updateParagraph(i: number, value: string) {
+    const updated = [...(content.ceoParagraphs ?? DEFAULT_CEO_PARAGRAPHS)];
+    updated[i] = value;
+    set("ceoParagraphs", updated);
+  }
+
+  function addParagraph() {
+    set("ceoParagraphs", [...(content.ceoParagraphs ?? DEFAULT_CEO_PARAGRAPHS), ""]);
+  }
+
+  function deleteParagraph(i: number) {
+    const updated = (content.ceoParagraphs ?? DEFAULT_CEO_PARAGRAPHS).filter((_, j) => j !== i);
+    set("ceoParagraphs", updated);
+  }
+
+  function updateLocation(i: number, data: Partial<LocationData>) {
+    const updated = (content.locations ?? DEFAULT_LOCATIONS).map((l, j) =>
+      j === i ? { ...l, ...data } : l
+    );
+    set("locations", updated);
+  }
+
+  const companyTabs: { id: CompanyTab; label: string }[] = [
+    { id: "overview", label: "개요" },
+    { id: "ceo",      label: "CEO 인사말" },
+    { id: "location", label: "찾아오시는 길" },
+  ];
+
+  return (
+    <div className="space-y-5">
+      <div className="flex gap-1 bg-gray-100 p-1 w-fit">
+        {companyTabs.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            className={`px-4 py-2 text-[12px] font-semibold transition-colors ${
+              tab === t.id
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {tab === "overview" && (
+        <div className="space-y-5">
+          <Field
+            label="대제목 (줄바꿈은 \\n 입력)"
+            value={content.overviewHeadline ?? ""}
+            onChange={(v) => set("overviewHeadline", v)}
+            multiline
+            rows={3}
+            hint="두 번째 줄은 빨간색으로 표시됩니다"
+          />
+          <Field
+            label="소개 문구"
+            value={content.overviewIntro ?? ""}
+            onChange={(v) => set("overviewIntro", v)}
+            multiline
+            rows={3}
+          />
+          <Field
+            label="Core Message"
+            value={content.coreMessage ?? ""}
+            onChange={(v) => set("coreMessage", v)}
+            multiline
+            rows={2}
+          />
+        </div>
+      )}
+
+      {tab === "ceo" && (
+        <div className="space-y-5">
+          <Field
+            label="CEO 인사말 첫 문장 (굵게 표시)"
+            value={content.ceoOpening ?? DEFAULT_CEO_OPENING}
+            onChange={(v) => set("ceoOpening", v)}
+            multiline
+            rows={2}
+          />
+          <div className="space-y-2">
+            <p className="text-[10px] font-bold text-gray-500 tracking-[2px] uppercase">
+              본문 단락
+            </p>
+            {(content.ceoParagraphs ?? DEFAULT_CEO_PARAGRAPHS).map((para, i) => (
+              <div key={i} className="border border-gray-200 p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono text-gray-400">단락 {i + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() => deleteParagraph(i)}
+                    className="flex items-center gap-1 text-[10px] text-red-400 hover:text-red-600 transition-colors"
+                  >
+                    <Trash2 className="size-3" /> 삭제
+                  </button>
+                </div>
+                <textarea
+                  value={para}
+                  onChange={(e) => updateParagraph(i, e.target.value)}
+                  rows={3}
+                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-[12px] px-3 py-2.5 focus:outline-none focus:border-red-400 transition-colors resize-y font-mono"
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addParagraph}
+              className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-gray-300 hover:border-gray-500 text-[12px] text-gray-500 hover:text-gray-900 transition-colors"
+            >
+              <Plus className="size-3.5" /> 단락 추가
+            </button>
+          </div>
+          <p className="text-[11px] text-gray-400 bg-blue-50 border border-blue-100 p-3">
+            💡 CEO 사진은 이미지 관리에서 <strong>company-ceo</strong> ID로 업로드하세요.
+          </p>
+        </div>
+      )}
+
+      {tab === "location" && (
+        <div className="space-y-3">
+          {(content.locations ?? DEFAULT_LOCATIONS).map((loc, i) => (
+            <div key={i} className="border border-gray-200">
+              <button
+                type="button"
+                onClick={() => setEditingLoc(editingLoc === i ? null : i)}
+                className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="text-[10px] font-mono text-[#C0392B]">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="text-[13px] font-semibold text-gray-900 truncate">{loc.name}</span>
+                  <span className="text-[11px] text-gray-400 hidden sm:block">{loc.type}</span>
+                </div>
+                {editingLoc === i ? <ChevronUp className="size-4 text-gray-400" /> : <ChevronDown className="size-4 text-gray-400" />}
+              </button>
+              {editingLoc === i && (
+                <div className="p-4 space-y-4">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <Field label="사업장명" value={loc.name} onChange={(v) => updateLocation(i, { name: v })} />
+                    <Field label="유형" value={loc.type} onChange={(v) => updateLocation(i, { type: v })} hint="예: 본사 · 전자사업장" />
+                  </div>
+                  <Field
+                    label="주소"
+                    value={loc.address}
+                    onChange={(v) => updateLocation(i, { address: v })}
+                    hint="입력한 주소로 구글 지도가 자동 표시됩니다"
+                  />
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <Field label="전화번호" value={loc.phone} onChange={(v) => updateLocation(i, { phone: v })} />
+                    <Field label="비고" value={loc.note} onChange={(v) => updateLocation(i, { note: v })} hint="예: 1호선 고색역 인근" />
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+          <p className="text-[11px] text-gray-400 bg-blue-50 border border-blue-100 p-3">
+            💡 주소를 수정하면 구글 지도가 자동으로 해당 위치를 표시합니다.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ── 메인 AdminDashboard ─────────────────────── */
 
-type NavSection = "home" | "business" | "images";
+type NavSection = "home" | "business" | "company" | "images";
 type HomeTab = "process" | "capabilities";
 type BusinessTab = "electronics" | "molding" | "startup";
 
@@ -552,6 +787,11 @@ export default function AdminDashboard({
     initDept("startup", initialContent.business.startup)
   );
 
+  // 회사 소개 데이터
+  const [company, setCompany] = useState<CompanyContent>(() =>
+    initCompany(initialContent.company)
+  );
+
   // 이미지
   const [images, setImages] = useState<Record<string, string>>(
     initialContent.images ?? {}
@@ -566,9 +806,10 @@ export default function AdminDashboard({
     (): SiteContent => ({
       home: { processSteps, capabilities },
       business: { electronics, molding, startup },
+      company,
       images,
     }),
-    [processSteps, capabilities, electronics, molding, startup, images]
+    [processSteps, capabilities, electronics, molding, startup, company, images]
   );
 
   async function handleSave() {
@@ -610,6 +851,7 @@ export default function AdminDashboard({
   const navItems: { id: NavSection; label: string; icon: React.ReactNode }[] = [
     { id: "home",     label: "홈페이지",   icon: <Home className="size-4" /> },
     { id: "business", label: "사업영역",   icon: <Briefcase className="size-4" /> },
+    { id: "company",  label: "회사 소개",  icon: <Building2 className="size-4" /> },
     { id: "images",   label: "이미지 관리", icon: <ImageIcon className="size-4" /> },
   ];
 
@@ -794,6 +1036,21 @@ export default function AdminDashboard({
                   content={currentDept.content}
                   onChange={currentDept.onChange}
                 />
+              </div>
+            </div>
+          )}
+
+          {/* ── 회사 소개 ── */}
+          {nav === "company" && (
+            <div className="max-w-4xl space-y-6">
+              <div>
+                <h2 className="text-[20px] font-bold text-gray-900 mb-1">회사 소개</h2>
+                <p className="text-[12px] text-gray-400">
+                  회사 소개 페이지의 텍스트를 수정합니다. CEO 사진은 이미지 관리에서 <strong>company-ceo</strong> ID로 업로드하세요.
+                </p>
+              </div>
+              <div className="bg-white border border-gray-200 p-6 space-y-4">
+                <CompanyEditor content={company} onChange={setCompany} />
               </div>
             </div>
           )}
