@@ -23,15 +23,32 @@ export interface CapabilityContent {
   desc: string;
 }
 
+export interface ProductContent {
+  id: string;
+  name: string;
+  nameEn: string;
+  description: string;
+  icon: string;
+}
+
+export interface DeptContent {
+  title?: string;
+  tagline?: string;
+  description?: string;
+  odmBody?: string;
+  tags?: string[];
+  products?: ProductContent[];
+}
+
 export interface SiteContent {
   home: {
     processSteps: ProcessStepContent[] | null;
     capabilities: CapabilityContent[] | null;
   };
   business: {
-    electronics: Record<string, unknown> | null;
-    molding: Record<string, unknown> | null;
-    startup: Record<string, unknown> | null;
+    electronics: DeptContent | null;
+    molding: DeptContent | null;
+    startup: DeptContent | null;
   };
   images: Record<string, string>;
 }

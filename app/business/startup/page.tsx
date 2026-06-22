@@ -5,7 +5,9 @@ import { motion, useInView } from "framer-motion";
 import { BUSINESS_DEPARTMENTS } from "@/lib/data/business";
 import { ProcessFlow } from "@/components/business/ProcessFlow";
 import { SuccessCases } from "@/components/business/SuccessCases";
+import { ProductGrid } from "@/components/business/ProductGrid";
 import { ContactBand } from "@/components/business/ContactBand";
+import { useAdminContent } from "@/lib/hooks/useAdminContent";
 
 function Reveal({
   children,
@@ -32,7 +34,21 @@ function Reveal({
 }
 
 export default function StartupPage() {
-  const dept = BUSINESS_DEPARTMENTS.find((d) => d.id === "startup")!;
+  const adminContent = useAdminContent();
+  const staticDept = BUSINESS_DEPARTMENTS.find((d) => d.id === "startup")!;
+  const adminOverride = adminContent?.business?.startup;
+  const images = adminContent?.images ?? {};
+
+  const dept = {
+    ...staticDept,
+    ...(adminOverride ?? {}),
+  };
+
+  // Admin-added products (separate from static successCases)
+  const adminProducts = (adminOverride?.products ?? []).map((p) => ({
+    ...p,
+    image: images[p.id] ?? undefined,
+  }));
 
   return (
     <div className="mx-auto max-w-[1280px] px-6 lg:px-16">
@@ -46,7 +62,7 @@ export default function StartupPage() {
                 className="text-[11px] font-medium tracking-[3px] uppercase text-[#C0392B] mb-6"
                 style={{ fontFamily: "Inter, sans-serif" }}
               >
-                {dept.index} &mdash; {dept.labelEn}
+                {staticDept.index} &mdash; {staticDept.labelEn}
               </p>
             </Reveal>
             <Reveal delay={0.08}>
@@ -80,7 +96,7 @@ export default function StartupPage() {
         </div>
       </section>
 
-      {/* ── Process ─ unified editorial grid (same style as ODM) ── */}
+      {/* ── Process ── */}
       {dept.processes && (
         <section className="border-t-2 border-[#111111] pt-12 pb-16 lg:pb-24">
           <Reveal>
@@ -104,6 +120,21 @@ export default function StartupPage() {
           </Reveal>
 
           <ProcessFlow items={dept.processes} />
+        </section>
+      )}
+
+      {/* ── Admin-added Products (if any) ── */}
+      {adminProducts.length > 0 && (
+        <section className="pb-16 lg:pb-24">
+          <Reveal>
+            <div className="flex items-center gap-6 mb-8">
+              <h3 className="text-[26px] lg:text-[32px] font-bold text-[#111111] shrink-0">
+                제품 라인업
+              </h3>
+              <div className="flex-1 h-px bg-[#E5E5E5]" />
+            </div>
+          </Reveal>
+          <ProductGrid products={adminProducts} columns={3} />
         </section>
       )}
 

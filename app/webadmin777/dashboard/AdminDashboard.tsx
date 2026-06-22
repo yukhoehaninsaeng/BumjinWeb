@@ -13,11 +13,19 @@ import {
   Check,
   AlertCircle,
   Upload,
-  X,
   Eye,
   EyeOff,
+  Plus,
+  Trash2,
 } from "lucide-react";
-import type { SiteContent, ProcessStepContent, CapabilityContent } from "@/lib/content-store";
+import type {
+  SiteContent,
+  ProcessStepContent,
+  CapabilityContent,
+  DeptContent,
+  ProductContent,
+} from "@/lib/content-store";
+import { BUSINESS_DEPARTMENTS } from "@/lib/data/business";
 
 /* ── 기본 데이터 ─────────────────────────────────────── */
 
@@ -45,7 +53,29 @@ const DEFAULT_CAPABILITIES: CapabilityContent[] = [
   { id: "c12", title: "ISO 9001 / IATF 16949 QMS",    desc: "전사 품질경영시스템 인증 유지, 자동차 전장 품질 기준 완전 대응." },
 ];
 
-/* ── 유틸리티 함수 ─────────────────────────────────── */
+function initDept(
+  id: "electronics" | "molding" | "startup",
+  stored: DeptContent | null
+): DeptContent {
+  if (stored) return stored;
+  const s = BUSINESS_DEPARTMENTS.find((d) => d.id === id)!;
+  return {
+    title: s.title,
+    tagline: s.tagline,
+    description: s.description,
+    odmBody: s.odmBody ?? "",
+    tags: s.tags ?? [],
+    products: (s.products ?? []).map((p) => ({
+      id: p.id,
+      name: p.name,
+      nameEn: p.nameEn,
+      description: p.description,
+      icon: p.icon,
+    })),
+  };
+}
+
+/* ── 유틸리티 ─────────────────────────────────── */
 
 function markdownToHtml(text: string): string {
   return text
@@ -56,7 +86,7 @@ function markdownToHtml(text: string): string {
     .join("");
 }
 
-/* ── 공통 UI 컴포넌트 ────────────────────────────────── */
+/* ── 공통 UI ─────────────────────────────────── */
 
 function Field({
   label,
@@ -123,40 +153,16 @@ function Toast({ msg, type }: { msg: string; type: "success" | "error" }) {
   return (
     <div
       className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 shadow-lg text-[12px] font-semibold ${
-        type === "success"
-          ? "bg-green-600 text-white"
-          : "bg-red-600 text-white"
+        type === "success" ? "bg-green-600 text-white" : "bg-red-600 text-white"
       }`}
     >
-      {type === "success" ? (
-        <Check className="size-4" />
-      ) : (
-        <AlertCircle className="size-4" />
-      )}
+      {type === "success" ? <Check className="size-4" /> : <AlertCircle className="size-4" />}
       {msg}
     </div>
   );
 }
 
-/* ── 이미지 업로드 컴포넌트 ────────────────────────── */
-
-const ALL_PRODUCTS = [
-  { id: "channel-sound", name: "채널 사운드 시스템 (전자)" },
-  { id: "ai-speaker",    name: "AI 스피커 (전자)" },
-  { id: "sound-stand",   name: "사운드 스탠드 (전자)" },
-  { id: "sound-bar",     name: "사운드바 (전자)" },
-  { id: "vesa-stand",    name: "VESA 스탠드 (전자)" },
-  { id: "hifi-amp",      name: "Hi-Fi 앰프 (전자)" },
-  { id: "smart-home",    name: "스마트홈 허브 (전자)" },
-  { id: "pc-speaker",    name: "PC 스피커 (전자)" },
-  { id: "bt-earphone",   name: "블루투스 이어폰 (전자)" },
-  { id: "injection-mold", name: "사출 금형 (금형)" },
-  { id: "plastic-part",   name: "플라스틱 부품 (금형)" },
-  { id: "housing",        name: "하우징 (금형)" },
-  { id: "connector",      name: "커넥터 (금형)" },
-  { id: "bracket",        name: "브라켓 (금형)" },
-  { id: "custom",         name: "커스텀 (직접 입력)" },
-];
+/* ── 이미지 업로드 ────────────────────────────── */
 
 function ImageManager({
   images,
@@ -165,24 +171,21 @@ function ImageManager({
   images: Record<string, string>;
   onImageUpload: (productId: string, url: string) => void;
 }) {
-  const [selectedProduct, setSelectedProduct] = useState(ALL_PRODUCTS[0].id);
-  const [customId, setCustomId] = useState("");
+  const [productId, setProductId] = useState("");
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const productId = selectedProduct === "custom" ? customId : selectedProduct;
-
   async function upload(file: File) {
-    if (!productId) return;
+    if (!productId.trim()) return;
     setUploading(true);
     try {
       const fd = new FormData();
       fd.append("file", file);
-      fd.append("productId", productId);
+      fd.append("productId", productId.trim());
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
       const data = await res.json();
-      if (data.ok) onImageUpload(productId, data.url);
+      if (data.ok) onImageUpload(productId.trim(), data.url);
     } finally {
       setUploading(false);
     }
@@ -197,57 +200,33 @@ function ImageManager({
 
   return (
     <div className="space-y-6">
-      {/* 업로드 */}
       <div className="space-y-3">
         <h3 className="text-[13px] font-bold text-gray-900">이미지 업로드</h3>
-
-        <div className="grid sm:grid-cols-2 gap-3">
-          <div>
-            <label className="block text-[10px] font-bold text-gray-500 tracking-[2px] uppercase mb-1.5">
-              제품 선택
-            </label>
-            <select
-              value={selectedProduct}
-              onChange={(e) => setSelectedProduct(e.target.value)}
-              className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-[12px] px-3 py-2.5 focus:outline-none focus:border-red-400"
-            >
-              {ALL_PRODUCTS.map((p) => (
-                <option key={p.id} value={p.id}>{p.name}</option>
-              ))}
-            </select>
-          </div>
-
-          {selectedProduct === "custom" && (
-            <div>
-              <label className="block text-[10px] font-bold text-gray-500 tracking-[2px] uppercase mb-1.5">
-                Product ID
-              </label>
-              <input
-                type="text"
-                value={customId}
-                onChange={(e) => setCustomId(e.target.value)}
-                placeholder="product-id-영문"
-                className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-[12px] px-3 py-2.5 focus:outline-none focus:border-red-400"
-              />
-            </div>
-          )}
-        </div>
-
+        <Field
+          label="제품 ID (영문, 소문자)"
+          value={productId}
+          onChange={setProductId}
+          hint="예: channel-sound, ai-speaker, injection — 사업영역 제품 ID와 동일하게 입력하세요"
+        />
         <div
           onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
-          onClick={() => inputRef.current?.click()}
-          className={`relative flex flex-col items-center justify-center gap-3 border-2 border-dashed py-10 cursor-pointer transition-colors ${
-            dragOver
-              ? "border-red-400 bg-red-50"
-              : "border-gray-200 hover:border-gray-400 bg-gray-50"
+          onClick={() => productId.trim() && inputRef.current?.click()}
+          className={`relative flex flex-col items-center justify-center gap-3 border-2 border-dashed py-10 transition-colors ${
+            !productId.trim()
+              ? "border-gray-100 bg-gray-50 cursor-not-allowed"
+              : dragOver
+              ? "border-red-400 bg-red-50 cursor-pointer"
+              : "border-gray-200 hover:border-gray-400 bg-gray-50 cursor-pointer"
           }`}
         >
           <Upload className="size-6 text-gray-300" />
           <p className="text-[12px] text-gray-400">
             {uploading
               ? "업로드 중..."
+              : !productId.trim()
+              ? "제품 ID를 먼저 입력하세요"
               : "클릭하거나 이미지를 드래그해서 놓으세요"}
           </p>
           <p className="text-[10px] text-gray-300">JPG · PNG · WebP · GIF</p>
@@ -265,7 +244,6 @@ function ImageManager({
         </div>
       </div>
 
-      {/* 업로드된 이미지 목록 */}
       {Object.keys(images).length > 0 && (
         <div>
           <h3 className="text-[13px] font-bold text-gray-900 mb-3">
@@ -275,20 +253,10 @@ function ImageManager({
             {Object.entries(images).map(([id, url]) => (
               <div key={id} className="group relative border border-gray-200 bg-gray-50">
                 <div className="aspect-[4/3] relative overflow-hidden">
-                  <Image
-                    src={url}
-                    alt={id}
-                    fill
-                    className="object-cover"
-                    sizes="200px"
-                  />
+                  <Image src={url} alt={id} fill className="object-cover" sizes="200px" />
                 </div>
-                <p className="px-2 py-1.5 text-[10px] text-gray-500 font-mono truncate">
-                  {id}
-                </p>
-                <p className="px-2 pb-2 text-[10px] text-gray-300 truncate">
-                  {url}
-                </p>
+                <p className="px-2 py-1.5 text-[10px] text-gray-500 font-mono truncate">{id}</p>
+                <p className="px-2 pb-2 text-[10px] text-gray-300 truncate">{url}</p>
               </div>
             ))}
           </div>
@@ -298,7 +266,7 @@ function ImageManager({
   );
 }
 
-/* ── 제조 프로세스 에디터 ─────────────────────────── */
+/* ── 제조 프로세스 에디터 ────────────────────── */
 
 function ProcessEditor({
   steps,
@@ -323,43 +291,16 @@ function ProcessEditor({
             className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
           >
             <div className="flex items-center gap-3">
-              <span className="text-[10px] font-mono text-[#C0392B] tracking-wider">
-                {s.step}
-              </span>
-              <span className="text-[13px] font-semibold text-gray-900">
-                {s.title}
-              </span>
+              <span className="text-[10px] font-mono text-[#C0392B] tracking-wider">{s.step}</span>
+              <span className="text-[13px] font-semibold text-gray-900">{s.title}</span>
             </div>
-            {open === s.step ? (
-              <ChevronUp className="size-4 text-gray-400" />
-            ) : (
-              <ChevronDown className="size-4 text-gray-400" />
-            )}
+            {open === s.step ? <ChevronUp className="size-4 text-gray-400" /> : <ChevronDown className="size-4 text-gray-400" />}
           </button>
-
           {open === s.step && (
             <div className="p-4 space-y-4">
-              <Field
-                label="단계 제목"
-                value={s.title}
-                onChange={(v) => update(s.step, "title", v)}
-              />
-              <Field
-                label="카드 설명 (짧게)"
-                value={s.body}
-                onChange={(v) => update(s.step, "body", v)}
-                multiline
-                rows={2}
-                hint="카드에 표시되는 한 줄 요약"
-              />
-              <Field
-                label="상세 설명 (모달)"
-                value={s.detail}
-                onChange={(v) => update(s.step, "detail", v)}
-                multiline
-                rows={4}
-                hint="클릭 시 모달에 표시되는 내용 · **굵게** _기울임_ 사용 가능"
-              />
+              <Field label="단계 제목" value={s.title} onChange={(v) => update(s.step, "title", v)} />
+              <Field label="카드 설명 (짧게)" value={s.body} onChange={(v) => update(s.step, "body", v)} multiline rows={2} hint="카드에 표시되는 한 줄 요약" />
+              <Field label="상세 설명 (모달)" value={s.detail} onChange={(v) => update(s.step, "detail", v)} multiline rows={4} hint="클릭 시 모달에 표시되는 내용 · **굵게** _기울임_ 사용 가능" />
             </div>
           )}
         </div>
@@ -368,7 +309,7 @@ function ProcessEditor({
   );
 }
 
-/* ── 기술 역량 에디터 ──────────────────────────────── */
+/* ── 기술 역량 에디터 ──────────────────────── */
 
 function CapabilityEditor({
   caps,
@@ -386,28 +327,200 @@ function CapabilityEditor({
       {caps.map((c) => (
         <div key={c.id} className="border border-gray-200 p-4 space-y-3">
           <p className="text-[10px] font-mono text-gray-300 tracking-wider">{c.id}</p>
-          <Field
-            label="역량명"
-            value={c.title}
-            onChange={(v) => update(c.id, "title", v)}
-          />
-          <Field
-            label="설명"
-            value={c.desc}
-            onChange={(v) => update(c.id, "desc", v)}
-            multiline
-            rows={2}
-          />
+          <Field label="역량명" value={c.title} onChange={(v) => update(c.id, "title", v)} />
+          <Field label="설명" value={c.desc} onChange={(v) => update(c.id, "desc", v)} multiline rows={2} />
         </div>
       ))}
     </div>
   );
 }
 
-/* ── 메인 AdminDashboard ─────────────────────────────── */
+/* ── 제품 목록 에디터 ──────────────────────── */
+
+function ProductListEditor({
+  products,
+  onChange,
+}: {
+  products: ProductContent[];
+  onChange: (p: ProductContent[]) => void;
+}) {
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  function addProduct() {
+    const newProduct: ProductContent = {
+      id: `product-${Date.now()}`,
+      name: "새 제품",
+      nameEn: "New Product",
+      description: "제품 설명을 입력하세요",
+      icon: "Speaker",
+    };
+    onChange([...products, newProduct]);
+    setEditingId(newProduct.id);
+  }
+
+  function updateProduct(id: string, data: Partial<ProductContent>) {
+    onChange(products.map((p) => (p.id === id ? { ...p, ...data } : p)));
+  }
+
+  function deleteProduct(id: string) {
+    onChange(products.filter((p) => p.id !== id));
+    if (editingId === id) setEditingId(null);
+  }
+
+  return (
+    <div className="space-y-2">
+      {products.length === 0 && (
+        <p className="text-[12px] text-gray-400 py-4 text-center border border-dashed border-gray-200">
+          제품이 없습니다. 아래 버튼으로 추가하세요.
+        </p>
+      )}
+      {products.map((p) => (
+        <div key={p.id} className="border border-gray-200">
+          <button
+            type="button"
+            onClick={() => setEditingId(editingId === p.id ? null : p.id)}
+            className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <span className="text-[11px] font-mono text-gray-400 shrink-0">{p.icon}</span>
+              <span className="text-[13px] font-semibold text-gray-900 truncate">{p.name}</span>
+              <span className="text-[11px] text-gray-400 truncate hidden sm:block">{p.nameEn}</span>
+            </div>
+            {editingId === p.id ? <ChevronUp className="size-4 text-gray-400 shrink-0" /> : <ChevronDown className="size-4 text-gray-400 shrink-0" />}
+          </button>
+          {editingId === p.id && (
+            <div className="p-4 space-y-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <Field label="제품 ID (영문, 소문자, 하이픈)" value={p.id} onChange={(v) => updateProduct(p.id, { id: v })} hint="이미지 업로드 시 이 ID를 사용하세요" />
+                <Field label="아이콘 이름 (Lucide)" value={p.icon} onChange={(v) => updateProduct(p.id, { icon: v })} hint="Speaker, Mic2, Monitor, Radio, Settings2, Layers, PenTool, Sparkles 등" />
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <Field label="제품명 (한국어)" value={p.name} onChange={(v) => updateProduct(p.id, { name: v })} />
+                <Field label="제품명 (영어)" value={p.nameEn} onChange={(v) => updateProduct(p.id, { nameEn: v })} />
+              </div>
+              <Field label="제품 설명" value={p.description} onChange={(v) => updateProduct(p.id, { description: v })} multiline rows={2} />
+              <div className="pt-2 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => deleteProduct(p.id)}
+                  className="flex items-center gap-1.5 text-[11px] text-red-500 hover:text-red-700 transition-colors"
+                >
+                  <Trash2 className="size-3" />
+                  이 제품 삭제
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={addProduct}
+        className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-gray-300 hover:border-gray-500 text-[12px] text-gray-500 hover:text-gray-900 transition-colors"
+      >
+        <Plus className="size-3.5" />
+        제품 추가
+      </button>
+    </div>
+  );
+}
+
+/* ── 사업부문 에디터 ─────────────────────────── */
+
+function DeptEditor({
+  deptId,
+  content,
+  onChange,
+}: {
+  deptId: "electronics" | "molding" | "startup";
+  content: DeptContent;
+  onChange: (c: DeptContent) => void;
+}) {
+  function set<K extends keyof DeptContent>(key: K, value: DeptContent[K]) {
+    onChange({ ...content, [key]: value });
+  }
+
+  return (
+    <div className="space-y-5">
+      <Field
+        label="대제목 (줄바꿈은 \\n 입력)"
+        value={content.title ?? ""}
+        onChange={(v) => set("title", v)}
+        multiline
+        rows={2}
+        hint='예: 당신 곁에 있는\n언제나 범진전자'
+      />
+      <Field
+        label="태그라인 (영문 소문자 슬로건)"
+        value={content.tagline ?? ""}
+        onChange={(v) => set("tagline", v)}
+        hint="예: Creative & Life"
+      />
+      <Field
+        label="부서 소개"
+        value={content.description ?? ""}
+        onChange={(v) => set("description", v)}
+        multiline
+        rows={4}
+        hint="페이지 우측에 표시되는 소개 문구입니다."
+      />
+
+      {deptId === "electronics" && (
+        <Field
+          label="ODM 설명"
+          value={content.odmBody ?? ""}
+          onChange={(v) => set("odmBody", v)}
+          multiline
+          rows={3}
+          hint="ODM 섹션의 설명 문구입니다."
+        />
+      )}
+
+      {deptId === "molding" && (
+        <div className="space-y-1">
+          <label className="text-[10px] font-bold text-gray-500 tracking-[2px] uppercase">
+            응용 산업 태그
+          </label>
+          <input
+            type="text"
+            value={(content.tags ?? []).join(", ")}
+            onChange={(e) =>
+              set(
+                "tags",
+                e.target.value
+                  .split(",")
+                  .map((t) => t.trim())
+                  .filter(Boolean)
+              )
+            }
+            className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-[12px] px-3 py-2.5 focus:outline-none focus:border-red-400 transition-colors"
+            placeholder="생활가전, 자동차, IT 기기, 기타 산업재"
+          />
+          <p className="text-[10px] text-gray-300">쉼표로 구분하여 입력하세요</p>
+        </div>
+      )}
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h4 className="text-[13px] font-bold text-gray-900">제품 목록</h4>
+          <p className="text-[10px] text-gray-400">
+            {(content.products ?? []).length}개 등록됨
+          </p>
+        </div>
+        <ProductListEditor
+          products={content.products ?? []}
+          onChange={(p) => set("products", p)}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ── 메인 AdminDashboard ─────────────────────── */
 
 type NavSection = "home" | "business" | "images";
 type HomeTab = "process" | "capabilities";
+type BusinessTab = "electronics" | "molding" | "startup";
 
 export default function AdminDashboard({
   initialContent,
@@ -416,6 +529,7 @@ export default function AdminDashboard({
 }) {
   const [nav, setNav] = useState<NavSection>("home");
   const [homeTab, setHomeTab] = useState<HomeTab>("process");
+  const [businessTab, setBusinessTab] = useState<BusinessTab>("electronics");
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ msg: string; type: "success" | "error" } | null>(null);
 
@@ -425,6 +539,17 @@ export default function AdminDashboard({
   );
   const [capabilities, setCapabilities] = useState<CapabilityContent[]>(
     initialContent.home.capabilities ?? DEFAULT_CAPABILITIES
+  );
+
+  // 사업영역 데이터
+  const [electronics, setElectronics] = useState<DeptContent>(() =>
+    initDept("electronics", initialContent.business.electronics)
+  );
+  const [molding, setMolding] = useState<DeptContent>(() =>
+    initDept("molding", initialContent.business.molding)
+  );
+  const [startup, setStartup] = useState<DeptContent>(() =>
+    initDept("startup", initialContent.business.startup)
   );
 
   // 이미지
@@ -437,11 +562,14 @@ export default function AdminDashboard({
     setTimeout(() => setToast(null), 3000);
   }
 
-  const buildContent = useCallback((): SiteContent => ({
-    home: { processSteps, capabilities },
-    business: initialContent.business,
-    images,
-  }), [processSteps, capabilities, images, initialContent.business]);
+  const buildContent = useCallback(
+    (): SiteContent => ({
+      home: { processSteps, capabilities },
+      business: { electronics, molding, startup },
+      images,
+    }),
+    [processSteps, capabilities, electronics, molding, startup, images]
+  );
 
   async function handleSave() {
     setSaving(true);
@@ -469,10 +597,9 @@ export default function AdminDashboard({
   }
 
   function handleImageUpload(productId: string, url: string) {
-    setImages((prev) => ({ ...prev, [productId]: url }));
-    showToast(`${productId} 이미지가 업로드되었습니다.`, "success");
-    // Auto-save images immediately
     const updated = { ...images, [productId]: url };
+    setImages(updated);
+    showToast(`${productId} 이미지가 업로드되었습니다.`, "success");
     fetch("/api/admin/content", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -485,6 +612,19 @@ export default function AdminDashboard({
     { id: "business", label: "사업영역",   icon: <Briefcase className="size-4" /> },
     { id: "images",   label: "이미지 관리", icon: <ImageIcon className="size-4" /> },
   ];
+
+  const businessTabs: { id: BusinessTab; label: string; index: string }[] = [
+    { id: "electronics", label: "전자부문",    index: "01" },
+    { id: "molding",     label: "금형·성형",   index: "02" },
+    { id: "startup",     label: "스타트업",    index: "03" },
+  ];
+
+  const currentDept =
+    businessTab === "electronics"
+      ? { content: electronics, onChange: setElectronics }
+      : businessTab === "molding"
+      ? { content: molding, onChange: setMolding }
+      : { content: startup, onChange: setStartup };
 
   return (
     <div className="min-h-screen bg-[#F4F4F4] flex flex-col">
@@ -569,7 +709,6 @@ export default function AdminDashboard({
                 </p>
               </div>
 
-              {/* Tabs */}
               <div className="flex gap-1 bg-gray-100 p-1 w-fit">
                 {(
                   [
@@ -593,31 +732,21 @@ export default function AdminDashboard({
 
               {homeTab === "process" && (
                 <div className="bg-white border border-gray-200 p-6 space-y-4">
-                  <h3 className="text-[14px] font-bold text-gray-900">
-                    제조 프로세스 6단계
-                  </h3>
+                  <h3 className="text-[14px] font-bold text-gray-900">제조 프로세스 6단계</h3>
                   <p className="text-[12px] text-gray-400 -mt-2">
                     각 단계 제목, 카드 설명, 모달 상세 내용을 편집하세요.
                   </p>
-                  <ProcessEditor
-                    steps={processSteps}
-                    onChange={setProcessSteps}
-                  />
+                  <ProcessEditor steps={processSteps} onChange={setProcessSteps} />
                 </div>
               )}
 
               {homeTab === "capabilities" && (
                 <div className="bg-white border border-gray-200 p-6 space-y-4">
-                  <h3 className="text-[14px] font-bold text-gray-900">
-                    기술 역량 12개
-                  </h3>
+                  <h3 className="text-[14px] font-bold text-gray-900">기술 역량 12개</h3>
                   <p className="text-[12px] text-gray-400 -mt-2">
                     각 역량 카드의 제목과 설명을 편집하세요.
                   </p>
-                  <CapabilityEditor
-                    caps={capabilities}
-                    onChange={setCapabilities}
-                  />
+                  <CapabilityEditor caps={capabilities} onChange={setCapabilities} />
                 </div>
               )}
             </div>
@@ -625,23 +754,46 @@ export default function AdminDashboard({
 
           {/* ── 사업영역 ── */}
           {nav === "business" && (
-            <div className="max-w-3xl space-y-6">
+            <div className="max-w-4xl space-y-6">
               <div>
                 <h2 className="text-[20px] font-bold text-gray-900 mb-1">사업영역</h2>
                 <p className="text-[12px] text-gray-400">
-                  각 사업 부문 페이지의 텍스트를 수정합니다. 제품 이미지는 이미지 관리에서 업로드하세요.
+                  각 사업 부문의 텍스트와 제품 목록을 수정합니다.
                 </p>
               </div>
 
+              {/* Dept tabs */}
+              <div className="flex gap-1 bg-gray-100 p-1 w-fit">
+                {businessTabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setBusinessTab(tab.id)}
+                    className={`flex items-center gap-1.5 px-4 py-2 text-[12px] font-semibold transition-colors ${
+                      businessTab === tab.id
+                        ? "bg-white text-gray-900 shadow-sm"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                  >
+                    <span className="text-[10px] font-mono text-[#C0392B]">{tab.index}</span>
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
               <div className="bg-white border border-gray-200 p-6 space-y-4">
-                <div className="flex items-center gap-3 pb-3 border-b border-gray-100">
-                  <span className="text-[10px] font-mono text-[#C0392B] tracking-wider bg-red-50 px-2 py-1">01</span>
-                  <h3 className="text-[14px] font-bold text-gray-900">전자부문</h3>
+                <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+                  <span className="text-[10px] font-mono text-[#C0392B] tracking-wider bg-red-50 px-2 py-1">
+                    {businessTabs.find((t) => t.id === businessTab)?.index}
+                  </span>
+                  <h3 className="text-[14px] font-bold text-gray-900">
+                    {businessTabs.find((t) => t.id === businessTab)?.label}
+                  </h3>
                 </div>
-                <p className="text-[12px] text-gray-500 bg-gray-50 p-3 border border-gray-200">
-                  사업영역 페이지의 텍스트 편집 기능은 다음 업데이트에서 지원됩니다.
-                  현재는 <code className="bg-gray-200 px-1 text-[11px]">lib/data/business.ts</code> 파일을 직접 수정해 주세요.
-                </p>
+                <DeptEditor
+                  deptId={businessTab}
+                  content={currentDept.content}
+                  onChange={currentDept.onChange}
+                />
               </div>
             </div>
           )}
@@ -652,15 +804,12 @@ export default function AdminDashboard({
               <div>
                 <h2 className="text-[20px] font-bold text-gray-900 mb-1">이미지 관리</h2>
                 <p className="text-[12px] text-gray-400">
-                  제품 이미지를 업로드하면 해당 제품 카드에 즉시 반영됩니다.
+                  제품 이미지를 업로드하면 해당 제품 카드에 즉시 반영됩니다. 제품 ID는 사업영역에서 설정한 ID와 동일하게 입력하세요.
                 </p>
               </div>
 
               <div className="bg-white border border-gray-200 p-6">
-                <ImageManager
-                  images={images}
-                  onImageUpload={handleImageUpload}
-                />
+                <ImageManager images={images} onImageUpload={handleImageUpload} />
               </div>
             </div>
           )}

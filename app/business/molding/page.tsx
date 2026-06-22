@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { BUSINESS_DEPARTMENTS } from "@/lib/data/business";
 import { ProductGrid } from "@/components/business/ProductGrid";
 import { ContactBand } from "@/components/business/ContactBand";
+import { useAdminContent } from "@/lib/hooks/useAdminContent";
 
 function Reveal({
   children,
@@ -31,7 +32,20 @@ function Reveal({
 }
 
 export default function MoldingPage() {
-  const dept = BUSINESS_DEPARTMENTS.find((d) => d.id === "molding")!;
+  const adminContent = useAdminContent();
+  const staticDept = BUSINESS_DEPARTMENTS.find((d) => d.id === "molding")!;
+  const adminOverride = adminContent?.business?.molding;
+  const images = adminContent?.images ?? {};
+
+  const dept = {
+    ...staticDept,
+    ...(adminOverride ?? {}),
+    products: (adminOverride?.products ?? staticDept.products ?? []).map((p) => ({
+      ...p,
+      image: images[p.id] ?? undefined,
+    })),
+    tags: adminOverride?.tags ?? staticDept.tags ?? [],
+  };
 
   return (
     <div className="mx-auto max-w-[1280px] px-6 lg:px-16">
@@ -45,7 +59,7 @@ export default function MoldingPage() {
                 className="text-[11px] font-medium tracking-[3px] uppercase text-[#C0392B] mb-6"
                 style={{ fontFamily: "Inter, sans-serif" }}
               >
-                {dept.index} &mdash; {dept.labelEn}
+                {staticDept.index} &mdash; {staticDept.labelEn}
               </p>
             </Reveal>
             <Reveal delay={0.08}>
@@ -74,7 +88,7 @@ export default function MoldingPage() {
               <p className="text-[15px] font-light text-[#666666] leading-[1.9] mb-7">
                 {dept.description}
               </p>
-              {dept.tags && (
+              {dept.tags && dept.tags.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {dept.tags.map((tag) => (
                     <span
@@ -92,7 +106,7 @@ export default function MoldingPage() {
       </section>
 
       {/* ── Capabilities ── */}
-      {dept.products && (
+      {dept.products && dept.products.length > 0 && (
         <section className="border-t border-[#E5E5E5] pt-12 pb-16 lg:pb-24">
           <Reveal>
             <div className="flex items-center gap-6 mb-8">

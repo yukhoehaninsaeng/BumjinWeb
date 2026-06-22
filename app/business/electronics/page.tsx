@@ -6,6 +6,7 @@ import { BUSINESS_DEPARTMENTS } from "@/lib/data/business";
 import { ProcessFlow } from "@/components/business/ProcessFlow";
 import { ProductGrid } from "@/components/business/ProductGrid";
 import { ContactBand } from "@/components/business/ContactBand";
+import { useAdminContent } from "@/lib/hooks/useAdminContent";
 
 function Reveal({
   children,
@@ -32,12 +33,24 @@ function Reveal({
 }
 
 export default function ElectronicsPage() {
-  const dept = BUSINESS_DEPARTMENTS.find((d) => d.id === "electronics")!;
+  const adminContent = useAdminContent();
+  const staticDept = BUSINESS_DEPARTMENTS.find((d) => d.id === "electronics")!;
+  const adminOverride = adminContent?.business?.electronics;
+  const images = adminContent?.images ?? {};
+
+  const dept = {
+    ...staticDept,
+    ...(adminOverride ?? {}),
+    products: (adminOverride?.products ?? staticDept.products ?? []).map((p) => ({
+      ...p,
+      image: images[p.id] ?? undefined,
+    })),
+  };
 
   return (
     <div className="mx-auto max-w-[1280px] px-6 lg:px-16">
 
-      {/* ── Overview ─ split column, not stacked ── */}
+      {/* ── Overview ─ split column ── */}
       <section className="pt-16 lg:pt-24 pb-16 lg:pb-20">
         <div className="grid lg:grid-cols-[3fr_2fr] gap-10 lg:gap-16 items-start">
           <div>
@@ -46,7 +59,7 @@ export default function ElectronicsPage() {
                 className="text-[11px] font-medium tracking-[3px] uppercase text-[#C0392B] mb-6"
                 style={{ fontFamily: "Inter, sans-serif" }}
               >
-                {dept.index} &mdash; {dept.labelEn}
+                {staticDept.index} &mdash; {staticDept.labelEn}
               </p>
             </Reveal>
             <Reveal delay={0.08}>
@@ -80,7 +93,7 @@ export default function ElectronicsPage() {
         </div>
       </section>
 
-      {/* ── ODM ─ editorial chapter break ── */}
+      {/* ── ODM ── */}
       {dept.odmBody && dept.odmFlow && (
         <section className="border-t-2 border-[#111111] pt-12 pb-16 lg:pb-24">
           <Reveal>
@@ -110,8 +123,8 @@ export default function ElectronicsPage() {
         </section>
       )}
 
-      {/* ── Products ─ image-first grid ── */}
-      {dept.products && (
+      {/* ── Products ── */}
+      {dept.products && dept.products.length > 0 && (
         <section className="pb-16 lg:pb-24">
           <Reveal>
             <div className="flex items-center gap-6 mb-8">
