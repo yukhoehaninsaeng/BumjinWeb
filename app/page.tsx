@@ -639,9 +639,7 @@ function GlobalSection({ lang, globalSites }: { lang: Lang; globalSites?: Global
           </div>
 
           <FadeIn delay={0.1} className="w-full">
-            <div className="rounded-sm overflow-hidden bg-[#070E1B] p-5 border border-slate-800">
-              <GlobalHubMap />
-            </div>
+            <FactoryGlobeMap mapHint={t.mapHint} lang={lang} />
           </FadeIn>
         </div>
       </div>
