@@ -87,16 +87,8 @@ const LANG_OPTIONS: { code: Lang; label: string }[] = [
 
 function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
   const t = translations[lang].nav;
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", fn, { passive: true });
-    fn();
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
 
   const navLinks = [
     { label: t.company, href: "/company" },
@@ -107,11 +99,7 @@ function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-white/97 shadow-[0_1px_0_#E5E7EB]" : "bg-white/80 backdrop-blur-md"
-      }`}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-[0_1px_0_#E5E7EB]">
       <nav className="mx-auto max-w-7xl px-6 lg:px-10 h-16 flex items-center justify-between">
         <a href="#" className="shrink-0">
           <Image src="/bumjin%20icon.jpg" alt="Bumjin Electronics" width={160} height={48} priority className="h-12 w-auto object-contain" />
