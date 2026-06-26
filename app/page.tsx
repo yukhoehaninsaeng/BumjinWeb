@@ -541,62 +541,6 @@ function TechnologySection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ─── R&D DATA ─── */
-
-function RndSection() {
-  return (
-    <BlueprintSection id="rnd-data" className="py-28 lg:py-40">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <FadeIn>
-          <p className="text-[9px] font-bold tracking-[3px] uppercase text-cyan-400/50 mb-3">
-            Live Lab Data
-          </p>
-          <h2
-            className="font-black text-white leading-[1.05] tracking-tight mb-3"
-            style={{ fontSize: "clamp(28px, 3.5vw, 52px)" }}
-          >
-            Engineering from the Inside Out
-          </h2>
-          <p className="text-[14px] text-slate-400 leading-relaxed mb-12 max-w-xl">
-            Real-time acoustic, DSP and thermal telemetry from our R&D labs — the data behind every design decision.
-          </p>
-        </FadeIn>
-        <RndBentoGrid />
-      </div>
-    </BlueprintSection>
-  );
-}
-
-/* ─── CERTIFICATION ─── */
-
-function CertificationSection() {
-  return (
-    <BlueprintSection id="certifications" className="py-28 lg:py-40">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <FadeIn>
-          <p className="text-[11px] font-semibold tracking-[0.35em] uppercase text-cyan-400/50 mb-8">
-            Compliance &amp; Certification
-          </p>
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
-            <h2
-              className="font-black text-white leading-[1.0] tracking-tight"
-              style={{ fontSize: "clamp(34px, 4.2vw, 60px)" }}
-            >
-              International
-              <span className="block text-cyan-400">Standards.</span>
-            </h2>
-            <p className="text-slate-400 text-[15px] max-w-sm leading-relaxed lg:text-right">
-              Every Bumjin product carries independently verified, globally recognised
-              certification — so your sourcing team never needs to ask twice.
-            </p>
-          </div>
-        </FadeIn>
-        <CertificateList />
-      </div>
-    </BlueprintSection>
-  );
-}
-
 /* ─── GLOBAL OPERATIONS ─── */
 
 function GlobalSection({ lang, globalSites }: { lang: Lang; globalSites?: GlobalSiteItem[] | null }) {
@@ -1269,8 +1213,7 @@ export default function Page() {
         <CompanySection lang={lang} />
         <BusinessSection lang={lang} />
         <TechnologySection lang={lang} />
-        <RndSection />
-        <CertificationSection />
+
         <ExplodedViewSection />
         <GlobalSection lang={lang} globalSites={adminContent?.global} />
         <ProcessSection lang={lang} />
