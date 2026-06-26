@@ -1214,7 +1214,7 @@ export default function Page() {
         <BusinessSection lang={lang} />
         <TechnologySection lang={lang} />
 
-        <ExplodedViewSection />
+
         <GlobalSection lang={lang} globalSites={adminContent?.global} />
         <ProcessSection lang={lang} />
         <ClientsSection lang={lang} clients={adminContent?.clients} images={adminContent?.images} />
