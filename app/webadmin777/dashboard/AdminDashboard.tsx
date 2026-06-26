@@ -18,6 +18,8 @@ import {
   Plus,
   Trash2,
   Building2,
+  Globe2,
+  Users,
 } from "lucide-react";
 import type {
   SiteContent,
@@ -32,6 +34,8 @@ import type {
   SubsidiaryItem,
   HistoryEntry,
   HistoryEvent,
+  GlobalSiteItem,
+  ClientItem,
 } from "@/lib/content-store";
 import { BUSINESS_DEPARTMENTS } from "@/lib/data/business";
 
@@ -620,6 +624,27 @@ const DEFAULT_HISTORY_DATA: HistoryEntry[] = [
   { year: "1991", events: [{ month: "10", text: "범진공업사 설립 (금형, 서울 영등포 소재)" }] },
 ];
 
+const DEFAULT_GLOBAL_SITES: GlobalSiteItem[] = [
+  { city: "수원, 한국", role: "HQ · 금형사업장", type: "hq" },
+  { city: "안성, 한국", role: "사출성형 공장", type: "plant" },
+  { city: "티후아나, 멕시코", role: "BJAM MEXICANA", type: "plant" },
+  { city: "찌카랑, 인도네시아", role: "동남아 생산 거점", type: "plant" },
+  { city: "꽝닌, 베트남", role: "베트남 제조 허브", type: "plant" },
+  { city: "후이저우, 중국", role: "광동 부품 공장", type: "plant" },
+  { city: "뢰린치, 헝가리", role: "유럽 제조 거점", type: "plant" },
+];
+
+const DEFAULT_CLIENTS: ClientItem[] = [
+  { id: "samsung", name: "Samsung Electronics" },
+  { id: "lg", name: "LG Electronics" },
+  { id: "sony", name: "SONY" },
+  { id: "harman-kardon", name: "Harman Kardon" },
+  { id: "jbl", name: "JBL" },
+  { id: "panasonic", name: "Panasonic" },
+  { id: "hp", name: "HP" },
+  { id: "dell", name: "Dell" },
+];
+
 function initCompany(stored: CompanyContent | null): CompanyContent {
   const defaults: CompanyContent = {
     overviewHeadline: "도전과 혁신,\n사람과 고객\n중심의 기업.",
@@ -1048,7 +1073,7 @@ function CompanyEditor({
 
 /* ── 메인 AdminDashboard ─────────────────────── */
 
-type NavSection = "home" | "business" | "company" | "images";
+type NavSection = "home" | "business" | "company" | "global" | "clients" | "images";
 type HomeTab = "process" | "capabilities";
 type BusinessTab = "electronics" | "molding" | "startup";
 
@@ -1087,6 +1112,16 @@ export default function AdminDashboard({
     initCompany(initialContent.company)
   );
 
+  // 글로벌 네트워크 데이터
+  const [globalSites, setGlobalSites] = useState<GlobalSiteItem[]>(
+    initialContent.global ?? DEFAULT_GLOBAL_SITES
+  );
+
+  // 고객사 데이터
+  const [clients, setClients] = useState<ClientItem[]>(
+    initialContent.clients ?? DEFAULT_CLIENTS
+  );
+
   // 이미지
   const [images, setImages] = useState<Record<string, string>>(
     initialContent.images ?? {}
@@ -1102,9 +1137,11 @@ export default function AdminDashboard({
       home: { processSteps, capabilities },
       business: { electronics, molding, startup },
       company,
+      global: globalSites,
+      clients,
       images,
     }),
-    [processSteps, capabilities, electronics, molding, startup, company, images]
+    [processSteps, capabilities, electronics, molding, startup, company, globalSites, clients, images]
   );
 
   async function handleSave() {
@@ -1147,6 +1184,8 @@ export default function AdminDashboard({
     { id: "home",     label: "홈페이지",   icon: <Home className="size-4" /> },
     { id: "business", label: "사업영역",   icon: <Briefcase className="size-4" /> },
     { id: "company",  label: "회사 소개",  icon: <Building2 className="size-4" /> },
+    { id: "global",   label: "글로벌",     icon: <Globe2 className="size-4" /> },
+    { id: "clients",  label: "고객사",     icon: <Users className="size-4" /> },
     { id: "images",   label: "이미지 관리", icon: <ImageIcon className="size-4" /> },
   ];
 
@@ -1346,6 +1385,129 @@ export default function AdminDashboard({
               </div>
               <div className="bg-white border border-gray-200 p-6 space-y-4">
                 <CompanyEditor content={company} onChange={setCompany} />
+              </div>
+            </div>
+          )}
+
+          {/* ── 글로벌 네트워크 ── */}
+          {nav === "global" && (
+            <div className="max-w-4xl space-y-6">
+              <div>
+                <h2 className="text-[20px] font-bold text-gray-900 mb-1">글로벌 네트워크</h2>
+                <p className="text-[12px] text-gray-400">
+                  홈페이지 글로벌 섹션에 표시되는 사업장 위치를 관리합니다.
+                </p>
+              </div>
+              <div className="bg-white border border-gray-200 p-6 space-y-3">
+                {globalSites.map((site, i) => (
+                  <div key={i} className="border border-gray-200">
+                    <div className="flex items-center justify-between px-4 py-3 bg-gray-50">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="text-[10px] font-mono text-[#C0392B] shrink-0">{String(i + 1).padStart(2, "0")}</span>
+                        <span className="text-[13px] font-semibold text-gray-900 truncate">{site.city}</span>
+                        <span className="text-[11px] text-gray-400 hidden sm:block truncate">{site.role}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setGlobalSites(globalSites.filter((_, j) => j !== i))}
+                        className="text-red-400 hover:text-red-600 shrink-0"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </button>
+                    </div>
+                    <div className="p-4 space-y-3">
+                      <div className="grid sm:grid-cols-3 gap-3">
+                        <Field
+                          label="도시명"
+                          value={site.city}
+                          onChange={(v) => setGlobalSites(globalSites.map((s, j) => j === i ? { ...s, city: v } : s))}
+                          hint="예: 수원, 한국"
+                        />
+                        <Field
+                          label="역할/설명"
+                          value={site.role}
+                          onChange={(v) => setGlobalSites(globalSites.map((s, j) => j === i ? { ...s, role: v } : s))}
+                          hint="예: HQ · 금형사업장"
+                        />
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-bold text-gray-500 tracking-[2px] uppercase">유형</label>
+                          <select
+                            value={site.type}
+                            onChange={(e) => setGlobalSites(globalSites.map((s, j) => j === i ? { ...s, type: e.target.value } : s))}
+                            className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-[12px] px-3 py-2.5 focus:outline-none focus:border-red-400 transition-colors"
+                          >
+                            <option value="hq">hq (본사)</option>
+                            <option value="plant">plant (공장)</option>
+                            <option value="office">office (사무소)</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setGlobalSites([...globalSites, { city: "새 도시, 국가", role: "역할을 입력하세요", type: "plant" }])}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-gray-300 hover:border-gray-500 text-[12px] text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  <Plus className="size-3.5" />
+                  사업장 추가
+                </button>
+                <p className="text-[11px] text-gray-400 bg-blue-50 border border-blue-100 p-3">
+                  💡 글로브 지도의 마커 위치는 도시명을 기반으로 자동 표시됩니다.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* ── 고객사 ── */}
+          {nav === "clients" && (
+            <div className="max-w-4xl space-y-6">
+              <div>
+                <h2 className="text-[20px] font-bold text-gray-900 mb-1">고객사</h2>
+                <p className="text-[12px] text-gray-400">
+                  홈페이지 고객사 섹션의 로고 슬라이더에 표시될 고객사 목록을 관리합니다.
+                </p>
+              </div>
+              <div className="bg-white border border-gray-200 p-6 space-y-3">
+                {clients.map((client, i) => (
+                  <div key={i} className="border border-gray-200">
+                    <div className="p-3 flex items-center gap-3">
+                      <span className="text-[10px] font-mono text-[#C0392B] shrink-0">{String(i + 1).padStart(2, "0")}</span>
+                      <div className="flex-1 grid sm:grid-cols-2 gap-3">
+                        <Field
+                          label="고객사명"
+                          value={client.name}
+                          onChange={(v) => setClients(clients.map((c, j) => j === i ? { ...c, name: v } : c))}
+                        />
+                        <Field
+                          label="ID (이미지 연동용)"
+                          value={client.id}
+                          onChange={(v) => setClients(clients.map((c, j) => j === i ? { ...c, id: v } : c))}
+                          hint="이미지 관리에서 이 ID로 로고 이미지를 업로드하세요"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setClients(clients.filter((_, j) => j !== i))}
+                        className="text-red-400 hover:text-red-600 shrink-0 mt-4"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setClients([...clients, { id: `client-${Date.now()}`, name: "새 고객사" }])}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-gray-300 hover:border-gray-500 text-[12px] text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  <Plus className="size-3.5" />
+                  고객사 추가
+                </button>
+                <p className="text-[11px] text-gray-400 bg-blue-50 border border-blue-100 p-3">
+                  💡 각 고객사 ID로 이미지 관리에서 로고를 업로드하면 슬라이더에 이미지가 표시됩니다. 이미지가 없으면 고객사명이 텍스트로 표시됩니다.
+                </p>
               </div>
             </div>
           )}

@@ -98,6 +98,17 @@ export interface CompanyContent {
   locations?: LocationData[];
 }
 
+export interface GlobalSiteItem {
+  city: string;
+  role: string;
+  type: string;
+}
+
+export interface ClientItem {
+  id: string;
+  name: string;
+}
+
 export interface SiteContent {
   home: {
     processSteps: ProcessStepContent[] | null;
@@ -109,6 +120,8 @@ export interface SiteContent {
     startup: DeptContent | null;
   };
   company: CompanyContent | null;
+  global: GlobalSiteItem[] | null;
+  clients: ClientItem[] | null;
   images: Record<string, string>;
 }
 
@@ -116,6 +129,8 @@ const DEFAULT: SiteContent = {
   home: { processSteps: null, capabilities: null },
   business: { electronics: null, molding: null, startup: null },
   company: null,
+  global: null,
+  clients: null,
   images: {},
 };
 

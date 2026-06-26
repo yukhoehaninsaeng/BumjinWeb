@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { MapPin, Phone, ExternalLink, ArrowUpRight, ChevronDown } from "lucide-react";
+import { MapPin, Phone, ExternalLink, ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { SiteHeader } from "@/components/ui/SiteHeader";
 import { useAdminContent } from "@/lib/hooks/useAdminContent";
 import type { VisionMeaningItem, CoreValueItem, SubsidiaryItem, HistoryEntry } from "@/lib/content-store";
@@ -970,10 +970,18 @@ const LOCATION_DATA = [
 
 function LocationSection({ locations }: { locations?: typeof LOCATION_DATA }) {
   const locs = locations ?? LOCATION_DATA;
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  function scrollSlider(dir: -1 | 1) {
+    if (!sliderRef.current) return;
+    const card = sliderRef.current.firstElementChild as HTMLElement;
+    const w = card ? card.offsetWidth + 16 : 360;
+    sliderRef.current.scrollBy({ left: dir * w, behavior: "smooth" });
+  }
 
   return (
     <section id="location" className="bg-gray-950">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-20 lg:pt-36 lg:pb-24">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-16 lg:pt-36 lg:pb-20">
         <FadeIn>
           <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-600 mb-10">
             Location
@@ -994,13 +1002,23 @@ function LocationSection({ locations }: { locations?: typeof LOCATION_DATA }) {
         </FadeIn>
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 pb-28 lg:pb-36">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-white/10">
-          {locs.map((loc, i) => (
-            <FadeIn key={loc.name} delay={i * 0.08}>
-              <div className="bg-gray-950 p-8 lg:p-10 h-full flex flex-col group hover:bg-gray-900 transition-colors duration-300">
+      <div className="pb-28 lg:pb-36">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div
+            ref={sliderRef}
+            className="flex gap-4 overflow-x-auto snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {locs.map((loc, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: Math.min(i * 0.06, 0.18), duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="snap-start shrink-0 w-[min(340px,80vw)] lg:w-[360px] bg-gray-900 hover:bg-gray-800 transition-colors duration-300 flex flex-col group"
+              >
                 {/* Google Maps embed */}
-                <div className="aspect-video relative overflow-hidden mb-8">
+                <div className="aspect-video relative overflow-hidden">
                   <iframe
                     src={`https://maps.google.com/maps?q=${encodeURIComponent(loc.address)}&output=embed&hl=ko&z=16`}
                     width="100%"
@@ -1022,19 +1040,17 @@ function LocationSection({ locations }: { locations?: typeof LOCATION_DATA }) {
                   </a>
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 p-6 lg:p-8">
                   <p className="text-[10px] font-semibold tracking-[0.3em] uppercase text-red-600 mb-3">
                     {loc.type}
                   </p>
-                  <p className="text-[18px] font-black text-white mb-6 leading-snug">
+                  <p className="text-[18px] font-black text-white mb-5 leading-snug">
                     {loc.name}
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start gap-3">
                       <MapPin className="size-3.5 text-gray-600 shrink-0 mt-0.5" />
-                      <span className="text-[13px] text-gray-400 leading-relaxed">
-                        {loc.address}
-                      </span>
+                      <span className="text-[13px] text-gray-400 leading-relaxed">{loc.address}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <Phone className="size-3.5 text-gray-600 shrink-0" />
@@ -1050,9 +1066,30 @@ function LocationSection({ locations }: { locations?: typeof LOCATION_DATA }) {
                     )}
                   </div>
                 </div>
-              </div>
-            </FadeIn>
-          ))}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Slider controls */}
+          <div className="flex items-center justify-between mt-5">
+            <p className="text-[11px] text-gray-700">{locs.length}개 사업장</p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => scrollSlider(-1)}
+                aria-label="이전"
+                className="w-9 h-9 border border-white/10 text-gray-400 hover:text-white hover:border-white/30 flex items-center justify-center transition-colors"
+              >
+                <ChevronLeft className="size-4" />
+              </button>
+              <button
+                onClick={() => scrollSlider(1)}
+                aria-label="다음"
+                className="w-9 h-9 border border-white/10 text-gray-400 hover:text-white hover:border-white/30 flex items-center justify-center transition-colors"
+              >
+                <ChevronRight className="size-4" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>

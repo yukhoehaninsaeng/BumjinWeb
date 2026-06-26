@@ -39,6 +39,8 @@ import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { FactoryGlobeMap } from "@/components/ui/factory-globe-map";
 import { translations, type Lang } from "@/lib/translations";
+import { useAdminContent } from "@/lib/hooks/useAdminContent";
+import type { GlobalSiteItem, ClientItem } from "@/lib/content-store";
 
 /* ─── helpers ─── */
 
@@ -548,8 +550,9 @@ function TechnologySection({ lang }: { lang: Lang }) {
 
 /* ─── GLOBAL OPERATIONS ─── */
 
-function GlobalSection({ lang }: { lang: Lang }) {
+function GlobalSection({ lang, globalSites }: { lang: Lang; globalSites?: GlobalSiteItem[] | null }) {
   const t = translations[lang].global;
+  const locations = (globalSites && globalSites.length > 0) ? globalSites : t.locations;
 
   return (
     <section id="operations" className="bg-gray-50 py-28 lg:py-40">
@@ -569,9 +572,9 @@ function GlobalSection({ lang }: { lang: Lang }) {
             </FadeIn>
 
             <div>
-              {t.locations.map((loc, i) => (
+              {locations.map((loc, i) => (
                 <motion.div
-                  key={loc.city}
+                  key={i}
                   initial={{ opacity: 0, x: -12 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -760,8 +763,47 @@ const CLIENT_LOGOS = [
   { name: "Dell", svg: <svg width="90" height="40" viewBox="0 0 90 40" fill="none"><text x="0" y="30" fontFamily="var(--font-noto),system-ui" fontSize="22" fontWeight="400" letterSpacing="2" fill="#9CA3AF">DELL</text></svg> },
 ];
 
-function ClientsSection({ lang }: { lang: Lang }) {
+function ClientsSection({
+  lang,
+  clients,
+  images,
+}: {
+  lang: Lang;
+  clients?: ClientItem[] | null;
+  images?: Record<string, string>;
+}) {
   const t = translations[lang].clients;
+  const hasAdminClients = clients && clients.length > 0;
+
+  const sliderItems = hasAdminClients
+    ? clients!.map((c) => ({
+        key: c.id,
+        img: images?.[c.id],
+        name: c.name,
+      }))
+    : CLIENT_LOGOS.map((c) => ({ key: c.name, img: undefined, name: c.name, svg: c.svg }));
+
+  const sliderItemsRev = [...sliderItems].reverse().map((c) => ({ ...c, key: `r-${c.key}` }));
+
+  function renderLogo(item: typeof sliderItems[0], className: string) {
+    if (item.img) {
+      return (
+        <Image
+          src={item.img}
+          alt={item.name}
+          width={160}
+          height={40}
+          className={`object-contain max-h-10 w-auto ${className}`}
+        />
+      );
+    }
+    if ("svg" in item && item.svg) return item.svg as React.ReactNode;
+    return (
+      <span className={`font-bold text-gray-400 text-[18px] tracking-wide ${className}`}>
+        {item.name}
+      </span>
+    );
+  }
 
   return (
     <section id="clients" className="bg-gray-50 py-28 lg:py-40">
@@ -794,16 +836,16 @@ function ClientsSection({ lang }: { lang: Lang }) {
           <ProgressiveBlur direction="left" blurIntensity={1} className="z-20" />
           <ProgressiveBlur direction="right" blurIntensity={1} className="z-20" />
           <InfiniteSlider gap={72} duration={30} className="py-6">
-            {CLIENT_LOGOS.map((c) => (
-              <div key={c.name} className="flex items-center justify-center opacity-40 hover:opacity-70 transition-opacity min-w-[80px]">
-                {c.svg}
+            {sliderItems.map((c) => (
+              <div key={c.key} className="flex items-center justify-center opacity-40 hover:opacity-70 transition-opacity min-w-[80px]">
+                {renderLogo(c, "")}
               </div>
             ))}
           </InfiniteSlider>
           <InfiniteSlider gap={72} duration={38} reverse className="py-4">
-            {[...CLIENT_LOGOS].reverse().map((c) => (
-              <div key={`r-${c.name}`} className="flex items-center justify-center opacity-25 hover:opacity-50 transition-opacity min-w-[80px]">
-                {c.svg}
+            {sliderItemsRev.map((c) => (
+              <div key={c.key} className="flex items-center justify-center opacity-25 hover:opacity-50 transition-opacity min-w-[80px]">
+                {renderLogo(c, "")}
               </div>
             ))}
           </InfiniteSlider>
@@ -1168,6 +1210,7 @@ function HeroVideo({ lang }: { lang: Lang }) {
 
 export default function Page() {
   const [lang, setLang] = useState<Lang>("ko");
+  const adminContent = useAdminContent();
 
   return (
     <div className="bg-white text-gray-900 min-h-screen">
@@ -1177,9 +1220,9 @@ export default function Page() {
         <CompanySection lang={lang} />
         <BusinessSection lang={lang} />
         <TechnologySection lang={lang} />
-        <GlobalSection lang={lang} />
+        <GlobalSection lang={lang} globalSites={adminContent?.global} />
         <ProcessSection lang={lang} />
-        <ClientsSection lang={lang} />
+        <ClientsSection lang={lang} clients={adminContent?.clients} images={adminContent?.images} />
         <CTAStrip lang={lang} />
         <ContactSection lang={lang} />
       </main>
