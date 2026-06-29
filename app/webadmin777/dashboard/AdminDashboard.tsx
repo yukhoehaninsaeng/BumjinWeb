@@ -13,6 +13,7 @@ import {
   Check,
   AlertCircle,
   Upload,
+  Download,
   Eye,
   EyeOff,
   Plus,
@@ -1169,6 +1170,44 @@ export default function AdminDashboard({
     window.location.href = "/webadmin777";
   }
 
+  function handleBackupDownload() {
+    const content = buildContent();
+    const blob = new Blob([JSON.stringify(content, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const date = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `bumjin-backup-${date}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function handleBackupRestore(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+      try {
+        const parsed: SiteContent = JSON.parse(ev.target?.result as string);
+        const res = await fetch("/api/admin/content", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(parsed),
+        });
+        if (res.ok) {
+          showToast("백업 복원 완료. 페이지를 새로고침합니다.", "success");
+          setTimeout(() => window.location.reload(), 1200);
+        } else {
+          showToast("복원에 실패했습니다.", "error");
+        }
+      } catch {
+        showToast("파일 형식이 올바르지 않습니다.", "error");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  }
+
   function handleImageUpload(productId: string, url: string) {
     const updated = { ...images, [productId]: url };
     setImages(updated);
@@ -1265,8 +1304,26 @@ export default function AdminDashboard({
             ))}
           </nav>
 
-          <div className="mt-6 pt-4 border-t border-gray-100">
-            <p className="text-[10px] text-gray-300 px-3 leading-relaxed">
+          <div className="mt-6 pt-4 border-t border-gray-100 space-y-2 px-1">
+            <p className="text-[10px] text-gray-400 px-2 font-semibold tracking-wide uppercase">백업 / 복원</p>
+            <button
+              onClick={handleBackupDownload}
+              className="w-full flex items-center gap-2 px-3 py-2 text-[12px] text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors rounded"
+            >
+              <Download className="size-3.5 shrink-0" />
+              백업 다운로드
+            </button>
+            <label className="w-full flex items-center gap-2 px-3 py-2 text-[12px] text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors rounded cursor-pointer">
+              <Upload className="size-3.5 shrink-0" />
+              백업 복원
+              <input
+                type="file"
+                accept=".json"
+                className="hidden"
+                onChange={handleBackupRestore}
+              />
+            </label>
+            <p className="text-[10px] text-gray-300 px-2 leading-relaxed">
               저장 버튼을 누르면 웹사이트에 즉시 반영됩니다.
             </p>
           </div>
