@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Next.js generated types
+next-env.d.ts
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS / editor
+.DS_Store
+*.pem
+.vscode/
+tsconfig.tsbuildinfo

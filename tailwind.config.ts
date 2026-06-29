@@ -10,30 +10,32 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        fraunces: ["var(--font-fraunces)", "Georgia", "serif"],
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        sans: ["var(--font-noto)", "Noto Sans KR", "system-ui", "sans-serif"],
       },
       colors: {
-        midnight: "#050505",
+        /* Company red #C0392B as red-600 base */
+        red: {
+          50: "#fef2f1",
+          100: "#fde3e1",
+          200: "#fbc5c0",
+          300: "#f79b93",
+          400: "#f06558",
+          500: "#e04535",
+          600: "#C0392B",
+          700: "#A93226",
+          800: "#8B2820",
+          900: "#6D1E18",
+          950: "#4A1410",
+        },
         charcoal: {
           DEFAULT: "#1A1A24",
           light: "#252535",
           border: "#2E2E42",
         },
-        cream: {
-          DEFAULT: "#F5F0E8",
-          muted: "#C8C0B0",
-          dim: "#8A8070",
-        },
-        gold: {
-          DEFAULT: "#C8A84B",
-          light: "#E2C97E",
-          dark: "#9B7D2A",
-        },
-        electric: {
-          DEFAULT: "#3B82F6",
-          dark: "#1D4ED8",
-          glow: "#60A5FA",
+        primary: {
+          DEFAULT: "#C0392B",
+          light: "#FFF0F0",
+          dark: "#A93226",
         },
       },
       backgroundImage: {
@@ -44,7 +46,6 @@ const config: Config = {
       animation: {
         "fade-up": "fadeUp 0.6s ease-out forwards",
         "fade-in": "fadeIn 0.8s ease-out forwards",
-        "pulse-gold": "pulseGold 2s ease-in-out infinite",
       },
       keyframes: {
         fadeUp: {
@@ -54,10 +55,6 @@ const config: Config = {
         fadeIn: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
-        },
-        pulseGold: {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.5" },
         },
       },
     },
