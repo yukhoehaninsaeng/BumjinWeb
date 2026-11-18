@@ -121,28 +121,19 @@ function OverviewSection({
 
       {/* 사훈 — Motrex-style hairline grid */}
       <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-20 pb-0">
-        <FadeIn>
-          <p className="text-[11px] font-semibold tracking-[0.35em] uppercase text-red-600 mb-10">
-            {t.visionEyebrow}
-          </p>
-        </FadeIn>
+        <p className="inline-flex items-center gap-2.5 text-[12px] font-semibold tracking-[0.14em] uppercase text-gray-500 mb-8">
+          <span aria-hidden="true" className="w-3 h-[2px] bg-red-600 inline-block" />
+          <span>{t.visionEyebrow}</span>
+        </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border-l border-t border-gray-200 bg-white">
-          {t.mottoItems.map((item, i) => (
-            <motion.div
+          {t.mottoItems.map((item) => (
+            <div
               key={item.num}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.06, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative p-6 lg:p-7 border-r border-b border-gray-200 hover:bg-[#F8F9FB] transition-colors flex flex-col justify-between"
+              className="p-6 lg:p-7 border-r border-b border-gray-200 hover:bg-[#F8F9FB] transition-colors flex flex-col justify-between"
             >
-              <span
-                aria-hidden="true"
-                className="absolute top-0 left-0 right-0 h-[2px] bg-red-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
-              />
               <div>
-                <p className="text-[11px] font-bold text-red-600 tracking-wider mb-5 tabular-nums">
+                <p className="text-[11px] font-semibold text-gray-400 tracking-wider mb-5 tabular-nums">
                   {item.num}
                 </p>
                 <h3 className="text-[18px] font-bold text-gray-900 mb-1.5 leading-snug">
@@ -155,7 +146,7 @@ function OverviewSection({
               <p className="text-[13px] text-gray-600 leading-[1.75] pt-4 border-t border-gray-100">
                 {item.body}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -497,45 +488,38 @@ function GroupSection({
   return (
     <section id="group" className="bg-[#F8F9FB] border-t border-gray-200/70">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-24 pb-12 lg:pt-32 lg:pb-14">
-        <FadeIn>
-          <p className="text-[11px] font-semibold tracking-[0.35em] uppercase text-red-600 mb-4">
-            {t.eyebrow}
-          </p>
-        </FadeIn>
+        <p className="inline-flex items-center gap-2.5 text-[12px] font-semibold tracking-[0.14em] uppercase text-gray-500 mb-4">
+          <span aria-hidden="true" className="w-3 h-[2px] bg-red-600 inline-block" />
+          <span>{t.eyebrow}</span>
+        </p>
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-          <FadeIn delay={0.05}>
-            <h2
-              className="font-bold text-gray-900 leading-[1.08] tracking-tight"
-              style={{ fontSize: "clamp(36px, 5vw, 64px)" }}
-            >
-              {t.title}
-            </h2>
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <p className="text-gray-500 text-[14px] max-w-md leading-relaxed">
-              {t.subtitle}
-            </p>
-          </FadeIn>
+          <h2
+            className="font-bold text-gray-900 leading-[1.08] tracking-tight"
+            style={{ fontSize: "clamp(36px, 5vw, 64px)" }}
+          >
+            {t.title}
+          </h2>
+          <p className="text-gray-500 text-[14px] max-w-md leading-relaxed">
+            {t.subtitle}
+          </p>
         </div>
 
         {/* Motrex-style Affiliate Anchor Pill Tabs */}
-        <FadeIn delay={0.14}>
-          <div className="flex flex-wrap gap-2.5 mt-10">
-            {data.map((sub, idx) => (
-              <button
-                key={sub.name}
-                onClick={() => scrollToAffiliate(idx)}
-                className={`px-5 py-2.5 text-[13px] font-semibold rounded-sm border transition-all ${
-                  selectedIdx === idx
-                    ? "bg-gray-900 text-white border-gray-900"
-                    : "bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:text-gray-900"
-                }`}
-              >
-                {sub.name}
-              </button>
-            ))}
-          </div>
-        </FadeIn>
+        <div className="flex flex-wrap gap-2.5 mt-10">
+          {data.map((sub, idx) => (
+            <button
+              key={sub.name}
+              onClick={() => scrollToAffiliate(idx)}
+              className={`px-5 py-2.5 text-[13px] font-semibold rounded-sm border transition-all ${
+                selectedIdx === idx
+                  ? "bg-gray-900 text-white border-gray-900"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:text-gray-900"
+              }`}
+            >
+              {sub.name}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Affiliate Cards — Motrex affiliates.php layout */}
@@ -546,18 +530,13 @@ function GroupSection({
             <motion.article
               id={`affiliate-${si}`}
               key={sub.name}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               onViewportEnter={() => setSelectedIdx(si)}
-              className="group relative bg-white border border-gray-200 overflow-hidden"
+              className="bg-white border border-gray-200 overflow-hidden"
             >
-              {/* Top red accent bar */}
-              <span
-                aria-hidden="true"
-                className="block h-[2px] w-full bg-red-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
-              />
 
               {/* Affiliate Header Row */}
               <div className="px-7 py-7 lg:px-10 lg:py-8 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -915,65 +894,28 @@ function LocationSection({
 function PageHero({ t }: { t: CompanyTranslations["hero"] }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 60]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 40]);
+  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
 
   return (
-    <div ref={ref} className="relative bg-gray-950 pt-36 pb-16 lg:pt-44 lg:pb-24 flex items-end overflow-hidden">
-      {/* Subtle animated gradient */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 grid-lines opacity-[0.04]" />
-        <motion.div
-          className="absolute inset-0"
-          animate={{ opacity: [0.4, 0.7, 0.4] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 60% at 70% 60%, rgba(232,0,29,0.08) 0%, transparent 70%)",
-          }}
-        />
-      </div>
-
-      {/* Large background text */}
-      <div
-        aria-hidden
-        className="absolute bottom-0 right-6 font-black leading-none text-white/[0.025] select-none pointer-events-none overflow-hidden"
-        style={{ fontSize: "clamp(140px, 22vw, 320px)" }}
-      >
-        BJ
-      </div>
-
+    <div ref={ref} className="relative bg-gray-950 pt-36 pb-16 lg:pt-44 lg:pb-24 flex items-end overflow-hidden border-b border-white/10">
       <motion.div
         style={{ y, opacity }}
         className="relative mx-auto max-w-7xl px-6 lg:px-10 w-full"
       >
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="text-[11px] font-semibold tracking-[0.35em] uppercase text-red-500 mb-4"
-        >
-          {t.eyebrow}
-        </motion.p>
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
-          className="font-bold text-white leading-[1.05] tracking-tight mb-5"
-          style={{ fontSize: "clamp(40px, 6vw, 76px)" }}
+        <p className="inline-flex items-center gap-2.5 text-[12px] font-semibold tracking-[0.14em] uppercase text-gray-400 mb-4">
+          <span aria-hidden="true" className="w-3 h-[2px] bg-red-600 inline-block" />
+          <span>{t.eyebrow}</span>
+        </p>
+        <h1
+          className="font-bold text-white leading-[1.06] tracking-tight mb-5"
+          style={{ fontSize: "clamp(40px, 6vw, 72px)" }}
         >
           {t.title}
-        </motion.h1>
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-center gap-4"
-        >
-          <p className="text-gray-400 text-[14px] lg:text-[15px] leading-relaxed max-w-md">
-            {t.subtitle}
-          </p>
-        </motion.div>
+        </h1>
+        <p className="text-gray-400 text-[14px] lg:text-[15px] leading-relaxed max-w-md">
+          {t.subtitle}
+        </p>
       </motion.div>
     </div>
   );

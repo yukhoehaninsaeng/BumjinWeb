@@ -2,35 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState, useEffect } from "react";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import {
-  type LucideIcon,
   ArrowUpRight,
-  ChevronDown,
   ChevronRight,
-  Globe,
   Mail,
   Phone,
   MapPin,
   ExternalLink,
-  Menu,
-  X,
   Download,
-  Target,
-  PenTool,
-  Settings2,
-  Wrench,
-  ShieldCheck,
-  Package,
-  Waves,
-  Activity,
-  Speaker,
-  Zap,
-  Cpu,
-  Layers,
-  Music,
-  Award,
   BadgeCheck,
 } from "lucide-react";
 
@@ -53,13 +34,13 @@ function FadeIn({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const inView = useInView(ref, { once: true, margin: "-40px" });
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 6 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ duration: 0.35, delay, ease: [0.25, 0.1, 0.25, 1] }}
       className={className}
     >
       {children}
@@ -69,8 +50,9 @@ function FadeIn({
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[11px] font-semibold tracking-[0.25em] uppercase text-red-600 mb-4">
-      {children}
+    <p className="inline-flex items-center gap-2.5 text-[12px] font-semibold tracking-[0.12em] uppercase text-gray-500 mb-3">
+      <span aria-hidden="true" className="w-3 h-[2px] bg-red-600 inline-block" />
+      <span>{children}</span>
     </p>
   );
 }
@@ -182,19 +164,14 @@ function BusinessSection({ lang }: { lang: Lang }) {
             <Link
               key={area.label}
               href={BUSINESS_LINKS[i] ?? "/business"}
-              className="group relative flex flex-col justify-between p-7 lg:p-8 border-r border-b border-gray-200 hover:bg-[#F8F9FB] transition-colors min-h-[260px]"
+              className="group flex flex-col justify-between p-7 lg:p-8 border-r border-b border-gray-200 hover:bg-[#F8F9FB] transition-colors min-h-[260px]"
             >
-              {/* Top red accent bar on hover */}
-              <span
-                aria-hidden="true"
-                className="absolute top-0 left-0 right-0 h-[2px] bg-red-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
-              />
               <div>
                 <div className="flex items-center justify-between mb-8">
-                  <span className="text-[12px] font-semibold text-red-600 tracking-wider tabular-nums">
+                  <span className="text-[12px] font-semibold text-gray-400 group-hover:text-red-600 transition-colors tracking-wider tabular-nums">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <ArrowUpRight className="size-4 text-gray-300 group-hover:text-red-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                  <ArrowUpRight className="size-4 text-gray-300 group-hover:text-red-600 transition-colors" />
                 </div>
                 <h3 className="text-[19px] font-bold text-gray-900 group-hover:text-red-600 transition-colors leading-snug mb-1.5">
                   {area.title}
@@ -214,95 +191,66 @@ function BusinessSection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ─── CAPABILITIES — Filtering Tabs ─── */
-
-type CapCategory = "all" | "acoustic" | "manufacturing" | "certification";
-
-const CAP_ICON_MAP: Record<string, LucideIcon> = {
-  c1: Waves,
-  c2: Speaker,
-  c3: Activity,
-  c4: Zap,
-  c5: Cpu,
-  c6: Layers,
-  c7: Settings2,
-  c8: Wrench,
-  c9: Music,
-  c10: Award,
-  c11: ShieldCheck,
-  c12: BadgeCheck,
-};
+/* ─── CAPABILITIES — 3-Pillar Architecture ─── */
 
 function TechnologySection({ lang }: { lang: Lang }) {
   const t = translations[lang].technology;
-  const [activeTab, setActiveTab] = useState<CapCategory>("all");
 
-  const tabs: { key: CapCategory; label: string }[] = [
-    { key: "all", label: t.tabs.all },
-    { key: "acoustic", label: t.tabs.acoustic },
-    { key: "manufacturing", label: t.tabs.manufacturing },
-    { key: "certification", label: t.tabs.certification },
+  const pillars: {
+    key: "acoustic" | "manufacturing" | "certification";
+    num: string;
+    title: string;
+  }[] = [
+    { key: "acoustic", num: "01", title: t.tabs.acoustic },
+    { key: "manufacturing", num: "02", title: t.tabs.manufacturing },
+    { key: "certification", num: "03", title: t.tabs.certification },
   ];
-
-  const filtered =
-    activeTab === "all"
-      ? t.items
-      : t.items.filter((c) => c.category === activeTab);
 
   return (
     <section id="capabilities" className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <FadeIn>
+        <div className="mb-12">
           <SectionLabel>{t.label}</SectionLabel>
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
-            <h2
-              className="font-black text-gray-900 leading-[1.05] tracking-tight"
-              style={{ fontSize: "clamp(30px, 3.8vw, 52px)" }}
-            >
-              {t.heading}
-            </h2>
-            <div className="flex flex-wrap gap-1.5">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.key}
-                  onClick={() => setActiveTab(tab.key)}
-                  className={`px-4 py-2 text-[12px] font-semibold tracking-wide rounded-sm transition-all ${
-                    activeTab === tab.key
-                      ? "bg-gray-900 text-white"
-                      : "border border-gray-200 text-gray-600 hover:border-gray-900 hover:text-gray-900"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </FadeIn>
+          <h2
+            className="font-black text-gray-900 leading-[1.08] tracking-tight"
+            style={{ fontSize: "clamp(30px, 3.8vw, 48px)" }}
+          >
+            {t.heading}
+          </h2>
+        </div>
 
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <AnimatePresence mode="popLayout">
-            {filtered.map((cap) => {
-              const Icon = CAP_ICON_MAP[cap.id] ?? Cpu;
-              return (
-                <motion.div
-                  key={cap.id}
-                  layout
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                  className="border border-gray-200 rounded-sm p-6 group hover:border-gray-400 hover:shadow-sm transition-all bg-white"
-                >
-                  <div className="w-10 h-10 rounded-sm bg-gray-50 flex items-center justify-center mb-5 group-hover:bg-red-50 transition-colors">
-                    <Icon className="size-5 text-gray-500 group-hover:text-red-600 transition-colors" />
-                  </div>
-                  <h3 className="text-[14px] font-bold text-gray-900 mb-2 leading-snug">{cap.title}</h3>
-                  <p className="text-[12px] text-gray-500 leading-relaxed">{cap.desc}</p>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </motion.div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 border-l border-t border-gray-200">
+          {pillars.map((pillar) => {
+            const items = t.items.filter((c) => c.category === pillar.key);
+            return (
+              <div
+                key={pillar.key}
+                className="border-r border-b border-gray-200 bg-white flex flex-col"
+              >
+                <div className="px-7 py-6 border-b border-gray-200 bg-[#F8F9FB] flex items-baseline justify-between">
+                  <h3 className="text-[17px] font-bold text-gray-900">
+                    {pillar.title}
+                  </h3>
+                  <span className="text-[12px] font-semibold text-gray-400 tabular-nums">
+                    {pillar.num}
+                  </span>
+                </div>
+                <dl className="divide-y divide-gray-100 flex-1">
+                  {items.map((cap) => (
+                    <div key={cap.id} className="px-7 py-5">
+                      <dt className="text-[14px] font-bold text-gray-900 mb-1.5 leading-snug">
+                        {cap.title}
+                      </dt>
+                      <dd className="text-[13px] text-gray-500 leading-relaxed">
+                        {cap.desc}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
@@ -358,138 +306,62 @@ function GlobalSection({ lang, globalSites }: { lang: Lang; globalSites?: Global
   );
 }
 
-/* ─── PROCESS — Interactive Grid ─── */
-
-interface ProcessStepItem {
-  step: string;
-  title: string;
-  titleEn: string;
-  body: string;
-  detail: string;
-  icon: LucideIcon;
-}
-
-const PROCESS_ICONS: LucideIcon[] = [Target, PenTool, Settings2, Wrench, ShieldCheck, Package];
-
-function ProcessCard({
-  step,
-  viewDetailLabel,
-  onClick,
-}: {
-  step: ProcessStepItem;
-  viewDetailLabel: string;
-  onClick: () => void;
-}) {
-  const Icon = step.icon;
-  return (
-    <motion.div
-      whileHover={{ y: -3 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      onClick={onClick}
-      className="pt-8 pb-6 pr-5 lg:pr-7 pl-5 lg:pl-7 first:pl-0 cursor-pointer group border-t-2 border-transparent hover:border-red-600 transition-[border-color] duration-200"
-    >
-      <p className="text-[11px] font-mono text-red-600 mb-4 tracking-wider">{step.step}</p>
-      <Icon className="size-4 text-gray-400 group-hover:text-red-600 transition-colors mb-3" />
-      <p className="text-[14px] font-bold text-gray-900 mb-2 leading-snug">{step.title}</p>
-      <p className="text-[12px] text-gray-500 leading-relaxed">{step.body}</p>
-      <p className="text-[11px] font-medium text-red-600 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-        {viewDetailLabel} →
-      </p>
-    </motion.div>
-  );
-}
-
-function ProcessModal({ step, onClose }: { step: ProcessStepItem; onClose: () => void }) {
-  const Icon = step.icon;
-  return (
-    <>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        className="fixed inset-0 bg-black/40 z-[60] backdrop-blur-sm cursor-pointer"
-        onClick={onClose}
-      />
-      <motion.div
-        initial={{ opacity: 0, y: 20, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 20, scale: 0.98 }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-md bg-white rounded-sm z-[61] p-8 shadow-2xl border border-gray-200"
-      >
-        <div className="flex items-start justify-between mb-6">
-          <div>
-            <p className="text-[11px] font-mono text-red-600 tracking-wider mb-2">{step.step}</p>
-            <h3 className="text-[24px] font-black text-gray-900 leading-tight">{step.title}</h3>
-            <p className="text-[11px] font-medium text-gray-400 tracking-[2px] uppercase mt-1">
-              {step.titleEn}
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-1 text-gray-400 hover:text-gray-900 transition-colors shrink-0"
-          >
-            <X className="size-5" />
-          </button>
-        </div>
-        <div className="w-11 h-11 rounded-sm bg-gray-50 flex items-center justify-center mb-5">
-          <Icon className="size-5 text-red-600" />
-        </div>
-        <p className="text-gray-600 text-[14px] leading-[1.75]">{step.detail}</p>
-      </motion.div>
-    </>
-  );
-}
+/* ─── PROCESS — Structured 6-Step Manufacturing Architecture ─── */
 
 function ProcessSection({ lang }: { lang: Lang }) {
   const t = translations[lang].process;
-  const [activeStep, setActiveStep] = useState<ProcessStepItem | null>(null);
-
-  const steps: ProcessStepItem[] = t.steps.map((s, i) => ({
-    ...s,
-    icon: PROCESS_ICONS[i] ?? Target,
-  }));
 
   return (
     <section className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between pb-10 border-b border-gray-200 mb-0">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
           <div>
             <SectionLabel>{t.label}</SectionLabel>
             <h2
-              className="font-black text-gray-900 leading-[1.05] tracking-tight"
-              style={{ fontSize: "clamp(30px, 3.8vw, 52px)" }}
+              className="font-black text-gray-900 leading-[1.08] tracking-tight"
+              style={{ fontSize: "clamp(30px, 3.8vw, 48px)" }}
             >
               {t.heading}
             </h2>
           </div>
           <a
             href="#contact"
-            className="hidden lg:inline-flex items-center gap-2 text-[13px] font-bold text-gray-700 border border-gray-300 hover:border-gray-900 px-6 py-3 rounded-sm transition-colors mt-4 lg:mt-0"
+            className="hidden lg:inline-flex items-center gap-2 text-[13px] font-semibold text-gray-700 border border-gray-300 hover:border-gray-900 px-6 py-3 rounded-sm transition-colors"
           >
             {t.cta}
             <ArrowUpRight className="size-4" />
           </a>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-6 divide-x divide-gray-100">
-          {steps.map((step) => (
-            <ProcessCard
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-l border-t border-gray-200">
+          {t.steps.map((step) => (
+            <div
               key={step.step}
-              step={step}
-              viewDetailLabel={t.viewDetail}
-              onClick={() => setActiveStep(step)}
-            />
+              className="p-7 lg:p-8 border-r border-b border-gray-200 bg-white flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-baseline justify-between mb-5">
+                  <span className="text-[12px] font-semibold text-gray-400 tracking-wider tabular-nums">
+                    {step.step}
+                  </span>
+                  <span className="text-[11px] font-medium tracking-wider uppercase text-gray-400">
+                    {step.titleEn}
+                  </span>
+                </div>
+                <h3 className="text-[18px] font-bold text-gray-900 mb-2 leading-snug">
+                  {step.title}
+                </h3>
+                <p className="text-[13px] font-medium text-gray-700 mb-3 leading-relaxed">
+                  {step.body}
+                </p>
+              </div>
+              <p className="text-[12px] text-gray-500 leading-relaxed pt-4 border-t border-gray-100">
+                {step.detail}
+              </p>
+            </div>
           ))}
         </div>
       </div>
-
-      <AnimatePresence>
-        {activeStep && (
-          <ProcessModal step={activeStep} onClose={() => setActiveStep(null)} />
-        )}
-      </AnimatePresence>
     </section>
   );
 }
@@ -591,35 +463,6 @@ function ClientsSection({
   );
 }
 
-/* ─── CTA STRIP ─── */
-
-function CTAStrip({ lang }: { lang: Lang }) {
-  const t = translations[lang].cta;
-
-  return (
-    <div className="relative bg-red-600 py-20 overflow-hidden">
-      <div className="absolute inset-0 grid-lines opacity-[0.06]" />
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10 text-center">
-        <FadeIn>
-          <p className="text-white/75 text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">{t.label}</p>
-          <h2
-            className="font-black text-white mb-5 leading-[1.08] tracking-tight"
-            style={{ fontSize: "clamp(28px, 4.2vw, 52px)" }}
-          >
-            {t.heading}
-          </h2>
-          <p className="text-white/85 text-[15px] mb-9 max-w-md mx-auto leading-relaxed">{t.subtitle}</p>
-          <a href="#contact">
-            <button className="text-[13px] font-bold text-red-600 bg-white hover:bg-gray-100 px-8 py-3.5 rounded-sm transition-colors shadow-lg inline-flex items-center gap-2">
-              {t.btn}
-              <ArrowUpRight className="size-4" />
-            </button>
-          </a>
-        </FadeIn>
-      </div>
-    </div>
-  );
-}
 
 /* ─── CONTACT ─── */
 
@@ -956,15 +799,9 @@ const HERO_COPY: Record<Lang, { tag: string; headline: string; body: string }> =
 function HeroVideo({ lang }: { lang: Lang }) {
   const c = HERO_COPY[lang];
   const heroT = translations[lang].hero;
-  const stats = [
-    { value: "1993", label: heroT.stat1 },
-    { value: "8", label: heroT.stat2 },
-    { value: "50M+", label: heroT.stat3 },
-    { value: "6", label: heroT.stat4 },
-  ];
 
   return (
-    <section className="relative min-h-[88vh] lg:min-h-[92vh] pt-16 flex flex-col justify-between bg-gray-950 overflow-hidden">
+    <section className="relative min-h-[84vh] lg:min-h-[90vh] pt-16 flex items-center bg-gray-950 overflow-hidden">
       {/* Background Video */}
       <video
         src="/Bumjin_Web_video_720p.mp4"
@@ -976,13 +813,14 @@ function HeroVideo({ lang }: { lang: Lang }) {
       />
 
       {/* Directional contrast overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/35" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/30" />
 
       {/* Main content */}
-      <div className="relative z-10 flex-1 flex items-center py-16 lg:py-24">
+      <div className="relative z-10 py-16 lg:py-24 w-full">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 w-full">
-          <p className="text-[11px] font-semibold tracking-[0.28em] uppercase text-red-400 mb-5">
-            {c.tag}
+          <p className="inline-flex items-center gap-2.5 text-[12px] font-medium tracking-[0.16em] uppercase text-white/75 mb-5">
+            <span aria-hidden="true" className="w-4 h-[2px] bg-red-600 inline-block" />
+            <span>{c.tag}</span>
           </p>
           <h1
             className="font-black text-white leading-[1.08] tracking-tight mb-6 whitespace-pre-line max-w-4xl"
@@ -1008,18 +846,6 @@ function HeroVideo({ lang }: { lang: Lang }) {
           </div>
         </div>
       </div>
-
-      {/* Bottom key metrics bar */}
-      <div className="relative z-10 border-t border-white/15 bg-black/40 backdrop-blur-sm">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/15">
-          {stats.map((s) => (
-            <div key={s.label} className="py-5 px-6 lg:px-8 first:pl-0">
-              <p className="text-[24px] lg:text-[28px] font-black text-white leading-none">{s.value}</p>
-              <p className="text-[11px] text-white/65 tracking-wide mt-1.5">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }
@@ -1041,7 +867,6 @@ export default function Page() {
         <GlobalSection lang={lang} globalSites={adminContent?.global} />
         <ProcessSection lang={lang} />
         <ClientsSection lang={lang} clients={adminContent?.clients} images={adminContent?.images} />
-        <CTAStrip lang={lang} />
         <ContactSection lang={lang} />
       </main>
       <Footer lang={lang} />
