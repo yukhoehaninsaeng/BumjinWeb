@@ -226,12 +226,12 @@ const KO: CompanyTranslations = {
     ],
   },
   vision: {
-    eyebrow: "Vision 2025",
+    eyebrow: "Vision 2030",
     statement: '"범진은 고객과 범진人의 동행으로 성장한다."',
     description:
-      "Vision 2025는 2025년까지 매출 1조 달성을 목표로 백년기업으로 성장 가능한 핵심 사업군을 발굴하고, R&D 및 인프라를 지속적으로 발전시키며, 중견기업으로 도약하기 위한 인재 육성과 활기찬 조직문화를 구축하여 고객과 함께 성장하는 미래를 만들어갑니다.",
+      "Vision 2030은 2030년까지 매출 1조 달성을 목표로 백년기업으로 성장 가능한 핵심 사업군을 발굴하고, R&D 및 인프라를 지속적으로 발전시키며, 중견기업으로 도약하기 위한 인재 육성과 활기찬 조직문화를 구축하여 고객과 함께 성장하는 미래를 만들어갑니다.",
     goals: [
-      { value: "1조", label: "2025 매출 목표" },
+      { value: "1조", label: "2030 매출 목표" },
       { value: "100년", label: "장기 목표" },
       { value: "30+", label: "창립 연수" },
       { value: "6개국", label: "글로벌 생산 거점" },
@@ -321,6 +321,13 @@ const KO: CompanyTranslations = {
         hq: "경기도 수원시 권선구",
         href: "/business/molding",
       },
+      {
+        category: "R&D & Precision Components",
+        founded: "2008년 08월",
+        businessField: "음향·전자 R&D 및 핵심 부품·모듈 솔루션",
+        hq: "경기도 수원시 권선구 산업로 155번길 217",
+        href: "/business/startup",
+      },
     ],
     subsidiaries: [
       {
@@ -353,6 +360,19 @@ const KO: CompanyTranslations = {
         products: ["금형 설계·제작", "생활가전 사출성형", "자동차 부품 사출성형"],
         roles: ["정밀 금형 개발", "사출성형 생산", "글로벌 제조 지원"],
         dark: false,
+      },
+      {
+        name: "범진시엔엘(주)",
+        en: "Bumjin C&L Co., Ltd.",
+        tagline: "차세대 음향·전자 R&D 및 핵심 모듈 솔루션",
+        desc: "범진시엔엘은 기업부설연구소를 중심으로 차세대 음향·전자 부품 개발과 신사업 소재·모듈 연구를 수행하며 범진 그룹의 기술 경쟁력을 선도하고 있습니다.",
+        locations: ["범진시엔엘 본사 (수원)", "기업부설연구소"],
+        revenue: "600억+",
+        employees: "180+",
+        productsLabel: "핵심 역량",
+        products: ["음향·전자 선행 연구", "핵심 모듈 개발", "신소재·스타트업 기술 지원"],
+        roles: ["선행 기술 R&D", "부품·모듈 엔지니어링", "신사업 인큐베이팅"],
+        dark: true,
       },
     ],
     coreMessage:
@@ -420,7 +440,7 @@ const KO: CompanyTranslations = {
       {
         name: "범진IND 금형사업장",
         type: "금형 제조",
-        address: "경기도 수원시 권선구 고색동",
+        address: "경기도 수원시 권선구 산업로 174-14 (고색동)",
         phone: "031-676-1461",
         note: "금형 설계 및 제작 전문 사업장",
       },
@@ -554,12 +574,12 @@ const EN: CompanyTranslations = {
     ],
   },
   vision: {
-    eyebrow: "Vision 2025",
+    eyebrow: "Vision 2030",
     statement: '"Bumjin grows together with our customers and Bumjin people."',
     description:
-      "Aiming for KRW 1 trillion in revenue, Vision 2025 identifies core business pillars capable of 100-year longevity, continuously advances R&D and infrastructure, and fosters talent and an energetic corporate culture to grow alongside our customers.",
+      "Aiming for KRW 1 trillion in revenue by 2030, Vision 2030 identifies core business pillars capable of 100-year longevity, continuously advances R&D and infrastructure, and fosters talent and an energetic corporate culture to grow alongside our customers.",
     goals: [
-      { value: "₩1T", label: "2025 Revenue Target" },
+      { value: "₩1T", label: "2030 Revenue Target" },
       { value: "100 Yrs", label: "Long-Term Vision" },
       { value: "30+", label: "Years of Heritage" },
       { value: "6", label: "Global Production Sites" },
@@ -649,6 +669,13 @@ const EN: CompanyTranslations = {
         hq: "Gwonseon-gu, Suwon-si, Gyeonggi-do",
         href: "/business/molding",
       },
+      {
+        category: "R&D & Precision Components",
+        founded: "August 2008",
+        businessField: "Acoustic & electronics R&D and core module solutions",
+        hq: "217, Saneop-ro 155beon-gil, Gwonseon-gu, Suwon-si",
+        href: "/business/startup",
+      },
     ],
     subsidiaries: [
       {
@@ -681,6 +708,19 @@ const EN: CompanyTranslations = {
         products: ["Mold Design & Fabrication", "Appliance Injection Molding", "Automotive Injection Molding"],
         roles: ["Precision Mold Development", "Injection Molding Production", "Global Manufacturing Support"],
         dark: false,
+      },
+      {
+        name: "Bumjin C&L Co., Ltd.",
+        en: "Bumjin C&L",
+        tagline: "Next-Gen Acoustic & Electronics R&D and Core Module Solutions",
+        desc: "Anchored by its certified corporate R&D center, Bumjin C&L leads the group's technological edge in next-generation acoustic components, advanced materials, and module engineering.",
+        locations: ["Bumjin C&L HQ (Suwon)", "Corporate R&D Center"],
+        revenue: "₩60B+",
+        employees: "180+",
+        productsLabel: "Core Focus",
+        products: ["Acoustic & Electronics R&D", "Core Module Engineering", "Advanced Materials & Startup Support"],
+        roles: ["Advanced R&D", "Module Engineering", "New Business Incubation"],
+        dark: true,
       },
     ],
     coreMessage:
@@ -748,7 +788,7 @@ const EN: CompanyTranslations = {
       {
         name: "Bumjin IND Mold Plant",
         type: "Mold Manufacturing",
-        address: "Gosaek-dong, Gwonseon-gu, Suwon-si, Gyeonggi-do",
+        address: "174-14, Saneop-ro, Gwonseon-gu, Suwon-si, Gyeonggi-do",
         phone: "031-676-1461",
         note: "Precision mold design & fabrication",
       },
@@ -881,12 +921,12 @@ const ZH: CompanyTranslations = {
     ],
   },
   vision: {
-    eyebrow: "Vision 2025",
+    eyebrow: "Vision 2030",
     statement: '"凡真与客户及凡真人同行共成长。"',
     description:
-      "Vision 2025以实现1万亿韩元营收为目标，发掘可成长为百年企业的核心事业群，持续升级研发与基础设施，培养人才并建设充满活力的组织文化，与客户携手共创未来。",
+      "Vision 2030以到2030年实现1万亿韩元营收为目标，发掘可成长为百年企业的核心事业群，持续升级研发与基础设施，培养人才并建设充满活力的组织文化，与客户携手共创未来。",
     goals: [
-      { value: "1兆", label: "2025营收目标" },
+      { value: "1兆", label: "2030营收目标" },
       { value: "100年", label: "长期目标" },
       { value: "30+", label: "创立年数" },
       { value: "6国", label: "全球生产基地" },
@@ -961,6 +1001,13 @@ const ZH: CompanyTranslations = {
         hq: "京畿道水原市劝善区",
         href: "/business/molding",
       },
+      {
+        category: "R&D & Precision Components",
+        founded: "2008年 08月",
+        businessField: "音响·电子研发及核心零部件与模组解决方案",
+        hq: "京畿道水原市劝善区产业路155街217",
+        href: "/business/startup",
+      },
     ],
     subsidiaries: [
       {
@@ -988,6 +1035,19 @@ const ZH: CompanyTranslations = {
         products: ["模具设计与制造", "生活家电注塑成型", "汽车零部件注塑成型"],
         roles: ["精密模具开发", "注塑成型生产", "全球制造支持"],
         dark: false,
+      },
+      {
+        name: "凡真C&L(株)",
+        en: "Bumjin C&L Co., Ltd.",
+        tagline: "新一代音响·电子研发及核心模组解决方案",
+        desc: "凡真C&L以企业附属研究所为核心，开展新一代音响·电子零部件研发及新材料·模组研究，引领凡真集团的技术竞争力。",
+        locations: ["凡真C&L 总部（水原）", "企业附属研究所"],
+        revenue: "600亿+",
+        employees: "180+",
+        productsLabel: "核心能力",
+        products: ["音响·电子先行研究", "核心模组开发", "新材料·初创技术支持"],
+        roles: ["前沿技术研发", "零部件·模组工程", "新事业孵化"],
+        dark: true,
       },
     ],
     coreMessage:
@@ -1055,7 +1115,7 @@ const ZH: CompanyTranslations = {
       {
         name: "凡真IND 模具事业部",
         type: "模具制造",
-        address: "京畿道水原市劝善区古索洞",
+        address: "京畿道水原市劝善区产业路174-14（古索洞）",
         phone: "031-676-1461",
         note: "模具设计与制造专业基地",
       },
@@ -1189,12 +1249,12 @@ const JA: CompanyTranslations = {
     ],
   },
   vision: {
-    eyebrow: "Vision 2025",
+    eyebrow: "Vision 2030",
     statement: '"ボムジンは顧客とボムジン人の同行により成長する。"',
     description:
-      "Vision 2025は売上1兆ウォン達成を目標に、100年企業へと成長可能な中核事業群を発掘し、R&Dおよびインフラを継続的に発展させ、人材育成と活気ある組織文化の構築によってお客様とともに成長する未来を創造します。",
+      "Vision 2030は2030年までの売上1兆ウォン達成を目標に、100年企業へと成長可能な中核事業群を発掘し、R&Dおよびインフラを継続的に発展させ、人材育成と活気ある組織文化の構築によってお客様とともに成長する未来を創造します。",
     goals: [
-      { value: "1兆", label: "2025年売上目標" },
+      { value: "1兆", label: "2030年売上目標" },
       { value: "100年", label: "長期目標" },
       { value: "30+", label: "創業年数" },
       { value: "6ヶ国", label: "グローバル生産拠点" },
@@ -1269,6 +1329,13 @@ const JA: CompanyTranslations = {
         hq: "京畿道水原市勧善区",
         href: "/business/molding",
       },
+      {
+        category: "R&D & Precision Components",
+        founded: "2008年 08月",
+        businessField: "音響・電子R&Dおよびコア部品・モジュールソリューション",
+        hq: "京畿道水原市勧善区産業路155番キル217",
+        href: "/business/startup",
+      },
     ],
     subsidiaries: [
       {
@@ -1296,6 +1363,19 @@ const JA: CompanyTranslations = {
         products: ["金型設計・製作", "生活家電射出成形", "自動車部品射出成形"],
         roles: ["精密金型開発", "射出成形生産", "グローバル製造支援"],
         dark: false,
+      },
+      {
+        name: "ボムジンC&L(株)",
+        en: "Bumjin C&L Co., Ltd.",
+        tagline: "次世代音響・電子R&Dおよびコアモジュールソリューション",
+        desc: "ボムジンC&Lは企業付設研究所を拠点に、次世代音響・電子部品の開発や新素材・モジュール研究を担い、グループの技術競争力を牽引しています。",
+        locations: ["ボムジンC&L 本社（水原）", "企業付設研究所"],
+        revenue: "600億+",
+        employees: "180+",
+        productsLabel: "コア領域",
+        products: ["音響・電子先行研究", "コアモジュール開発", "新素材・スタートアップ支援"],
+        roles: ["先行技術R&D", "部品・モジュール設計", "新規事業インキュベーション"],
+        dark: true,
       },
     ],
     coreMessage:
@@ -1363,7 +1443,7 @@ const JA: CompanyTranslations = {
       {
         name: "ボムジンIND 金型事業所",
         type: "金型製造",
-        address: "京畿道水原市勧善区古索洞",
+        address: "京畿道水原市勧善区産業路174-14（古索洞）",
         phone: "031-676-1461",
         note: "金型設計・製作専門事業所",
       },

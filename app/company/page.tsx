@@ -119,120 +119,44 @@ function OverviewSection({
       {/* Full-width divider */}
       <div className="h-px bg-gray-100 mx-6 lg:mx-10" />
 
-      {/* 사훈 — arch layout */}
-      <div className="mx-auto pt-20 pb-0 px-12" style={{ maxWidth: "1200px" }}>
+      {/* 사훈 — Motrex-style hairline grid */}
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-20 pb-0">
         <FadeIn>
-          <p
-            className="font-semibold tracking-[0.4em] uppercase mb-16"
-            style={{ fontSize: "11px", color: "#999999" }}
-          >
+          <p className="text-[11px] font-semibold tracking-[0.35em] uppercase text-red-600 mb-10">
             {t.visionEyebrow}
           </p>
         </FadeIn>
 
-        {/* Horizontal scroll wrapper for narrow viewports */}
-        <div className="overflow-x-auto">
-          <div style={{ minWidth: "680px" }}>
-            {/* All 5 arches in a single SVG for seamless stroke alignment */}
-            <FadeIn>
-              <svg
-                viewBox="0 0 1000 115"
-                className="w-full block"
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border-l border-t border-gray-200 bg-white">
+          {t.mottoItems.map((item, i) => (
+            <motion.div
+              key={item.num}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.06, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative p-6 lg:p-7 border-r border-b border-gray-200 hover:bg-[#F8F9FB] transition-colors flex flex-col justify-between"
+            >
+              <span
                 aria-hidden="true"
-                style={{ aspectRatio: "1000 / 115" }}
-              >
-                {t.mottoItems.map((item, i) => (
-                  <g key={i}>
-                    {/* Arch: M start-x,base A radius radius 0 0 0 end-x,base */}
-                    <path
-                      d={`M ${i * 200} 108 A 100 100 0 0 0 ${i * 200 + 200} 108`}
-                      stroke="#111111"
-                      strokeWidth="1"
-                      fill="none"
-                    />
-                    {/* Junction dot between arches */}
-                    {i > 0 && (
-                      <circle cx={i * 200} cy={108} r="3.5" fill="#111111" />
-                    )}
-                    {/* Keyword centered inside arch */}
-                    <text
-                      x={i * 200 + 100}
-                      y={78}
-                      textAnchor="middle"
-                      fontFamily="Pretendard Variable, Pretendard, sans-serif"
-                      fontSize={lang === "en" ? 23 : 30}
-                      fontWeight={700}
-                      fill="#c0392b"
-                    >
-                      {item.archLabel}
-                    </text>
-                  </g>
-                ))}
-              </svg>
-            </FadeIn>
-
-            {/* Detail columns */}
-            <div className="grid grid-cols-5 divide-x divide-[#e8e8e8] border-t border-[#e8e8e8]">
-              {t.mottoItems.map((item, i) => (
-                <motion.div
-                  key={item.num}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.07, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  style={{ padding: "24px 20px 40px" }}
-                >
-                  <p
-                    style={{
-                      color: "#c0392b",
-                      fontSize: "11px",
-                      letterSpacing: "2px",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    {item.num}
-                  </p>
-                  <p
-                    style={{
-                      color: "#111111",
-                      fontSize: "clamp(16px, 1.7vw, 24px)",
-                      fontWeight: 500,
-                      marginBottom: "6px",
-                      lineHeight: 1.3,
-                    }}
-                  >
-                    {item.en}
-                  </p>
-                  <p
-                    style={{
-                      color: "#999999",
-                      fontSize: "16px",
-                      marginBottom: "14px",
-                    }}
-                  >
-                    {item.title}
-                  </p>
-                  <div
-                    style={{
-                      height: "1px",
-                      backgroundColor: "#e0e0e0",
-                      marginBottom: "14px",
-                    }}
-                  />
-                  <p
-                    style={{
-                      color: "#666666",
-                      fontSize: "15px",
-                      fontWeight: 400,
-                      lineHeight: 1.8,
-                    }}
-                  >
-                    {item.body}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+                className="absolute top-0 left-0 right-0 h-[2px] bg-red-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+              />
+              <div>
+                <p className="text-[11px] font-bold text-red-600 tracking-wider mb-5 tabular-nums">
+                  {item.num}
+                </p>
+                <h3 className="text-[18px] font-bold text-gray-900 mb-1.5 leading-snug">
+                  {item.title}
+                </h3>
+                <p className="text-[11px] font-medium text-gray-400 tracking-wide mb-5">
+                  {item.en}
+                </p>
+              </div>
+              <p className="text-[13px] text-gray-600 leading-[1.75] pt-4 border-t border-gray-100">
+                {item.body}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </div>
 
@@ -367,11 +291,11 @@ function CEOSection({
                 <p className="text-[16px] font-black text-gray-900 mt-1">{t.ceoTitle}</p>
               </div>
               <Image
-                src="/bumjin%20icon.jpg"
-                alt="Bumjin Electronics"
-                width={80}
-                height={24}
-                className="h-6 w-auto object-contain opacity-20"
+                src="/images/cen_sign.png"
+                alt="CEO Signature"
+                width={120}
+                height={48}
+                className="h-10 w-auto object-contain opacity-85"
               />
             </div>
           </FadeIn>

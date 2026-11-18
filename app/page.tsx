@@ -853,7 +853,73 @@ function Footer({ lang }: { lang: Lang }) {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Affiliates & Family Site strip (Motrex + BUMJIN.html) */}
+        <div className="pt-8 pb-6 border-t border-white/10 grid lg:grid-cols-[1fr_auto] gap-6 items-start">
+          <div className="grid sm:grid-cols-3 gap-4 text-[12px] text-gray-400">
+            <div>
+              <p className="text-white/90 font-semibold mb-1">
+                {lang === "ko" ? "범진전자(주)" : "Bumjin Electronics Co., Ltd."}
+              </p>
+              <p className="text-gray-500 text-[11px] leading-relaxed">
+                {lang === "ko"
+                  ? "경기도 수원시 권선구 산업로 155번길 217"
+                  : "217, Saneop-ro 155beon-gil, Suwon-si"}
+                <br />
+                TEL. 031-493-9415
+              </p>
+            </div>
+            <div>
+              <p className="text-white/90 font-semibold mb-1">
+                {lang === "ko" ? "범진아이엔디(주)" : "Bumjin I&D Co., Ltd."}
+              </p>
+              <p className="text-gray-500 text-[11px] leading-relaxed">
+                {lang === "ko"
+                  ? "경기도 수원시 권선구 산업로 174-14"
+                  : "174-14, Saneop-ro, Gwonseon-gu, Suwon-si"}
+                <br />
+                TEL. 031-676-1461
+              </p>
+            </div>
+            <div>
+              <p className="text-white/90 font-semibold mb-1">
+                {lang === "ko" ? "범진시엔엘(주)" : "Bumjin C&L Co., Ltd."}
+              </p>
+              <p className="text-gray-500 text-[11px] leading-relaxed">
+                {lang === "ko"
+                  ? "경기도 수원시 권선구 산업로 155번길 217"
+                  : "217, Saneop-ro 155beon-gil, Suwon-si"}
+                <br />
+                TEL. 031-493-9415
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4 lg:justify-end">
+            <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-500">
+              Family Site
+            </span>
+            <Link href="/company#affiliate-0" className="text-[12px] text-gray-400 hover:text-white transition-colors">
+              {lang === "ko" ? "범진전자" : "Bumjin Electronics"}
+            </Link>
+            <Link href="/company#affiliate-1" className="text-[12px] text-gray-400 hover:text-white transition-colors">
+              {lang === "ko" ? "범진IND" : "Bumjin I&D"}
+            </Link>
+            <Link href="/company#affiliate-2" className="text-[12px] text-gray-400 hover:text-white transition-colors">
+              {lang === "ko" ? "범진C&L" : "Bumjin C&L"}
+            </Link>
+            <a
+              href="https://bumjin.career.greetinghr.com/ko/home"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[12px] text-red-400 hover:text-red-300 transition-colors"
+            >
+              <span>Bumjin Recruit</span>
+              <ExternalLink className="size-3" />
+            </a>
+          </div>
+        </div>
+
+        <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-[11px]">© {new Date().getFullYear()} {t.copyright}</p>
           <p className="text-gray-500 text-[10px] tracking-[0.25em] uppercase">{t.tagline}</p>
         </div>
