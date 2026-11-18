@@ -72,7 +72,27 @@ export const translations = {
     technology: {
       label: "기술역량",
       heading: "음향과 기술이 만나는 곳",
-      subtitle: "세계에서 가장 까다로운 오디오 브랜드들이 범진을 선택하는 6가지 핵심 역량.",
+      subtitle: "세계에서 가장 까다로운 오디오 브랜드들이 범진을 선택하는 12가지 핵심 역량.",
+      tabs: {
+        all: "전체",
+        acoustic: "음향 설계",
+        manufacturing: "제조",
+        certification: "품질 인증",
+      },
+      items: [
+        { id: "c1", category: "acoustic", title: "DSP 엔지니어링 & 음향 튜닝", desc: "24비트 DSP 알고리즘 설계, 무향실 측정, 목표 커브 매칭으로 정밀 음색 구현." },
+        { id: "c2", category: "acoustic", title: "커스텀 드라이버 제조", desc: "우퍼·트위터 맞춤 설계, 마그넷 최적화, 보이스코일 와인딩 내재화." },
+        { id: "c3", category: "acoustic", title: "Dolby Atmos / DTS:X 인증", desc: "공간음향 렌더링 파이프라인 구축 및 Dolby·DTS 공식 인증 라이선스 취득." },
+        { id: "c4", category: "acoustic", title: "AirPlay 2 / Chromecast 연동", desc: "Wi-Fi 멀티룸 스트리밍 모듈 통합 및 iOS·Android 전 플랫폼 호환성 검증." },
+        { id: "c5", category: "manufacturing", title: "Class-D & Class-AB 앰프 설계", desc: "고효율 D급 앰프 및 저왜율 AB급 앰프 고객사 사양 맞춤 설계." },
+        { id: "c6", category: "manufacturing", title: "Wi-Fi 6 & Bluetooth 5.3 통합", desc: "최신 무선 모듈 통합, 레이턴시 최적화, 각국 RF 공인 시험 일괄 지원." },
+        { id: "c7", category: "manufacturing", title: "인하우스 CNC & EDM 금형", desc: "자체 NC·방전 가공 설비로 리드타임 업계 평균 대비 40% 단축 달성." },
+        { id: "c8", category: "manufacturing", title: "SMT 실장 & AOI 검사", desc: "고속 SMT 라인(0201 부품 대응), 자동 광학검사 100% 전수 적용." },
+        { id: "c9", category: "certification", title: "Hi-Res Audio 인증", desc: "일본음향협회 기준 40kHz 이상 재생 능력 검증 및 로고 라이선싱 취득." },
+        { id: "c10", category: "certification", title: "HDMI eARC / HDMI 2.1 모듈", desc: "최신 HDMI 규격 전면 대응, eARC 음성 패스스루 회로 자체 설계." },
+        { id: "c11", category: "certification", title: "무향실 측정", desc: "자체 운영 무향실에서 FR·THD·방향성·지향성 전 항목 정밀 측정." },
+        { id: "c12", category: "certification", title: "ISO 9001 / IATF 16949 QMS", desc: "전사 품질경영시스템 인증 유지, 자동차 전장 품질 기준 완전 대응." },
+      ],
     },
     global: {
       label: "글로벌 네트워크",
@@ -98,6 +118,39 @@ export const translations = {
       subtitle:
         "기획부터 출하까지 6단계의 턴키 파이프라인으로 프리미엄 오디오 제품을 완성합니다.",
       cta: "공장 견학 신청",
+      viewDetail: "상세 보기",
+      steps: [
+        {
+          step: "01", title: "기획", titleEn: "Planning",
+          body: "R&D 공동 기획, 시장 조사, 음향 모델링, 산업 디자인 방향 수립.",
+          detail: "클라이언트 R&D팀과 공동으로 제품 기획 단계를 진행합니다. 시장 조사, 타겟 사양 정의, 음향 모델링, PCB 구성 검토, 산업 디자인 방향 수립까지 전 과정을 지원합니다.",
+        },
+        {
+          step: "02", title: "설계", titleEn: "Engineering",
+          body: "PCB·기구·음향 통합 설계. DFM·DFA 검토 완료 후 시제품 제작.",
+          detail: "회로 설계(PCB 레이아웃, EMC 최적화), 기구 설계(3D CAD), 음향 설계(FEA 시뮬레이션)를 통합적으로 수행합니다. 시제품 제작 전 DFM·DFA 검토를 완료합니다.",
+        },
+        {
+          step: "03", title: "사출", titleEn: "Molding",
+          body: "자체 CNC·EDM 금형. 리드타임 업계 평균 대비 40% 단축.",
+          detail: "자체 CNC 및 EDM 설비로 금형을 제작합니다. 리드타임은 업계 평균 대비 40% 단축되며 PP·ABS·PC 등 다양한 수지 재료를 지원합니다. 게이트 위치 최적화로 싱크·워프를 최소화합니다.",
+        },
+        {
+          step: "04", title: "조립", titleEn: "Assembly",
+          body: "고속 SMT·AOI 검사. 로봇 자동 조립, 100% 음향 캘리브레이션.",
+          detail: "고속 SMT 라인(0201 대응)과 AOI 자동광학검사를 거쳐 PCB를 실장합니다. 로봇 자동화 조립 라인에서 드라이버·앰프·DSP 모듈을 통합하고 100% 라인엔드 음향 캘리브레이션을 수행합니다.",
+        },
+        {
+          step: "05", title: "품질", titleEn: "Quality",
+          body: "AQL 샘플링, CE·FCC·UL 인증, ISO 9001 / IATF 16949 준수.",
+          detail: "AQL 샘플링 검사, CE·FCC·UL 인증 대응, 고객사별 맞춤 패키징을 진행합니다. ISO 9001 / IATF 16949 품질경영 시스템을 기반으로 전수 검사와 신뢰성 시험을 병행합니다.",
+        },
+        {
+          step: "06", title: "물류", titleEn: "Logistics",
+          body: "6개 거점 항공·해상·철도 네트워크. 3PL 연동·실시간 추적.",
+          detail: "6개 거점(한국·중국·베트남·인도네시아·멕시코·헝가리)에서 항공·해상·철도를 활용한 글로벌 배송 네트워크를 운영합니다. 3PL 직접 연동 및 실시간 재고 추적 시스템을 제공합니다.",
+        },
+      ],
     },
     clients: {
       label: "고객사",
@@ -124,11 +177,19 @@ export const translations = {
       headingEnd: "을 시작하세요.",
       subtitle:
         "모든 문의는 시니어 BD팀이 상호 NDA 하에 처리합니다. 영업일 기준 24시간 내 회신 드립니다.",
+      address: "경기도 수원시 권선구 고색동 (본사 · 금형사업장)",
+      phones: [
+        { dept: "전자", num: "031-493-9415" },
+        { dept: "금형", num: "031-676-1461" },
+        { dept: "성형", num: "031-210-4930" },
+      ],
       ndaBox:
         "최초 상담 중 공유되는 모든 정보는 범진전자의 표준 상호 비밀유지계약(MNDA)에 의해 자동으로 보호됩니다.",
       form: {
         firstName: "이름",
+        firstNamePlaceholder: "길동",
         lastName: "성",
+        lastNamePlaceholder: "홍",
         company: "회사명",
         email: "업무용 이메일",
         phone: "전화번호",
@@ -144,7 +205,7 @@ export const translations = {
       },
     },
     footer: {
-      desc: "8개국 6개 시설에 걸친 글로벌 생산 역량을 보유한 프리미엄 사운드바 ODM/OEM 제조기업.",
+      desc: "6개국 8개 시설에 걸친 글로벌 생산 역량을 보유한 프리미엄 사운드바 ODM/OEM 제조기업.",
       careers: "채용 정보",
       solutions: "솔루션",
       company: "회사",
@@ -224,7 +285,27 @@ export const translations = {
     technology: {
       label: "Technology",
       heading: "Where Acoustics Meet Engineering.",
-      subtitle: "Six core competencies that make Bumjin the manufacturing partner of choice for the world's most demanding audio brands.",
+      subtitle: "Twelve core capabilities that make Bumjin the manufacturing partner of choice for global audio brands.",
+      tabs: {
+        all: "All",
+        acoustic: "Acoustic Design",
+        manufacturing: "Manufacturing",
+        certification: "Quality & Cert",
+      },
+      items: [
+        { id: "c1", category: "acoustic", title: "DSP Engineering & Acoustic Tuning", desc: "24-bit DSP algorithm design, anechoic chamber measurement, and target curve matching." },
+        { id: "c2", category: "acoustic", title: "Custom Driver Manufacturing", desc: "Bespoke woofer & tweeter design, magnet optimization, and in-house voice-coil winding." },
+        { id: "c3", category: "acoustic", title: "Dolby Atmos / DTS:X Certified", desc: "Spatial audio rendering pipelines and official Dolby & DTS certification licensing." },
+        { id: "c4", category: "acoustic", title: "AirPlay 2 / Chromecast Integration", desc: "Wi-Fi multi-room streaming module integration with full iOS & Android compatibility." },
+        { id: "c5", category: "manufacturing", title: "Class-D & Class-AB Amp Design", desc: "High-efficiency Class-D and low-THD Class-AB amplifier topologies tailored to spec." },
+        { id: "c6", category: "manufacturing", title: "Wi-Fi 6 & Bluetooth 5.3", desc: "Latest wireless module integration, latency optimization, and global RF compliance." },
+        { id: "c7", category: "manufacturing", title: "In-House CNC & EDM Tooling", desc: "Dedicated NC & EDM machining centers reducing tooling lead times by 40%." },
+        { id: "c8", category: "manufacturing", title: "High-Speed SMT & 100% AOI", desc: "0201 component placement lines with 100% automated optical inspection." },
+        { id: "c9", category: "certification", title: "Hi-Res Audio Certification", desc: "JAS-compliant 40kHz+ frequency response verification and official logo licensing." },
+        { id: "c10", category: "certification", title: "HDMI eARC / HDMI 2.1", desc: "Full compliance with latest HDMI specs and proprietary eARC pass-through circuits." },
+        { id: "c11", category: "certification", title: "Anechoic Chamber Testing", desc: "Precision FR, THD, dispersion, and directivity testing in our in-house anechoic lab." },
+        { id: "c12", category: "certification", title: "ISO 9001 / IATF 16949 QMS", desc: "Enterprise quality management certified to automotive-grade reliability standards." },
+      ],
     },
     global: {
       label: "Global Network",
@@ -250,6 +331,39 @@ export const translations = {
       subtitle:
         "A six-stage turn-key pipeline engineered to bring premium audio products from initial brief to retail-ready units at scale.",
       cta: "Request a Factory Tour",
+      viewDetail: "View Details",
+      steps: [
+        {
+          step: "01", title: "Planning", titleEn: "Planning",
+          body: "Joint R&D planning, market research, acoustic modeling, and industrial design.",
+          detail: "We co-develop product roadmaps with client R&D teams, covering market research, target specifications, acoustic modeling, PCB architecture, and industrial design direction.",
+        },
+        {
+          step: "02", title: "Engineering", titleEn: "Engineering",
+          body: "Integrated PCB, mechanical & acoustic design with full DFM/DFA review.",
+          detail: "Integrated circuit layout (EMC optimization), 3D CAD mechanical engineering, and FEA acoustic simulation — validated through thorough DFM/DFA reviews prior to prototyping.",
+        },
+        {
+          step: "03", title: "Molding", titleEn: "Molding",
+          body: "In-house CNC & EDM tooling with 40% shorter lead times than industry average.",
+          detail: "In-house CNC and EDM mold fabrication supporting PP, ABS, PC, and engineering resins. Gate optimization minimizes sink marks and warpage.",
+        },
+        {
+          step: "04", title: "Assembly", titleEn: "Assembly",
+          body: "High-speed SMT, AOI inspection, robotic assembly, and 100% acoustic calibration.",
+          detail: "0201-capable SMT lines with 100% AOI verification feed into automated robotic assembly and 100% end-of-line acoustic calibration.",
+        },
+        {
+          step: "05", title: "Quality", titleEn: "Quality",
+          body: "AQL sampling, CE/FCC/UL compliance, and ISO 9001 / IATF 16949 QMS.",
+          detail: "Multi-stage quality gates including AQL sampling, CE/FCC/UL regulatory compliance, custom packaging, and automotive-grade reliability testing.",
+        },
+        {
+          step: "06", title: "Logistics", titleEn: "Logistics",
+          body: "6-hub air, sea & rail network with 3PL integration and real-time tracking.",
+          detail: "Global fulfillment across 6 regional hubs (Korea, China, Vietnam, Indonesia, Mexico, Hungary) with direct 3PL integration and real-time inventory tracking.",
+        },
+      ],
     },
     clients: {
       label: "Client Portfolio",
@@ -276,11 +390,19 @@ export const translations = {
       headingEnd: "Partnership.",
       subtitle:
         "All enquiries are handled under mutual NDA by our senior business development team. We typically respond within 24 hours.",
+      address: "Gosaek-dong, Gwonseon-gu, Suwon-si, Gyeonggi-do, Korea",
+      phones: [
+        { dept: "Elec", num: "+82-31-493-9415" },
+        { dept: "Mold", num: "+82-31-676-1461" },
+        { dept: "Inj", num: "+82-31-210-4930" },
+      ],
       ndaBox:
         "All information shared during initial consultation is automatically covered under our standard Mutual Non-Disclosure Agreement (MNDA).",
       form: {
         firstName: "First Name",
+        firstNamePlaceholder: "John",
         lastName: "Last Name",
+        lastNamePlaceholder: "Smith",
         company: "Company",
         email: "Business Email",
         phone: "Phone",
@@ -375,7 +497,27 @@ export const translations = {
     technology: {
       label: "技术能力",
       heading: "声学与工程的交汇点。",
-      subtitle: "六大核心能力，助范珍成为全球最苛刻音响品牌的首选制造合作伙伴。",
+      subtitle: "十二大核心能力，助范珍成为全球最苛刻音响品牌的首选制造合作伙伴。",
+      tabs: {
+        all: "全部",
+        acoustic: "声学设计",
+        manufacturing: "制造工艺",
+        certification: "质量认证",
+      },
+      items: [
+        { id: "c1", category: "acoustic", title: "DSP 工程与声学调音", desc: "24位DSP算法设计、消声室测量与目标曲线精准匹配。" },
+        { id: "c2", category: "acoustic", title: "定制扬声器单元制造", desc: "低音/高音单元定制设计、磁路优化及音圈自主绕制。" },
+        { id: "c3", category: "acoustic", title: "Dolby Atmos / DTS:X 认证", desc: "空间音频渲染管线构建与 Dolby·DTS 官方认证授权。" },
+        { id: "c4", category: "acoustic", title: "AirPlay 2 / Chromecast 集成", desc: "Wi-Fi多房间流媒体模块集成与 iOS·Android 全平台兼容验证。" },
+        { id: "c5", category: "manufacturing", title: "Class-D 与 Class-AB 功放设计", desc: "高效率D类与低失真AB类功放按客户规格定制开发。" },
+        { id: "c6", category: "manufacturing", title: "Wi-Fi 6 与 Bluetooth 5.3", desc: "新一代无线模块集成、低延迟优化及各国RF认证一站式支持。" },
+        { id: "c7", category: "manufacturing", title: "自主 CNC 与 EDM 模具", desc: "自有数控与电火花加工中心，模具交期较行业平均缩短40%。" },
+        { id: "c8", category: "manufacturing", title: "高速 SMT 与 100% AOI 检测", desc: "支持0201元件的高速SMT产线与100%自动光学检测。" },
+        { id: "c9", category: "certification", title: "Hi-Res Audio 认证", desc: "符合JAS标准的40kHz+频响验证与官方标识授权。" },
+        { id: "c10", category: "certification", title: "HDMI eARC / HDMI 2.1", desc: "全面支持最新HDMI规范及自主研发的eARC音频回传电路。" },
+        { id: "c11", category: "certification", title: "消声室精密测量", desc: "自有消声实验室完成频响、失真度与指向性全项精密测试。" },
+        { id: "c12", category: "certification", title: "ISO 9001 / IATF 16949 体系", desc: "全面遵循汽车级可靠性标准的企业质量管理体系。" },
+      ],
     },
     global: {
       label: "全球网络",
@@ -399,6 +541,39 @@ export const translations = {
       headingAccent: "大规模量产。",
       subtitle: "六阶段交钥匙流水线，将高端音响产品从初始简报打造为零售就绪单元。",
       cta: "申请工厂参观",
+      viewDetail: "查看详情",
+      steps: [
+        {
+          step: "01", title: "联合策划", titleEn: "Planning",
+          body: "R&D联合策划、市场调研、声学建模与工业设计方向制定。",
+          detail: "与客户研发团队共同推进产品策划，涵盖市场调研、目标规格定义、声学建模、PCB架构评审及工业设计方向制定。",
+        },
+        {
+          step: "02", title: "工程设计", titleEn: "Engineering",
+          body: "PCB·结构·声学一体化设计，完成DFM·DFA评审后试产打样。",
+          detail: "统筹完成电路布局（EMC优化）、3D CAD结构设计与FEA声学仿真，并在打样前完成严谨的DFM/DFA评审。",
+        },
+        {
+          step: "03", title: "模具注塑", titleEn: "Molding",
+          body: "自主CNC·EDM模具制造，交期比行业平均缩短40%。",
+          detail: "自有CNC与EDM设备制作模具，支持PP、ABS、PC等多种工程塑料，优化浇口位置以减少缩痕与翘曲。",
+        },
+        {
+          step: "04", title: "自动化组装", titleEn: "Assembly",
+          body: "高速SMT·AOI检测、机器人自动组装与100%声学校准。",
+          detail: "支持0201的高速SMT产线配合100% AOI检测，与机器人自动化组装及100%产线末端声学校准无缝衔接。",
+        },
+        {
+          step: "05", title: "品质管控", titleEn: "Quality",
+          body: "AQL抽检、CE·FCC·UL认证及ISO 9001 / IATF 16949标准执行。",
+          detail: "严格执行AQL抽样、CE/FCC/UL合规测试、定制化包装及汽车级可靠性实验。",
+        },
+        {
+          step: "06", title: "全球物流", titleEn: "Logistics",
+          body: "6大枢纽空海铁联运网络，3PL直连与实时库存追踪。",
+          detail: "依托韩国、中国、越南、印尼、墨西哥、匈牙利6大区域枢纽，提供3PL直连与实时追踪配送。",
+        },
+      ],
     },
     clients: {
       label: "客户案例",
@@ -423,10 +598,18 @@ export const translations = {
       headingAccent: "世界级",
       headingEnd: "合作伙伴关系。",
       subtitle: "所有询盘均由高级业务开发团队在相互保密协议下处理，通常24小时内回复。",
+      address: "韩国京畿道水原市劝善区古索洞（总部 · 模具事业部）",
+      phones: [
+        { dept: "电子", num: "+82-31-493-9415" },
+        { dept: "模具", num: "+82-31-676-1461" },
+        { dept: "注塑", num: "+82-31-210-4930" },
+      ],
       ndaBox: "初次咨询中共享的所有信息将自动受到范珍电子标准相互保密协议（MNDA）的保护。",
       form: {
         firstName: "名",
+        firstNamePlaceholder: "明",
         lastName: "姓",
+        lastNamePlaceholder: "李",
         company: "公司名称",
         email: "工作邮箱",
         phone: "电话",
@@ -441,7 +624,7 @@ export const translations = {
       },
     },
     footer: {
-      desc: "拥有8个全球生产基地（覆盖6个国家）的高端声棒ODM/OEM制造商。",
+      desc: "拥有6个国家8个全球生产基地的高端声棒ODM/OEM制造商。",
       careers: "加入我们",
       solutions: "解决方案",
       company: "公司",
@@ -521,7 +704,27 @@ export const translations = {
     technology: {
       label: "技術力",
       heading: "音響と技術が出会う場所。",
-      subtitle: "世界で最も厳しいオーディオブランドが範珍を選ぶ6つのコア技術力。",
+      subtitle: "世界で最も厳しいオーディオブランドが範珍を選ぶ12のコア技術力。",
+      tabs: {
+        all: "すべて",
+        acoustic: "音響設計",
+        manufacturing: "製造技術",
+        certification: "品質・認証",
+      },
+      items: [
+        { id: "c1", category: "acoustic", title: "DSPエンジニアリング・音響チューニング", desc: "24bit DSPアルゴリズム設計、無響室測定、目標カーブへの精密な音色調整。" },
+        { id: "c2", category: "acoustic", title: "カスタムドライバー製造", desc: "ウーファー・ツイーターの専用設計、磁気回路最適化、ボイスコイル内製巻線。" },
+        { id: "c3", category: "acoustic", title: "Dolby Atmos / DTS:X 認証", desc: "空間オーディオレンダリング構築およびDolby・DTS公式ライセンス取得。" },
+        { id: "c4", category: "acoustic", title: "AirPlay 2 / Chromecast 連携", desc: "Wi-Fiマルチルームモジュール統合とiOS・Android全プラットフォーム検証。" },
+        { id: "c5", category: "manufacturing", title: "Class-D / Class-AB アンプ設計", desc: "高効率D級・低歪みAB級アンプをお客様の仕様に合わせてカスタム設計。" },
+        { id: "c6", category: "manufacturing", title: "Wi-Fi 6 & Bluetooth 5.3", desc: "最新無線モジュール統合、低遅延最適化、各国RF認証試験の一括対応。" },
+        { id: "c7", category: "manufacturing", title: "自社CNC・EDM金型製作", desc: "社内NC・放電加工設備により金型リードタイムを業界平均比40%短縮。" },
+        { id: "c8", category: "manufacturing", title: "高速SMT実装・100% AOI検査", desc: "0201部品対応の高速SMTラインと100%自動光学検査を実施。" },
+        { id: "c9", category: "certification", title: "Hi-Res Audio 認証", desc: "日本オーディオ協会基準40kHz以上の再生能力検証と公式ロゴ取得。" },
+        { id: "c10", category: "certification", title: "HDMI eARC / HDMI 2.1", desc: "最新HDMI規格への全面対応および独自eARCパススルー回路設計。" },
+        { id: "c11", category: "certification", title: "無響室精密測定", desc: "社内無響室にて周波数特性・歪み率・指向性を全項目精密測定。" },
+        { id: "c12", category: "certification", title: "ISO 9001 / IATF 16949 QMS", desc: "車載電装品質基準に完全対応した全社品質マネジメントシステム。" },
+      ],
     },
     global: {
       label: "グローバルネットワーク",
@@ -545,6 +748,39 @@ export const translations = {
       headingAccent: "量産まで。",
       subtitle: "企画から出荷まで6段階のターンキー製造パイプラインでプレミアムオーディオ製品を完成させます。",
       cta: "工場見学を申し込む",
+      viewDetail: "詳細を見る",
+      steps: [
+        {
+          step: "01", title: "企画", titleEn: "Planning",
+          body: "R&D共同企画、市場調査、音響モデリング、工業デザイン策定。",
+          detail: "お客様のR&Dチームと共同で商品企画を推進し、市場調査・仕様定義・音響モデリング・PCB構成検討まで一貫支援します。",
+        },
+        {
+          step: "02", title: "設計", titleEn: "Engineering",
+          body: "PCB・機構・音響の統合設計。DFM・DFA検証後の試作製作。",
+          detail: "回路設計（EMC最適化）、3D CAD機構設計、FEA音響シミュレーションを統合し、試作前にDFM・DFA検証を完了します。",
+        },
+        {
+          step: "03", title: "成形", titleEn: "Molding",
+          body: "自社CNC・EDM金型によりリードタイムを業界平均比40%短縮。",
+          detail: "自社CNC・EDM設備による金型製作とPP・ABS・PC等各種樹脂成形に対応。ゲート最適化によりヒケ・反りを抑えます。",
+        },
+        {
+          step: "04", title: "組立", titleEn: "Assembly",
+          body: "高速SMT・AOI検査、ロボット自動組立、100%音響キャリブレーション。",
+          detail: "0201対応高速SMTと100% AOI検査を経て、ロボット自動組立およびラインエンドでの100%音響校正を行います。",
+        },
+        {
+          step: "05", title: "品質", titleEn: "Quality",
+          body: "AQL抜取検査、CE・FCC・UL認証、ISO 9001 / IATF 16949準拠。",
+          detail: "AQL検査、CE・FCC・UL各種規制認証、ブランド専用パッケージングおよび信頼性試験を徹底しています。",
+        },
+        {
+          step: "06", title: "物流", titleEn: "Logistics",
+          body: "6拠点の航空・海上・鉄道ネットワーク。3PL連携・リアルタイム追跡。",
+          detail: "韓国・中国・ベトナム・インドネシア・メキシコ・ハンガリーの6拠点から3PL連携による最適なグローバル配送を提供します。",
+        },
+      ],
     },
     clients: {
       label: "お客様",
@@ -569,10 +805,18 @@ export const translations = {
       headingAccent: "パートナーシップ",
       headingEnd: "を始めましょう。",
       subtitle: "すべてのお問い合わせは、シニアBD チームが相互NDAの下で対応いたします。通常24時間以内にご返答します。",
+      address: "韓国京畿道水原市勧善区古索洞（本社・金型事業場）",
+      phones: [
+        { dept: "電子", num: "+82-31-493-9415" },
+        { dept: "金型", num: "+82-31-676-1461" },
+        { dept: "成形", num: "+82-31-210-4930" },
+      ],
       ndaBox: "初回相談中に共有されるすべての情報は、範珍電子の標準相互秘密保持契約（MNDA）により自動的に保護されます。",
       form: {
         firstName: "名",
+        firstNamePlaceholder: "太郎",
         lastName: "姓",
+        lastNamePlaceholder: "山田",
         company: "会社名",
         email: "業務用メール",
         phone: "電話番号",

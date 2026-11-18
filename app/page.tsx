@@ -1,16 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { Fragment, useRef, useState, useEffect } from "react";
-import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
+import Link from "next/link";
+import { useRef, useState, useEffect } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   type LucideIcon,
   ArrowUpRight,
   ChevronDown,
   ChevronRight,
-  Globe2,
-  Shield,
-  BadgeCheck,
+  Globe,
   Mail,
   Phone,
   MapPin,
@@ -24,7 +23,6 @@ import {
   Wrench,
   ShieldCheck,
   Package,
-  CornerDownLeft,
   Waves,
   Activity,
   Speaker,
@@ -33,16 +31,12 @@ import {
   Layers,
   Music,
   Award,
+  BadgeCheck,
 } from "lucide-react";
 
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { FactoryGlobeMap } from "@/components/ui/factory-globe-map";
-import { BlueprintSection } from "@/components/ui/BlueprintSection";
-import { CertificateList } from "@/components/ui/CertificateList";
-import { ExplodedViewSection } from "@/components/ui/ExplodedViewSection";
-import { GlobalHubMap } from "@/components/ui/GlobalHubMap";
-import { RndBentoGrid } from "@/components/ui/RndBentoGrid";
 import { translations, type Lang } from "@/lib/translations";
 import { useAdminContent } from "@/lib/hooks/useAdminContent";
 import type { GlobalSiteItem, ClientItem } from "@/lib/content-store";
@@ -59,13 +53,13 @@ function FadeIn({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ duration: 0.55, delay, ease: [0.25, 0.1, 0.25, 1] }}
       className={className}
     >
       {children}
@@ -75,7 +69,7 @@ function FadeIn({
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[11px] font-semibold tracking-[0.35em] uppercase text-gray-400 mb-8">
+    <p className="text-[11px] font-semibold tracking-[0.25em] uppercase text-red-600 mb-4">
       {children}
     </p>
   );
@@ -83,17 +77,18 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 /* ─── NAVIGATION ─── */
 
-const LANG_OPTIONS: { code: Lang; label: string }[] = [
-  { code: "ko", label: "한국어" },
-  { code: "en", label: "English" },
-  { code: "zh", label: "中文" },
-  { code: "ja", label: "日本語" },
+const LANG_OPTIONS: { code: Lang; label: string; short: string }[] = [
+  { code: "ko", label: "한국어", short: "KR" },
+  { code: "en", label: "English", short: "EN" },
+  { code: "zh", label: "中文", short: "ZH" },
+  { code: "ja", label: "日本語", short: "JA" },
 ];
 
 function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
   const t = translations[lang].nav;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const activeLangOption = LANG_OPTIONS.find((o) => o.code === lang) ?? LANG_OPTIONS[0];
 
   const navLinks = [
     { label: t.company, href: "/company" },
@@ -104,10 +99,10 @@ function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-[0_1px_0_#E5E7EB]">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200/80">
       <nav className="mx-auto max-w-7xl px-6 lg:px-10 h-16 flex items-center justify-between">
         <a href="#" className="shrink-0">
-          <Image src="/bumjin%20icon.jpg" alt="Bumjin Electronics" width={160} height={48} priority className="h-12 w-auto object-contain" />
+          <Image src="/bumjin%20icon.jpg" alt="Bumjin Electronics" width={160} height={48} priority className="h-10 w-auto object-contain" />
         </a>
 
         <ul className="hidden lg:flex items-center gap-10">
@@ -124,26 +119,28 @@ function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
           <div className="relative hidden sm:block">
             <button
               onClick={() => setLangOpen(!langOpen)}
-              className="flex items-center gap-1 text-[12px] font-medium text-gray-500 hover:text-gray-900 transition-colors px-2 py-1"
+              className="flex items-center gap-1.5 text-[12px] font-medium text-gray-600 hover:text-gray-900 transition-colors px-2.5 py-1.5 rounded-sm hover:bg-gray-50"
             >
-              Language
-              <ChevronDown className="size-3" />
+              <Globe className="size-3.5 text-gray-400" />
+              <span>{activeLangOption.short}</span>
+              <ChevronDown className="size-3 text-gray-400" />
             </button>
             {langOpen && (
               <motion.div
                 initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="absolute right-0 top-full mt-2 bg-white border border-gray-100 shadow-xl rounded overflow-hidden z-50 min-w-[110px]"
+                className="absolute right-0 top-full mt-2 bg-white border border-gray-200 shadow-lg rounded-sm overflow-hidden z-50 min-w-[120px]"
               >
                 {LANG_OPTIONS.map((opt) => (
                   <button
                     key={opt.code}
                     onClick={() => { setLang(opt.code); setLangOpen(false); }}
-                    className={`w-full text-left px-4 py-2.5 text-[12px] font-medium transition-colors hover:bg-gray-50 ${
-                      lang === opt.code ? "text-red-600" : "text-gray-700"
+                    className={`w-full text-left px-4 py-2.5 text-[12px] font-medium transition-colors hover:bg-gray-50 flex items-center justify-between ${
+                      lang === opt.code ? "text-red-600 bg-red-50/40" : "text-gray-700"
                     }`}
                   >
-                    {opt.label}
+                    <span>{opt.label}</span>
+                    <span className="text-[10px] text-gray-400 font-mono">{opt.short}</span>
                   </button>
                 ))}
               </motion.div>
@@ -151,12 +148,12 @@ function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
           </div>
 
           <a href="#contact" className="hidden sm:block">
-            <button className="text-[13px] font-semibold text-white bg-red-600 hover:bg-red-700 px-5 py-2 transition-colors">
+            <button className="text-[13px] font-semibold text-white bg-red-600 hover:bg-red-700 px-5 py-2 rounded-sm transition-colors">
               {t.contact}
             </button>
           </a>
 
-          <button className="lg:hidden p-1 text-gray-700" onClick={() => setMobileOpen(!mobileOpen)}>
+          <button className="lg:hidden p-1 text-gray-700" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
             {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
@@ -179,7 +176,7 @@ function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
               <button
                 key={opt.code}
                 onClick={() => { setLang(opt.code); setMobileOpen(false); }}
-                className={`text-[11px] font-semibold px-3 py-1.5 border transition-colors ${
+                className={`text-[11px] font-semibold px-3 py-1.5 rounded-sm border transition-colors ${
                   lang === opt.code ? "bg-red-600 text-white border-red-600" : "border-gray-200 text-gray-600"
                 }`}
               >
@@ -189,7 +186,7 @@ function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
           </div>
           <div className="px-6 py-4">
             <a href="#contact" onClick={() => setMobileOpen(false)}>
-              <button className="w-full text-[13px] font-semibold text-white bg-red-600 py-3 transition-colors">
+              <button className="w-full text-[13px] font-semibold text-white bg-red-600 py-3 rounded-sm transition-colors">
                 {t.contact}
               </button>
             </a>
@@ -200,179 +197,51 @@ function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
   );
 }
 
-/* ─── SOUND WAVE BACKGROUND ─── */
-
-function SoundWaveBackground() {
-  const radii = [70, 150, 230, 310, 390, 470, 550, 630];
-  return (
-    <div aria-hidden className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-      <svg
-        className="absolute right-[-3%] top-1/2 -translate-y-1/2 w-[58vw] max-w-[680px] h-auto"
-        viewBox="0 0 680 680"
-        fill="none"
-      >
-        {radii.map((r, i) => (
-          <motion.circle
-            key={r}
-            cx="680"
-            cy="340"
-            r={r}
-            stroke="#C0392B"
-            strokeWidth={i < 2 ? 1.5 : 1}
-            fill="none"
-            animate={{
-              opacity: [
-                0.03 + (radii.length - i) * 0.007,
-                0.13 + (radii.length - i) * 0.007,
-                0.03 + (radii.length - i) * 0.007,
-              ],
-            }}
-            transition={{
-              duration: 3.4,
-              delay: i * 0.22,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-      </svg>
-    </div>
-  );
-}
-
-/* ─── HERO ─── */
-
-function HeroSection({ lang }: { lang: Lang }) {
-  const t = translations[lang].hero;
-  const stats = [
-    { value: "30+", label: t.stat1 },
-    { value: "8", label: t.stat2 },
-    { value: "50M+", label: t.stat3 },
-    { value: "6", label: t.stat4 },
-  ];
-
-  return (
-    <section className="relative min-h-screen flex flex-col bg-white overflow-hidden">
-      <SoundWaveBackground />
-
-      {/* Giant background "B" — subtle brand watermark */}
-      <div
-        aria-hidden
-        className="absolute right-[-4%] top-1/2 -translate-y-[55%] text-[52vw] font-black leading-none select-none pointer-events-none text-gray-50"
-        style={{ letterSpacing: "-0.04em" }}
-      >
-        B
-      </div>
-
-      {/* Hero body — left-aligned, editorial */}
-      <div className="relative flex-1 flex items-end pb-16">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 w-full pt-36">
-          <FadeIn delay={0.05}>
-            <p className="text-[11px] font-semibold tracking-[0.35em] uppercase text-gray-400 mb-10">
-              Since 1994 — Bumjin Electronics
-            </p>
-          </FadeIn>
-
-          <FadeIn delay={0.15}>
-            <h1
-              className="font-black leading-[1.1] tracking-[-0.02em] text-gray-900 mb-10"
-              style={{ fontSize: "clamp(52px, 8.5vw, 130px)" }}
-            >
-              {t.line1}
-              <br />
-              <span className="text-red-600">{t.line2}</span>
-            </h1>
-          </FadeIn>
-
-          <FadeIn delay={0.3}>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 max-w-3xl">
-              <p className="text-gray-500 text-[15px] leading-relaxed max-w-xs shrink-0">
-                {t.subtitle}
-              </p>
-              <div className="flex gap-3 shrink-0">
-                <a href="#contact">
-                  <button className="text-[13px] font-bold text-white bg-red-600 hover:bg-red-700 px-8 py-3.5 transition-colors">
-                    {t.cta1}
-                  </button>
-                </a>
-                <a href="#about">
-                  <button className="text-[13px] font-bold text-gray-700 border border-gray-300 hover:border-gray-600 px-8 py-3.5 transition-colors">
-                    {t.cta2}
-                  </button>
-                </a>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </div>
-
-      {/* Stats strip */}
-      <FadeIn delay={0.5}>
-        <div className="border-t border-gray-100">
-          <div className="mx-auto max-w-7xl px-6 lg:px-10 grid grid-cols-2 lg:grid-cols-4 divide-x divide-gray-100">
-            {stats.map((s) => (
-              <div key={s.label} className="py-7 px-6 lg:px-10 first:pl-0">
-                <p className="text-[28px] font-black text-gray-900 leading-none">{s.value}</p>
-                <p className="text-[11px] text-gray-400 tracking-wide mt-1.5 uppercase">{s.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </FadeIn>
-
-      {/* Scroll cue */}
-      <motion.button
-        className="absolute bottom-20 right-10 hidden lg:flex flex-col items-center gap-2 text-gray-300 hover:text-gray-500 transition-colors"
-        animate={{ y: [0, 6, 0] }}
-        transition={{ repeat: Infinity, duration: 2.5 }}
-        onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
-      >
-        <span className="text-[9px] tracking-[0.3em] uppercase font-semibold">Scroll</span>
-        <ChevronDown className="size-4" />
-      </motion.button>
-    </section>
-  );
-}
-
 /* ─── COMPANY ─── */
 
 function CompanySection({ lang }: { lang: Lang }) {
   const t = translations[lang].company;
 
   return (
-    <section id="about" className="bg-white py-28 lg:py-40">
+    <section id="about" className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <SectionLabel>{t.label}</SectionLabel>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 mb-20">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 mb-16">
           <FadeIn>
             <h2
-              className="font-black leading-[1.0] tracking-tight text-gray-900"
-              style={{ fontSize: "clamp(36px, 4.5vw, 68px)" }}
+              className="font-black leading-[1.08] tracking-tight text-gray-900"
+              style={{ fontSize: "clamp(32px, 4vw, 56px)" }}
             >
               {t.heading}
               <br />
               <span className="text-red-600">{t.headingAccent}</span>
             </h2>
           </FadeIn>
-          <FadeIn delay={0.15} className="flex flex-col justify-end">
+          <FadeIn delay={0.1} className="flex flex-col justify-end">
             <p className="text-gray-600 text-[15px] leading-relaxed mb-6">{t.body}</p>
-            <a href="#contact" className="inline-flex items-center gap-2 text-red-600 font-semibold text-[13px] hover:gap-3 transition-all group">
-              {t.inquiryLink}
-              <ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </a>
+            <div className="flex flex-wrap items-center gap-6">
+              <a href="#contact" className="inline-flex items-center gap-2 text-red-600 font-semibold text-[13px] hover:gap-3 transition-all group">
+                {t.inquiryLink}
+                <ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
+              <Link href="/company" className="inline-flex items-center gap-1.5 text-gray-600 hover:text-gray-900 font-medium text-[13px] transition-colors">
+                {translations[lang].business.more}
+                <ChevronRight className="size-4" />
+              </Link>
+            </div>
           </FadeIn>
         </div>
 
-        {/* Large stats — no containers, just numbers */}
-        <div className="border-t border-gray-100 pt-14 grid grid-cols-2 lg:grid-cols-5 gap-y-10">
+        {/* Large stats */}
+        <div className="border-t border-gray-200 pt-12 grid grid-cols-2 lg:grid-cols-5 gap-y-8">
           {t.stats.map((s, i) => (
-            <FadeIn key={s.label} delay={i * 0.06}>
-              <div className={i < t.stats.length - 1 ? "lg:pr-10 lg:border-r lg:border-gray-100" : "lg:pl-0"}>
-                <p className="text-[52px] lg:text-[64px] font-black text-gray-900 leading-none tracking-tighter">
+            <FadeIn key={s.label} delay={i * 0.05}>
+              <div className={i < t.stats.length - 1 ? "lg:pr-8 lg:border-r lg:border-gray-200/80" : "lg:pl-0"}>
+                <p className="text-[40px] lg:text-[52px] font-black text-gray-900 leading-none tracking-tight">
                   {s.value}
                 </p>
-                <p className="text-[13px] font-semibold text-gray-700 mt-3">{s.label}</p>
+                <p className="text-[13px] font-semibold text-gray-800 mt-3">{s.label}</p>
                 {s.sub && <p className="text-[11px] text-gray-400 mt-1">{s.sub}</p>}
               </div>
             </FadeIn>
@@ -383,56 +252,60 @@ function CompanySection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ─── BUSINESS AREAS — editorial numbered list ─── */
+/* ─── BUSINESS AREAS — editorial numbered list with real links ─── */
+
+const BUSINESS_LINKS = [
+  "/business/electronics",
+  "/business/electronics",
+  "/business/molding",
+  "/business/electronics",
+];
 
 function BusinessSection({ lang }: { lang: Lang }) {
   const t = translations[lang].business;
 
   return (
-    <section id="solutions" className="bg-gray-50 py-28 lg:py-40">
+    <section id="solutions" className="bg-gray-50 py-20 lg:py-28 border-y border-gray-200/70">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* Header row */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between border-b border-gray-200 pb-10 mb-0">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between border-b border-gray-200 pb-8 mb-0">
           <div>
             <SectionLabel>{t.label}</SectionLabel>
             <h2
-              className="font-black text-gray-900 leading-[0.95] tracking-tight"
-              style={{ fontSize: "clamp(36px, 5vw, 72px)" }}
+              className="font-black text-gray-900 leading-[1.05] tracking-tight"
+              style={{ fontSize: "clamp(32px, 4.2vw, 56px)" }}
             >
               {t.heading}
             </h2>
           </div>
-          <p className="text-gray-400 text-[13px] max-w-[220px] hidden lg:block leading-relaxed pb-1">
+          <p className="text-gray-500 text-[14px] max-w-xs hidden lg:block leading-relaxed pb-1">
             {t.subtitle}
           </p>
         </div>
 
         {/* Numbered list */}
         {t.areas.map((area, i) => (
-          <motion.div
+          <Link
             key={area.label}
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.06, duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
-            className="group flex items-center gap-6 lg:gap-16 py-9 border-b border-gray-200 hover:bg-white -mx-6 lg:-mx-10 px-6 lg:px-10 transition-colors cursor-pointer"
+            href={BUSINESS_LINKS[i] ?? "/business"}
+            className="group flex items-center gap-6 lg:gap-14 py-8 border-b border-gray-200 hover:bg-white border-l-2 border-l-transparent hover:border-l-red-600 -mx-6 lg:-mx-10 px-6 lg:px-10 transition-all"
           >
-            <span className="text-[11px] font-mono text-gray-300 shrink-0 w-6 tabular-nums">
+            <span className="text-[12px] font-mono text-gray-400 group-hover:text-red-600 transition-colors shrink-0 w-6 tabular-nums">
               {String(i + 1).padStart(2, "0")}
             </span>
             <div className="flex-1 grid lg:grid-cols-3 gap-2 lg:gap-12 items-center min-w-0">
               <div className="lg:col-span-1">
-                <p className="text-[18px] lg:text-[22px] font-bold text-gray-900 leading-snug">
+                <p className="text-[18px] lg:text-[21px] font-bold text-gray-900 group-hover:text-red-600 transition-colors leading-snug">
                   {area.title}
                 </p>
                 <p className="text-[12px] text-gray-400 mt-0.5">{area.titleSub}</p>
               </div>
-              <p className="text-gray-500 text-[13px] leading-relaxed lg:col-span-2 hidden lg:block">
+              <p className="text-gray-600 text-[13px] leading-relaxed lg:col-span-2 hidden lg:block">
                 {area.desc}
               </p>
             </div>
-            <ArrowUpRight className="size-5 text-gray-200 group-hover:text-red-600 transition-colors shrink-0" />
-          </motion.div>
+            <ArrowUpRight className="size-5 text-gray-300 group-hover:text-red-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+          </Link>
         ))}
       </div>
     </section>
@@ -443,66 +316,58 @@ function BusinessSection({ lang }: { lang: Lang }) {
 
 type CapCategory = "all" | "acoustic" | "manufacturing" | "certification";
 
-interface CapItem {
-  id: string;
-  category: Exclude<CapCategory, "all">;
-  title: string;
-  desc: string;
-  icon: LucideIcon;
-}
-
-const CAPABILITIES_DATA: CapItem[] = [
-  { id: "c1",  category: "acoustic",       title: "DSP 엔지니어링 & 음향 튜닝",     desc: "24비트 DSP 알고리즘 설계, 무향실 측정, 목표 커브 매칭으로 정밀 음색 구현.",          icon: Waves      },
-  { id: "c2",  category: "acoustic",       title: "커스텀 드라이버 제조",            desc: "우퍼·트위터 맞춤 설계, 마그넷 최적화, 보이스코일 와인딩 내재화.",                   icon: Speaker    },
-  { id: "c3",  category: "acoustic",       title: "Dolby Atmos / DTS:X 인증",      desc: "공간음향 렌더링 파이프라인 구축 및 Dolby·DTS 공식 인증 라이선스 취득.",             icon: Activity   },
-  { id: "c4",  category: "acoustic",       title: "AirPlay 2 / Chromecast 연동",   desc: "Wi-Fi 멀티룸 스트리밍 모듈 통합 및 iOS·Android 전 플랫폼 호환성 검증.",            icon: Zap        },
-  { id: "c5",  category: "manufacturing",  title: "Class-D & Class-AB 앰프 설계",  desc: "고효율 D급 앰프 및 저왜율 AB급 앰프 고객사 사양 맞춤 설계.",                       icon: Cpu        },
-  { id: "c6",  category: "manufacturing",  title: "Wi-Fi 6 & Bluetooth 5.3 통합", desc: "최신 무선 모듈 통합, 레이턴시 최적화, 각국 RF 공인 시험 일괄 지원.",               icon: Layers     },
-  { id: "c7",  category: "manufacturing",  title: "인하우스 CNC & EDM 금형",        desc: "자체 NC·방전 가공 설비로 리드타임 업계 평균 대비 40% 단축 달성.",                  icon: Settings2  },
-  { id: "c8",  category: "manufacturing",  title: "SMT 실장 & AOI 검사",           desc: "고속 SMT 라인(0201 부품 대응), 자동 광학검사 100% 전수 적용.",                    icon: Wrench     },
-  { id: "c9",  category: "certification",  title: "Hi-Res Audio 인증",             desc: "일본음향협회 기준 40kHz 이상 재생 능력 검증 및 로고 라이선싱 취득.",                icon: Music      },
-  { id: "c10", category: "certification",  title: "HDMI eARC / HDMI 2.1 모듈",    desc: "최신 HDMI 규격 전면 대응, eARC 음성 패스스루 회로 자체 설계.",                     icon: Award      },
-  { id: "c11", category: "certification",  title: "무향실 측정",                   desc: "자체 운영 무향실에서 FR·THD·방향성·지향성 전 항목 정밀 측정.",                    icon: ShieldCheck },
-  { id: "c12", category: "certification",  title: "ISO 9001 / IATF 16949 QMS",    desc: "전사 품질경영시스템 인증 유지, 자동차 전장 품질 기준 완전 대응.",                   icon: BadgeCheck },
-];
-
-const CAP_TABS: { key: CapCategory; label: string }[] = [
-  { key: "all",           label: "전체"     },
-  { key: "acoustic",      label: "음향 설계" },
-  { key: "manufacturing", label: "제조"     },
-  { key: "certification", label: "품질 인증" },
-];
+const CAP_ICON_MAP: Record<string, LucideIcon> = {
+  c1: Waves,
+  c2: Speaker,
+  c3: Activity,
+  c4: Zap,
+  c5: Cpu,
+  c6: Layers,
+  c7: Settings2,
+  c8: Wrench,
+  c9: Music,
+  c10: Award,
+  c11: ShieldCheck,
+  c12: BadgeCheck,
+};
 
 function TechnologySection({ lang }: { lang: Lang }) {
   const t = translations[lang].technology;
   const [activeTab, setActiveTab] = useState<CapCategory>("all");
 
+  const tabs: { key: CapCategory; label: string }[] = [
+    { key: "all", label: t.tabs.all },
+    { key: "acoustic", label: t.tabs.acoustic },
+    { key: "manufacturing", label: t.tabs.manufacturing },
+    { key: "certification", label: t.tabs.certification },
+  ];
+
   const filtered =
     activeTab === "all"
-      ? CAPABILITIES_DATA
-      : CAPABILITIES_DATA.filter((c) => c.category === activeTab);
+      ? t.items
+      : t.items.filter((c) => c.category === activeTab);
 
   return (
-    <section id="capabilities" className="bg-white py-28 lg:py-40">
+    <section id="capabilities" className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <FadeIn>
           <SectionLabel>{t.label}</SectionLabel>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
             <h2
-              className="font-black text-gray-900 leading-[1.0] tracking-tight"
-              style={{ fontSize: "clamp(34px, 4.2vw, 60px)" }}
+              className="font-black text-gray-900 leading-[1.05] tracking-tight"
+              style={{ fontSize: "clamp(30px, 3.8vw, 52px)" }}
             >
               {t.heading}
             </h2>
             <div className="flex flex-wrap gap-1.5">
-              {CAP_TABS.map((tab) => (
+              {tabs.map((tab) => (
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key)}
-                  className={`px-4 py-2 text-[12px] font-semibold tracking-wide transition-all ${
+                  className={`px-4 py-2 text-[12px] font-semibold tracking-wide rounded-sm transition-all ${
                     activeTab === tab.key
-                      ? "bg-[#111111] text-white"
-                      : "border border-gray-200 text-gray-500 hover:border-gray-900 hover:text-gray-900"
+                      ? "bg-gray-900 text-white"
+                      : "border border-gray-200 text-gray-600 hover:border-gray-900 hover:text-gray-900"
                   }`}
                 >
                   {tab.label}
@@ -515,22 +380,22 @@ function TechnologySection({ lang }: { lang: Lang }) {
         <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <AnimatePresence mode="popLayout">
             {filtered.map((cap) => {
-              const Icon = cap.icon;
+              const Icon = CAP_ICON_MAP[cap.id] ?? Cpu;
               return (
                 <motion.div
                   key={cap.id}
                   layout
-                  initial={{ opacity: 0, y: 12 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.94 }}
-                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                  className="border border-[#E8E8E8] p-7 group hover:border-gray-300 transition-colors"
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  className="border border-gray-200 rounded-sm p-6 group hover:border-gray-400 hover:shadow-sm transition-all bg-white"
                 >
-                  <div className="w-10 h-10 bg-[#F6F6F4] flex items-center justify-center mb-5 group-hover:bg-red-50 transition-colors">
-                    <Icon className="size-5 text-gray-400 group-hover:text-[#C0392B] transition-colors" />
+                  <div className="w-10 h-10 rounded-sm bg-gray-50 flex items-center justify-center mb-5 group-hover:bg-red-50 transition-colors">
+                    <Icon className="size-5 text-gray-500 group-hover:text-red-600 transition-colors" />
                   </div>
                   <h3 className="text-[14px] font-bold text-gray-900 mb-2 leading-snug">{cap.title}</h3>
-                  <p className="text-[12px] text-gray-400 leading-relaxed">{cap.desc}</p>
+                  <p className="text-[12px] text-gray-500 leading-relaxed">{cap.desc}</p>
                 </motion.div>
               );
             })}
@@ -548,35 +413,35 @@ function GlobalSection({ lang, globalSites }: { lang: Lang; globalSites?: Global
   const locations = (globalSites && globalSites.length > 0) ? globalSites : t.locations;
 
   return (
-    <section id="operations" className="bg-gray-50 py-28 lg:py-40">
+    <section id="operations" className="bg-gray-50 py-20 lg:py-28 border-y border-gray-200/70">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-start">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           <div>
             <FadeIn>
               <SectionLabel>{t.label}</SectionLabel>
               <h2
-                className="font-black text-gray-900 leading-[1.0] tracking-tight mb-6"
-                style={{ fontSize: "clamp(34px, 4.5vw, 64px)" }}
+                className="font-black text-gray-900 leading-[1.05] tracking-tight mb-5"
+                style={{ fontSize: "clamp(32px, 4vw, 56px)" }}
               >
                 {t.heading}
                 <span className="block text-red-600">{t.headingAccent}</span>
               </h2>
-              <p className="text-gray-500 text-[15px] leading-relaxed mb-10">{t.subtitle}</p>
+              <p className="text-gray-600 text-[15px] leading-relaxed mb-8">{t.subtitle}</p>
             </FadeIn>
 
             <div>
               {locations.map((loc, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, x: -12 }}
+                  initial={{ opacity: 0, x: -10 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.05, duration: 0.5 }}
+                  transition={{ delay: i * 0.04, duration: 0.45 }}
                   className="flex items-center gap-4 py-3.5 border-b border-gray-200"
                 >
-                  <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${loc.type === "hq" ? "bg-red-600" : "bg-gray-300"}`} />
-                  <span className="text-[13px] font-medium text-gray-900 flex-1">{loc.city}</span>
-                  <span className="text-[11px] text-gray-400">{loc.role}</span>
+                  <div className={`w-2 h-2 rounded-full shrink-0 ${loc.type === "hq" ? "bg-red-600" : "bg-gray-400"}`} />
+                  <span className="text-[13px] font-semibold text-gray-900 flex-1">{loc.city}</span>
+                  <span className="text-[12px] text-gray-500">{loc.role}</span>
                 </motion.div>
               ))}
             </div>
@@ -593,69 +458,46 @@ function GlobalSection({ lang, globalSites }: { lang: Lang; globalSites?: Global
 
 /* ─── PROCESS — Interactive Grid ─── */
 
-interface ProcessStep {
+interface ProcessStepItem {
   step: string;
   title: string;
   titleEn: string;
   body: string;
-  icon: LucideIcon;
   detail: string;
+  icon: LucideIcon;
 }
 
-const PROCESS_STEPS: ProcessStep[] = [
-  {
-    step: "01", title: "기획", titleEn: "Planning", icon: Target,
-    body: "R&D 공동 기획, 시장 조사, 음향 모델링, 산업 디자인 방향 수립.",
-    detail: "클라이언트 R&D팀과 공동으로 제품 기획 단계를 진행합니다. 시장 조사, 타겟 사양 정의, 음향 모델링, PCB 구성 검토, 산업 디자인 방향 수립까지 전 과정을 지원합니다.",
-  },
-  {
-    step: "02", title: "설계", titleEn: "Engineering", icon: PenTool,
-    body: "PCB·기구·음향 통합 설계. DFM·DFA 검토 완료 후 시제품 제작.",
-    detail: "회로 설계(PCB 레이아웃, EMC 최적화), 기구 설계(3D CAD), 음향 설계(FEA 시뮬레이션)를 통합적으로 수행합니다. 시제품 제작 전 DFM·DFA 검토를 완료합니다.",
-  },
-  {
-    step: "03", title: "사출", titleEn: "Molding", icon: Settings2,
-    body: "자체 CNC·EDM 금형. 리드타임 업계 평균 대비 40% 단축.",
-    detail: "자체 CNC 및 EDM 설비로 금형을 제작합니다. 리드타임은 업계 평균 대비 40% 단축되며 PP·ABS·PC 등 다양한 수지 재료를 지원합니다. 게이트 위치 최적화로 싱크·워프를 최소화합니다.",
-  },
-  {
-    step: "04", title: "조립", titleEn: "Assembly", icon: Wrench,
-    body: "고속 SMT·AOI 검사. 로봇 자동 조립, 100% 음향 캘리브레이션.",
-    detail: "고속 SMT 라인(0201 대응)과 AOI 자동광학검사를 거쳐 PCB를 실장합니다. 로봇 자동화 조립 라인에서 드라이버·앰프·DSP 모듈을 통합하고 100% 라인엔드 음향 캘리브레이션을 수행합니다.",
-  },
-  {
-    step: "05", title: "품질", titleEn: "Quality", icon: ShieldCheck,
-    body: "AQL 샘플링, CE·FCC·UL 인증, ISO 9001 / IATF 16949 준수.",
-    detail: "AQL 샘플링 검사, CE·FCC·UL 인증 대응, 고객사별 맞춤 패키징을 진행합니다. ISO 9001 / IATF 16949 품질경영 시스템을 기반으로 전수 검사와 신뢰성 시험을 병행합니다.",
-  },
-  {
-    step: "06", title: "물류", titleEn: "Logistics", icon: Package,
-    body: "6개 거점 항공·해상·철도 네트워크. 3PL 연동·실시간 추적.",
-    detail: "6개 거점(한국·중국·베트남·폴란드·미국·일본)에서 항공·해상·철도를 활용한 글로벌 배송 네트워크를 운영합니다. 3PL 직접 연동 및 실시간 재고 추적 시스템을 제공합니다.",
-  },
-];
+const PROCESS_ICONS: LucideIcon[] = [Target, PenTool, Settings2, Wrench, ShieldCheck, Package];
 
-function ProcessCard({ step, onClick }: { step: ProcessStep; onClick: () => void }) {
+function ProcessCard({
+  step,
+  viewDetailLabel,
+  onClick,
+}: {
+  step: ProcessStepItem;
+  viewDetailLabel: string;
+  onClick: () => void;
+}) {
   const Icon = step.icon;
   return (
     <motion.div
-      whileHover={{ y: -4 }}
+      whileHover={{ y: -3 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
       onClick={onClick}
-      className="pt-8 pb-6 pr-4 lg:pr-6 pl-4 first:pl-0 cursor-pointer group border-t-2 border-transparent hover:border-[#C0392B] transition-[border-color] duration-200"
+      className="pt-8 pb-6 pr-4 lg:pr-6 pl-4 first:pl-0 cursor-pointer group border-t-2 border-transparent hover:border-red-600 transition-[border-color] duration-200"
     >
       <p className="text-[11px] font-mono text-red-600 mb-4 tracking-wider">{step.step}</p>
-      <Icon className="size-4 text-gray-300 group-hover:text-[#C0392B] transition-colors mb-3" />
-      <p className="text-[13px] font-bold text-gray-900 mb-2 leading-snug">{step.title}</p>
-      <p className="text-[12px] text-gray-400 leading-relaxed">{step.body}</p>
-      <p className="text-[11px] text-[#C0392B] mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-        상세 보기 →
+      <Icon className="size-4 text-gray-400 group-hover:text-red-600 transition-colors mb-3" />
+      <p className="text-[14px] font-bold text-gray-900 mb-2 leading-snug">{step.title}</p>
+      <p className="text-[12px] text-gray-500 leading-relaxed">{step.body}</p>
+      <p className="text-[11px] font-medium text-red-600 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        {viewDetailLabel} →
       </p>
     </motion.div>
   );
 }
 
-function ProcessModal({ step, onClose }: { step: ProcessStep; onClose: () => void }) {
+function ProcessModal({ step, onClose }: { step: ProcessStepItem; onClose: () => void }) {
   const Icon = step.icon;
   return (
     <>
@@ -668,34 +510,31 @@ function ProcessModal({ step, onClose }: { step: ProcessStep; onClose: () => voi
         onClick={onClose}
       />
       <motion.div
-        initial={{ opacity: 0, y: 24, scale: 0.97 }}
+        initial={{ opacity: 0, y: 20, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 24, scale: 0.97 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-md bg-white z-[61] p-8 shadow-2xl"
+        exit={{ opacity: 0, y: 20, scale: 0.98 }}
+        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-md bg-white rounded-sm z-[61] p-8 shadow-2xl border border-gray-200"
       >
         <div className="flex items-start justify-between mb-6">
           <div>
-            <p className="text-[11px] font-mono text-[#C0392B] tracking-wider mb-2">{step.step}</p>
-            <h3 className="text-[26px] font-black text-[#111111] leading-tight">{step.title}</h3>
-            <p
-              className="text-[10px] font-medium text-[#CCCCCC] tracking-[2.5px] uppercase mt-1"
-              style={{ fontFamily: "Inter, sans-serif" }}
-            >
+            <p className="text-[11px] font-mono text-red-600 tracking-wider mb-2">{step.step}</p>
+            <h3 className="text-[24px] font-black text-gray-900 leading-tight">{step.title}</h3>
+            <p className="text-[11px] font-medium text-gray-400 tracking-[2px] uppercase mt-1">
               {step.titleEn}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1 text-gray-300 hover:text-gray-900 transition-colors shrink-0"
+            className="p-1 text-gray-400 hover:text-gray-900 transition-colors shrink-0"
           >
             <X className="size-5" />
           </button>
         </div>
-        <div className="w-12 h-12 bg-[#F6F6F4] flex items-center justify-center mb-6">
-          <Icon className="size-6 text-[#C0392B]" />
+        <div className="w-11 h-11 rounded-sm bg-gray-50 flex items-center justify-center mb-5">
+          <Icon className="size-5 text-red-600" />
         </div>
-        <p className="text-gray-600 text-[14px] leading-[1.8]">{step.detail}</p>
+        <p className="text-gray-600 text-[14px] leading-[1.75]">{step.detail}</p>
       </motion.div>
     </>
   );
@@ -703,24 +542,29 @@ function ProcessModal({ step, onClose }: { step: ProcessStep; onClose: () => voi
 
 function ProcessSection({ lang }: { lang: Lang }) {
   const t = translations[lang].process;
-  const [activeStep, setActiveStep] = useState<ProcessStep | null>(null);
+  const [activeStep, setActiveStep] = useState<ProcessStepItem | null>(null);
+
+  const steps: ProcessStepItem[] = t.steps.map((s, i) => ({
+    ...s,
+    icon: PROCESS_ICONS[i] ?? Target,
+  }));
 
   return (
-    <section className="bg-white py-28 lg:py-40">
+    <section className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between pb-10 border-b border-gray-200 mb-0">
           <div>
             <SectionLabel>{t.label}</SectionLabel>
             <h2
-              className="font-black text-gray-900 leading-[1.0] tracking-tight"
-              style={{ fontSize: "clamp(34px, 4.2vw, 60px)" }}
+              className="font-black text-gray-900 leading-[1.05] tracking-tight"
+              style={{ fontSize: "clamp(30px, 3.8vw, 52px)" }}
             >
               {t.heading}
             </h2>
           </div>
           <a
             href="#contact"
-            className="hidden lg:inline-flex items-center gap-2 text-[13px] font-bold text-gray-700 border border-gray-300 hover:border-gray-900 px-6 py-3 transition-colors mt-4 lg:mt-0"
+            className="hidden lg:inline-flex items-center gap-2 text-[13px] font-bold text-gray-700 border border-gray-300 hover:border-gray-900 px-6 py-3 rounded-sm transition-colors mt-4 lg:mt-0"
           >
             {t.cta}
             <ArrowUpRight className="size-4" />
@@ -728,8 +572,13 @@ function ProcessSection({ lang }: { lang: Lang }) {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-6 divide-x divide-gray-100">
-          {PROCESS_STEPS.map((step) => (
-            <ProcessCard key={step.step} step={step} onClick={() => setActiveStep(step)} />
+          {steps.map((step) => (
+            <ProcessCard
+              key={step.step}
+              step={step}
+              viewDetailLabel={t.viewDetail}
+              onClick={() => setActiveStep(step)}
+            />
           ))}
         </div>
       </div>
@@ -745,15 +594,15 @@ function ProcessSection({ lang }: { lang: Lang }) {
 
 /* ─── CLIENTS ─── */
 
-const CLIENT_LOGOS = [
-  { name: "Samsung Electronics", svg: <svg width="160" height="40" viewBox="0 0 160 40" fill="none"><text x="0" y="30" fontFamily="var(--font-noto),system-ui" fontSize="22" fontWeight="700" letterSpacing="-0.5" fill="#9CA3AF">SAMSUNG</text></svg> },
-  { name: "LG Electronics", svg: <svg width="100" height="40" viewBox="0 0 100 40" fill="none"><text x="0" y="30" fontFamily="var(--font-noto),system-ui" fontSize="26" fontWeight="700" letterSpacing="2" fill="#9CA3AF">LG</text></svg> },
-  { name: "SONY", svg: <svg width="120" height="40" viewBox="0 0 120 40" fill="none"><text x="0" y="30" fontFamily="var(--font-noto),system-ui" fontSize="24" fontWeight="300" letterSpacing="6" fill="#9CA3AF">SONY</text></svg> },
-  { name: "Harman Kardon", svg: <svg width="200" height="40" viewBox="0 0 200 40" fill="none"><text x="0" y="28" fontFamily="var(--font-noto),system-ui" fontSize="16" fontWeight="400" letterSpacing="3" fill="#9CA3AF">HARMAN KARDON</text></svg> },
-  { name: "JBL", svg: <svg width="80" height="40" viewBox="0 0 80 40" fill="none"><text x="0" y="32" fontFamily="var(--font-noto),system-ui" fontSize="32" fontWeight="900" letterSpacing="-1" fill="#9CA3AF">JBL</text></svg> },
-  { name: "Panasonic", svg: <svg width="170" height="40" viewBox="0 0 170 40" fill="none"><text x="0" y="29" fontFamily="var(--font-noto),system-ui" fontSize="20" fontWeight="500" letterSpacing="4" fill="#9CA3AF">Panasonic</text></svg> },
-  { name: "HP", svg: <svg width="60" height="40" viewBox="0 0 60 40" fill="none"><text x="0" y="32" fontFamily="var(--font-noto),system-ui" fontSize="30" fontWeight="800" fill="#9CA3AF">hp</text></svg> },
-  { name: "Dell", svg: <svg width="90" height="40" viewBox="0 0 90 40" fill="none"><text x="0" y="30" fontFamily="var(--font-noto),system-ui" fontSize="22" fontWeight="400" letterSpacing="2" fill="#9CA3AF">DELL</text></svg> },
+const CLIENT_PARTNERS = [
+  { name: "SAMSUNG", tracking: "tracking-[0.06em]" },
+  { name: "LG", tracking: "tracking-[0.14em]" },
+  { name: "SONY", tracking: "tracking-[0.22em]" },
+  { name: "HARMAN KARDON", tracking: "tracking-[0.14em]" },
+  { name: "JBL", tracking: "tracking-[0.08em]" },
+  { name: "PANASONIC", tracking: "tracking-[0.12em]" },
+  { name: "HP", tracking: "tracking-[0.1em]" },
+  { name: "DELL", tracking: "tracking-[0.16em]" },
 ];
 
 function ClientsSection({
@@ -773,12 +622,13 @@ function ClientsSection({
         key: c.id,
         img: images?.[c.id],
         name: c.name,
+        tracking: "tracking-[0.12em]",
       }))
-    : CLIENT_LOGOS.map((c) => ({ key: c.name, img: undefined, name: c.name, svg: c.svg }));
+    : CLIENT_PARTNERS.map((c) => ({ key: c.name, img: undefined, name: c.name, tracking: c.tracking }));
 
   const sliderItemsRev = [...sliderItems].reverse().map((c) => ({ ...c, key: `r-${c.key}` }));
 
-  function renderLogo(item: typeof sliderItems[0], className: string) {
+  function renderLogo(item: typeof sliderItems[0]) {
     if (item.img) {
       return (
         <Image
@@ -786,39 +636,40 @@ function ClientsSection({
           alt={item.name}
           width={160}
           height={40}
-          className={`object-contain max-h-10 w-auto ${className}`}
+          className="object-contain max-h-10 w-auto"
         />
       );
     }
-    if ("svg" in item && item.svg) return item.svg as React.ReactNode;
     return (
-      <span className={`font-bold text-gray-400 text-[18px] tracking-wide ${className}`}>
+      <span
+        className={`text-[15px] lg:text-[17px] font-bold text-gray-500 hover:text-gray-900 transition-colors select-none whitespace-nowrap ${item.tracking}`}
+      >
         {item.name}
       </span>
     );
   }
 
   return (
-    <section id="clients" className="bg-gray-50 py-28 lg:py-40">
+    <section id="clients" className="bg-gray-50 py-20 lg:py-28 border-y border-gray-200/70">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid lg:grid-cols-3 gap-12 lg:gap-20 mb-16 items-end">
+        <div className="grid lg:grid-cols-3 gap-12 lg:gap-16 mb-14 items-end">
           <div className="lg:col-span-1">
             <SectionLabel>{t.label}</SectionLabel>
             <h2
-              className="font-black text-gray-900 leading-[1.0] tracking-tight"
-              style={{ fontSize: "clamp(34px, 4vw, 56px)" }}
+              className="font-black text-gray-900 leading-[1.08] tracking-tight"
+              style={{ fontSize: "clamp(30px, 3.6vw, 48px)" }}
             >
               {t.heading}
               <span className="block text-red-600">{t.headingAccent}</span>
             </h2>
           </div>
           <div className="lg:col-span-2">
-            <p className="text-gray-500 text-[15px] leading-relaxed mb-8">{t.subtitle}</p>
+            <p className="text-gray-600 text-[15px] leading-relaxed mb-8">{t.subtitle}</p>
             <div className="grid grid-cols-3 gap-6">
               {t.stats.map((item) => (
                 <div key={item.label} className="border-t-2 border-red-600 pt-4">
                   <p className="text-[28px] font-black text-gray-900">{item.value}</p>
-                  <p className="text-[11px] text-gray-400 mt-1">{item.label}</p>
+                  <p className="text-[11px] text-gray-500 mt-1">{item.label}</p>
                 </div>
               ))}
             </div>
@@ -828,17 +679,17 @@ function ClientsSection({
         <div className="relative">
           <ProgressiveBlur direction="left" blurIntensity={1} className="z-20" />
           <ProgressiveBlur direction="right" blurIntensity={1} className="z-20" />
-          <InfiniteSlider gap={72} duration={30} className="py-6">
+          <InfiniteSlider gap={64} duration={30} className="py-5">
             {sliderItems.map((c) => (
-              <div key={c.key} className="flex items-center justify-center opacity-40 hover:opacity-70 transition-opacity min-w-[80px]">
-                {renderLogo(c, "")}
+              <div key={c.key} className="flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity min-w-[90px]">
+                {renderLogo(c)}
               </div>
             ))}
           </InfiniteSlider>
-          <InfiniteSlider gap={72} duration={38} reverse className="py-4">
+          <InfiniteSlider gap={64} duration={38} reverse className="py-4">
             {sliderItemsRev.map((c) => (
-              <div key={c.key} className="flex items-center justify-center opacity-25 hover:opacity-50 transition-opacity min-w-[80px]">
-                {renderLogo(c, "")}
+              <div key={c.key} className="flex items-center justify-center opacity-45 hover:opacity-85 transition-opacity min-w-[90px]">
+                {renderLogo(c)}
               </div>
             ))}
           </InfiniteSlider>
@@ -854,20 +705,20 @@ function CTAStrip({ lang }: { lang: Lang }) {
   const t = translations[lang].cta;
 
   return (
-    <div className="relative bg-red-600 py-24 overflow-hidden">
-      <div className="absolute inset-0 grid-lines opacity-[0.07]" />
+    <div className="relative bg-red-600 py-20 overflow-hidden">
+      <div className="absolute inset-0 grid-lines opacity-[0.06]" />
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10 text-center">
         <FadeIn>
-          <p className="text-white/60 text-[11px] font-semibold tracking-[0.4em] uppercase mb-6">{t.label}</p>
+          <p className="text-white/75 text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">{t.label}</p>
           <h2
-            className="font-black text-white mb-6 leading-[0.95] tracking-tight"
-            style={{ fontSize: "clamp(36px, 6vw, 96px)" }}
+            className="font-black text-white mb-5 leading-[1.08] tracking-tight"
+            style={{ fontSize: "clamp(28px, 4.2vw, 52px)" }}
           >
             {t.heading}
           </h2>
-          <p className="text-white/60 text-[15px] mb-10 max-w-sm mx-auto leading-relaxed">{t.subtitle}</p>
+          <p className="text-white/85 text-[15px] mb-9 max-w-md mx-auto leading-relaxed">{t.subtitle}</p>
           <a href="#contact">
-            <button className="text-[13px] font-bold text-red-600 bg-white hover:bg-gray-50 px-10 py-4 transition-colors shadow-xl inline-flex items-center gap-2">
+            <button className="text-[13px] font-bold text-red-600 bg-white hover:bg-gray-100 px-8 py-3.5 rounded-sm transition-colors shadow-lg inline-flex items-center gap-2">
               {t.btn}
               <ArrowUpRight className="size-4" />
             </button>
@@ -885,12 +736,12 @@ function FormField({ label, id, type = "text", placeholder, required }: {
 }) {
   return (
     <div>
-      <label htmlFor={id} className="block text-gray-500 text-[10px] font-bold tracking-[0.25em] uppercase mb-2">
+      <label htmlFor={id} className="block text-gray-600 text-[11px] font-semibold tracking-wider uppercase mb-2">
         {label}
       </label>
       <input
         id={id} name={id} type={type} placeholder={placeholder} required={required}
-        className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-[13px] px-4 py-3 focus:outline-none focus:border-red-500 transition-colors placeholder:text-gray-300"
+        className="w-full bg-gray-50 border border-gray-200 rounded-sm text-gray-900 text-[13px] px-4 py-3 focus:outline-none focus:border-red-600 focus:bg-white transition-colors placeholder:text-gray-400"
       />
     </div>
   );
@@ -902,50 +753,52 @@ function ContactSection({ lang }: { lang: Lang }) {
   const [ndaAccepted, setNdaAccepted] = useState(false);
 
   return (
-    <section id="contact" className="bg-white py-28 lg:py-40">
+    <section id="contact" className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+        <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-start">
           {/* Left */}
           <div>
             <FadeIn>
               <SectionLabel>{t.label}</SectionLabel>
               <h2
-                className="font-black text-gray-900 leading-[1.0] tracking-tight mb-6"
-                style={{ fontSize: "clamp(34px, 4.5vw, 64px)" }}
+                className="font-black text-gray-900 leading-[1.08] tracking-tight mb-5"
+                style={{ fontSize: "clamp(32px, 4vw, 52px)" }}
               >
                 {t.heading}
                 <span className="block text-red-600">{t.headingAccent}</span>
                 {t.headingEnd && <span className="block text-gray-900">{t.headingEnd}</span>}
               </h2>
-              <p className="text-gray-500 text-[15px] leading-relaxed mb-10">{t.subtitle}</p>
+              <p className="text-gray-600 text-[15px] leading-relaxed mb-8">{t.subtitle}</p>
             </FadeIn>
 
-            <FadeIn delay={0.1} className="space-y-4 mb-10">
-              <div className="flex items-center gap-3 text-gray-500">
+            <FadeIn delay={0.1} className="space-y-4 mb-8">
+              <div className="flex items-center gap-3 text-gray-600">
                 <span className="text-red-600 shrink-0"><Mail className="size-4" /></span>
                 <span className="text-[13px]">bd@bumjin.co.kr</span>
               </div>
-              <div className="flex items-start gap-3 text-gray-500">
+              <div className="flex items-start gap-3 text-gray-600">
                 <span className="text-red-600 shrink-0 mt-0.5"><Phone className="size-4" /></span>
                 <div className="text-[13px] space-y-1">
-                  <p><span className="text-gray-400 w-10 inline-block">전자</span> 031-493-9415</p>
-                  <p><span className="text-gray-400 w-10 inline-block">금형</span> 031-676-1461</p>
-                  <p><span className="text-gray-400 w-10 inline-block">성형</span> 031-210-4930</p>
+                  {t.phones.map((p) => (
+                    <p key={p.dept}>
+                      <span className="text-gray-400 w-12 inline-block">{p.dept}</span> {p.num}
+                    </p>
+                  ))}
                 </div>
               </div>
-              <div className="flex items-center gap-3 text-gray-500">
+              <div className="flex items-center gap-3 text-gray-600">
                 <span className="text-red-600 shrink-0"><MapPin className="size-4" /></span>
-                <span className="text-[13px]">수원시 권선구 고색동, 경기도</span>
+                <span className="text-[13px]">{t.address}</span>
               </div>
             </FadeIn>
 
             {/* Download buttons */}
-            <FadeIn delay={0.12} className="flex flex-col sm:flex-row gap-3 mb-10">
+            <FadeIn delay={0.12} className="flex flex-col sm:flex-row gap-3 mb-8">
               <a
                 href="https://drive.google.com/file/d/1AgTHbT-8cOA8aY0oUcxPmB6OSDs0g3Fw/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 border border-gray-300 text-gray-700 text-[13px] font-semibold hover:border-red-600 hover:text-red-600 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 border border-gray-300 rounded-sm text-gray-700 text-[13px] font-semibold hover:border-red-600 hover:text-red-600 transition-colors"
               >
                 <Download className="size-3.5 shrink-0" />
                 Brochure Download
@@ -954,7 +807,7 @@ function ContactSection({ lang }: { lang: Lang }) {
                 href="https://drive.google.com/file/d/1OMeKEWeAUa3uC3UYUXJz3uirCXcg57UE/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 border border-gray-300 text-gray-700 text-[13px] font-semibold hover:border-red-600 hover:text-red-600 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 border border-gray-300 rounded-sm text-gray-700 text-[13px] font-semibold hover:border-red-600 hover:text-red-600 transition-colors"
               >
                 <Download className="size-3.5 shrink-0" />
                 CES2025 Catalogue
@@ -962,8 +815,8 @@ function ContactSection({ lang }: { lang: Lang }) {
             </FadeIn>
 
             <FadeIn delay={0.15}>
-              <div className="p-5 border border-red-100 bg-red-50">
-                <p className="text-[10px] text-red-600 font-bold tracking-[0.25em] uppercase mb-2">NDA Policy</p>
+              <div className="p-5 border border-red-100 bg-red-50/70 rounded-sm">
+                <p className="text-[10px] text-red-600 font-bold tracking-[0.2em] uppercase mb-2">NDA Policy</p>
                 <p className="text-gray-600 text-[13px] leading-relaxed">{t.ndaBox}</p>
               </div>
             </FadeIn>
@@ -972,28 +825,28 @@ function ContactSection({ lang }: { lang: Lang }) {
           {/* Right: form */}
           <FadeIn delay={0.15}>
             {submitted ? (
-              <div className="flex flex-col items-center justify-center text-center py-24 border border-gray-100">
-                <div className="w-14 h-14 border border-red-200 flex items-center justify-center mb-6">
+              <div className="flex flex-col items-center justify-center text-center py-24 border border-gray-200 rounded-sm">
+                <div className="w-14 h-14 rounded-sm border border-red-200 bg-red-50 flex items-center justify-center mb-6">
                   <BadgeCheck className="size-6 text-red-600" />
                 </div>
                 <h3 className="text-2xl font-black text-gray-900 mb-3">{t.form.successTitle}</h3>
-                <p className="text-gray-400 text-[13px] leading-relaxed max-w-xs">{t.form.successBody}</p>
+                <p className="text-gray-500 text-[13px] leading-relaxed max-w-xs">{t.form.successBody}</p>
               </div>
             ) : (
-              <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="space-y-5">
+              <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="space-y-5 bg-white border border-gray-200 rounded-sm p-6 lg:p-8">
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <FormField label={t.form.firstName} id="fname" placeholder="길동" required />
-                  <FormField label={t.form.lastName} id="lname" placeholder="홍" required />
+                  <FormField label={t.form.firstName} id="fname" placeholder={t.form.firstNamePlaceholder} required />
+                  <FormField label={t.form.lastName} id="lname" placeholder={t.form.lastNamePlaceholder} required />
                 </div>
                 <FormField label={t.form.company} id="company" placeholder="Samsung Electronics" required />
                 <FormField label={t.form.email} id="email" type="email" placeholder="example@company.com" required />
                 <FormField label={t.form.phone} id="phone" type="tel" placeholder="+82 10 1234 5678" />
 
                 <div>
-                  <label className="block text-gray-500 text-[10px] font-bold tracking-[0.25em] uppercase mb-2">
+                  <label className="block text-gray-600 text-[11px] font-semibold tracking-wider uppercase mb-2">
                     {t.form.category}
                   </label>
-                  <select className="w-full bg-gray-50 border border-gray-200 text-gray-700 text-[13px] px-4 py-3 focus:outline-none focus:border-red-500 transition-colors" required>
+                  <select className="w-full bg-gray-50 border border-gray-200 rounded-sm text-gray-700 text-[13px] px-4 py-3 focus:outline-none focus:border-red-600 focus:bg-white transition-colors" required>
                     <option value="">{t.form.categoryPlaceholder}</option>
                     <option>Soundbar ODM</option>
                     <option>Soundbar OEM</option>
@@ -1005,13 +858,13 @@ function ContactSection({ lang }: { lang: Lang }) {
                 </div>
 
                 <div>
-                  <label className="block text-gray-500 text-[10px] font-bold tracking-[0.25em] uppercase mb-2">
+                  <label className="block text-gray-600 text-[11px] font-semibold tracking-wider uppercase mb-2">
                     {t.form.brief}
                   </label>
                   <textarea
                     rows={4}
                     placeholder={t.form.briefPlaceholder}
-                    className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-[13px] px-4 py-3 focus:outline-none focus:border-red-500 transition-colors resize-none placeholder:text-gray-300"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-sm text-gray-900 text-[13px] px-4 py-3 focus:outline-none focus:border-red-600 focus:bg-white transition-colors resize-none placeholder:text-gray-400"
                     required
                   />
                 </div>
@@ -1019,17 +872,17 @@ function ContactSection({ lang }: { lang: Lang }) {
                 <label className="flex items-start gap-3 cursor-pointer">
                   <div className="relative mt-0.5 shrink-0">
                     <input type="checkbox" checked={ndaAccepted} onChange={(e) => setNdaAccepted(e.target.checked)} className="peer sr-only" required />
-                    <div className="w-4 h-4 border border-gray-300 bg-white peer-checked:border-red-500 peer-checked:bg-red-50 transition-colors" />
+                    <div className="w-4 h-4 rounded-sm border border-gray-300 bg-white peer-checked:border-red-600 peer-checked:bg-red-50 transition-colors" />
                     {ndaAccepted && (
                       <svg className="absolute inset-0 m-auto w-2.5 h-2.5 text-red-600" viewBox="0 0 12 12" fill="none">
                         <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     )}
                   </div>
-                  <span className="text-gray-400 text-[12px] leading-relaxed">{t.form.ndaCheck}</span>
+                  <span className="text-gray-500 text-[12px] leading-relaxed">{t.form.ndaCheck}</span>
                 </label>
 
-                <button type="submit" className="w-full inline-flex items-center justify-center gap-2 text-[13px] font-bold text-white bg-red-600 hover:bg-red-700 py-4 transition-colors">
+                <button type="submit" className="w-full inline-flex items-center justify-center gap-2 text-[13px] font-bold text-white bg-red-600 hover:bg-red-700 py-4 rounded-sm transition-colors">
                   {t.form.submit}
                   <ChevronRight className="size-4" />
                 </button>
@@ -1053,8 +906,16 @@ function Footer({ lang }: { lang: Lang }) {
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div className="lg:col-span-2">
-            <Image src="/bumjin%20icon.jpg" alt="Bumjin Electronics" width={150} height={44} className="h-12 w-auto mb-5 object-contain brightness-0 invert opacity-70" />
-            <p className="text-gray-500 text-[13px] leading-relaxed max-w-xs mb-5">{t.desc}</p>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-9 h-9 rounded-sm bg-red-600 flex items-center justify-center">
+                <span className="text-white font-black text-base leading-none">B</span>
+              </div>
+              <div>
+                <p className="text-white text-[13px] font-bold tracking-[0.18em]">BUMJIN</p>
+                <p className="text-gray-400 text-[9px] tracking-[0.28em] uppercase">Electronics</p>
+              </div>
+            </div>
+            <p className="text-gray-400 text-[13px] leading-relaxed max-w-xs mb-5">{t.desc}</p>
             <a href="https://bumjin.career.greetinghr.com/ko/home" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-red-400 text-[13px] hover:text-red-300 transition-colors">
               {t.careers}
               <ExternalLink className="size-3" />
@@ -1062,27 +923,35 @@ function Footer({ lang }: { lang: Lang }) {
           </div>
 
           <div>
-            <p className="text-white/70 text-[10px] font-bold tracking-[0.25em] uppercase mb-5">{t.solutions}</p>
+            <p className="text-white/80 text-[10px] font-bold tracking-[0.25em] uppercase mb-5">{t.solutions}</p>
             <ul className="space-y-3">
-              {["Soundbar ODM", "Soundbar OEM", "Acoustic Drivers", "DSP Engineering", "Smart Integration"].map((item) => (
-                <li key={item}>
-                  <a href="#solutions" className="text-gray-500 text-[13px] hover:text-gray-300 transition-colors">{item}</a>
+              {[
+                { label: "Soundbar ODM", href: "/business/electronics" },
+                { label: "Soundbar OEM", href: "/business/electronics" },
+                { label: "Precision Molding", href: "/business/molding" },
+                { label: "Startup Lab", href: "/business/startup" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-gray-400 text-[13px] hover:text-white transition-colors">
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <p className="text-white/70 text-[10px] font-bold tracking-[0.25em] uppercase mb-5">{t.company}</p>
+            <p className="text-white/80 text-[10px] font-bold tracking-[0.25em] uppercase mb-5">{t.company}</p>
             <ul className="space-y-3">
               {[
+                { label: nav.company, href: "/company" },
                 { label: nav.global, href: "#operations" },
                 { label: nav.clients, href: "#clients" },
                 { label: nav.contact, href: "#contact" },
                 { label: t.careers, href: "https://bumjin.career.greetinghr.com/ko/home", ext: true },
               ].map((item) => (
                 <li key={item.label}>
-                  <a href={item.href} target={item.ext ? "_blank" : undefined} rel={item.ext ? "noopener noreferrer" : undefined} className="text-gray-500 text-[13px] hover:text-gray-300 transition-colors inline-flex items-center gap-1">
+                  <a href={item.href} target={item.ext ? "_blank" : undefined} rel={item.ext ? "noopener noreferrer" : undefined} className="text-gray-400 text-[13px] hover:text-white transition-colors inline-flex items-center gap-1">
                     {item.label}
                     {item.ext && <ExternalLink className="size-3" />}
                   </a>
@@ -1093,117 +962,127 @@ function Footer({ lang }: { lang: Lang }) {
         </div>
 
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gray-600 text-[11px]">© {new Date().getFullYear()} {t.copyright}</p>
-          <p className="text-gray-700 text-[10px] tracking-[0.3em] uppercase">{t.tagline}</p>
+          <p className="text-gray-500 text-[11px]">© {new Date().getFullYear()} {t.copyright}</p>
+          <p className="text-gray-500 text-[10px] tracking-[0.25em] uppercase">{t.tagline}</p>
         </div>
       </div>
     </footer>
   );
 }
 
-/* ─── HERO VIDEO — small → full screen on scroll ─── */
+/* ─── HERO VIDEO — Clean Full-Bleed Corporate Hero ─── */
 
 const HERO_COPY: Record<Lang, { tag: string; headline: string; body: string }> = {
   ko: {
-    tag: "Since 1994 — Bumjin Electronics",
+    tag: "Since 1993 — Bumjin Electronics",
     headline: "Your complete\nmanufacturing partner",
-    body: "범진은 고객의 아이디어를 현실로 구현하기 위해 기획부터 설계, 금형, 생산까지 전 과정을 함께합니다. 축적된 제조 기술력과 품질 경쟁력을 바탕으로 전자산업의 혁신을 이끌며, 고객과 함께 성장하는 글로벌 제조 파트너로 나아가고 있습니다.",
+    body: "범진은 기획부터 설계, 금형, 사출, 조립까지 전 공정을 내재화하여 고객의 아이디어를 글로벌 양산 제품으로 완성합니다.",
   },
   en: {
-    tag: "Since 1994 — Bumjin Electronics",
+    tag: "Since 1993 — Bumjin Electronics",
     headline: "Your complete\nmanufacturing partner",
-    body: "From concept to mass production, Bumjin walks every step with our clients — design, tooling, injection molding, and assembly. Backed by 30 years of manufacturing excellence, we drive innovation in the electronics industry as a trusted global partner.",
+    body: "From concept and acoustic engineering to in-house tooling, injection molding, and mass assembly — Bumjin delivers end-to-end electronics manufacturing.",
   },
   zh: {
-    tag: "自1994年 — 范振电子",
+    tag: "自1993年 — 范振电子",
     headline: "您的全程\n制造合作伙伴",
-    body: "从创意到量产，范振陪伴客户走过每一步——设计、模具、注塑成型、组装。依托30年制造卓越，我们作为值得信赖的全球合作伙伴，引领电子行业创新。",
+    body: "从产品策划、声学设计到自主模具、注塑与量产组装，范振提供全流程内制化的全球电子制造服务。",
   },
   ja: {
-    tag: "1994年創業 — 범진電子",
+    tag: "1993年創業 — 範珍電子",
     headline: "お客様の完全な\n製造パートナー",
-    body: "コンセプトから量産まで、設計・金型・射出成形・組立のすべてをご一緒します。30年の製造技術と品質競争力を背景に、電子産業の革新を牽引するグローバル製造パートナーとして歩んでいます。",
+    body: "企画・音響設計から自社金型・射出成形・量産組立まで全工程を内製化し、お客様のアイデアを確かな製品へと導きます。",
   },
 };
 
 function HeroVideo({ lang }: { lang: Lang }) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const c = HERO_COPY[lang];
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  /* Video window: 72% → 100% of viewport */
-  const scale        = useTransform(scrollYProgress, [0, 0.85], [0.72, 1]);
-  const borderRadius = useTransform(scrollYProgress, [0, 0.75], [16, 0]);
-
-  /* Text: visible at start, fades as video expands */
-  const textOpacity = useTransform(scrollYProgress, [0, 0.32], [1, 0]);
-  const textY       = useTransform(scrollYProgress, [0, 0.32], [0, -20]);
-
-  /* Scroll hint: fades quickly */
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
+  const heroT = translations[lang].hero;
+  const stats = [
+    { value: "1993", label: heroT.stat1 },
+    { value: "8", label: heroT.stat2 },
+    { value: "50M+", label: heroT.stat3 },
+    { value: "6", label: heroT.stat4 },
+  ];
 
   return (
-    <div ref={containerRef} style={{ height: "200vh" }}>
-      <div className="sticky top-0 h-screen bg-white overflow-hidden flex items-center justify-center">
-        <motion.div
-          className="relative w-full h-full overflow-hidden"
-          style={{ scale, borderRadius }}
-        >
-          {/* Video */}
-          <video
-            src="/Bumjin_Web_video_720p.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+    <section className="relative min-h-[88vh] lg:min-h-[92vh] pt-16 flex flex-col justify-between bg-gray-950 overflow-hidden">
+      {/* Background Video */}
+      <video
+        src="/Bumjin_Web_video_720p.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      />
 
-          {/* Dark overlay so text is readable */}
-          <div className="absolute inset-0 bg-black/52" />
+      {/* Directional contrast overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/35" />
 
-          {/* Text overlay — fades out as video expands */}
-          <motion.div
-            className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
-            style={{ opacity: textOpacity, y: textY }}
+      {/* Main content */}
+      <div className="relative z-10 flex-1 flex items-center py-16 lg:py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 w-full">
+          <p className="text-[11px] font-semibold tracking-[0.28em] uppercase text-red-400 mb-5">
+            {c.tag}
+          </p>
+          <h1
+            className="font-black text-white leading-[1.08] tracking-tight mb-6 whitespace-pre-line max-w-4xl"
+            style={{ fontSize: "clamp(36px, 5vw, 68px)" }}
           >
-            <p className="text-[15px] font-bold tracking-[0.45em] uppercase text-white/55 mb-7">
-              {c.tag}
-            </p>
-            <h1
-              className="font-black text-white leading-[1.05] tracking-[-0.02em] mb-7 whitespace-pre-line"
-              style={{ fontSize: "clamp(57px, 7.5vw, 114px)" }}
-            >
-              {c.headline}
-            </h1>
-            <p className="text-white/65 text-[21px] leading-relaxed max-w-xl">
-              {c.body}
-            </p>
-          </motion.div>
-
-          {/* Scroll cue */}
-          <motion.div
-            className="absolute bottom-8 left-0 right-0 flex flex-col items-center gap-2 text-white/40 pointer-events-none"
-            style={{ opacity: hintOpacity }}
-          >
-            <p className="text-[9px] tracking-[0.4em] uppercase">Scroll</p>
-            <ChevronDown className="size-3.5 animate-bounce" />
-          </motion.div>
-        </motion.div>
+            {c.headline}
+          </h1>
+          <p className="text-white/80 text-[15px] lg:text-[17px] leading-relaxed max-w-xl mb-9">
+            {c.body}
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a href="#contact">
+              <button className="text-[13px] font-bold text-white bg-red-600 hover:bg-red-700 px-7 py-3.5 rounded-sm transition-colors inline-flex items-center gap-2">
+                {heroT.cta1}
+                <ArrowUpRight className="size-4" />
+              </button>
+            </a>
+            <Link href="/business">
+              <button className="text-[13px] font-semibold text-white border border-white/35 hover:border-white hover:bg-white/10 px-7 py-3.5 rounded-sm transition-colors">
+                {heroT.cta2}
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
-    </div>
+
+      {/* Bottom key metrics bar */}
+      <div className="relative z-10 border-t border-white/15 bg-black/40 backdrop-blur-sm">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/15">
+          {stats.map((s) => (
+            <div key={s.label} className="py-5 px-4 lg:px-8 first:pl-0">
+              <p className="text-[24px] lg:text-[28px] font-black text-white leading-none">{s.value}</p>
+              <p className="text-[11px] text-white/65 tracking-wide mt-1.5">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
 /* ─── PAGE ─── */
 
 export default function Page() {
-  const [lang, setLang] = useState<Lang>("ko");
+  const [lang, setLangState] = useState<Lang>("ko");
   const adminContent = useAdminContent();
+
+  useEffect(() => {
+    const saved = localStorage.getItem("bumjin-lang") as Lang | null;
+    if (saved && ["ko", "en", "zh", "ja"].includes(saved)) {
+      setLangState(saved);
+    }
+  }, []);
+
+  const setLang = (next: Lang) => {
+    setLangState(next);
+    localStorage.setItem("bumjin-lang", next);
+  };
 
   return (
     <div className="bg-white text-gray-900 min-h-screen">
@@ -1213,8 +1092,6 @@ export default function Page() {
         <CompanySection lang={lang} />
         <BusinessSection lang={lang} />
         <TechnologySection lang={lang} />
-
-
         <GlobalSection lang={lang} globalSites={adminContent?.global} />
         <ProcessSection lang={lang} />
         <ClientsSection lang={lang} clients={adminContent?.clients} images={adminContent?.images} />

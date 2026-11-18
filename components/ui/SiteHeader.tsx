@@ -2,26 +2,39 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Globe, Menu, X } from "lucide-react";
 import { translations, type Lang } from "@/lib/translations";
 
-const LANG_OPTIONS: { code: Lang; label: string }[] = [
-  { code: "ko", label: "한국어" },
-  { code: "en", label: "English" },
-  { code: "zh", label: "中文" },
-  { code: "ja", label: "日本語" },
+const LANG_OPTIONS: { code: Lang; label: string; short: string }[] = [
+  { code: "ko", label: "한국어", short: "KR" },
+  { code: "en", label: "English", short: "EN" },
+  { code: "zh", label: "中文", short: "ZH" },
+  { code: "ja", label: "日本語", short: "JA" },
 ];
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const [lang, setLang] = useState<Lang>("ko");
+  const [lang, setLangState] = useState<Lang>("ko");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
 
+  useEffect(() => {
+    const saved = localStorage.getItem("bumjin-lang") as Lang | null;
+    if (saved && ["ko", "en", "zh", "ja"].includes(saved)) {
+      setLangState(saved);
+    }
+  }, []);
+
+  const setLang = (next: Lang) => {
+    setLangState(next);
+    localStorage.setItem("bumjin-lang", next);
+  };
+
   const t = translations[lang].nav;
+  const activeLangOption = LANG_OPTIONS.find((o) => o.code === lang) ?? LANG_OPTIONS[0];
 
   const navLinks = [
     { label: t.company, href: "/company" },
@@ -38,7 +51,7 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-[0_1px_0_#E5E7EB]">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200/80">
       <nav className="mx-auto max-w-7xl px-6 lg:px-10 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="shrink-0">
@@ -48,7 +61,7 @@ export function SiteHeader() {
             width={160}
             height={48}
             priority
-            className="h-12 w-auto object-contain"
+            className="h-10 w-auto object-contain"
           />
         </Link>
 
@@ -60,7 +73,7 @@ export function SiteHeader() {
                 href={link.href}
                 className={`text-[13px] font-medium transition-colors ${
                   isActive(link.href)
-                    ? "text-gray-900 border-b border-gray-900 pb-0.5"
+                    ? "text-gray-900 border-b-2 border-red-600 pb-1"
                     : "text-gray-600 hover:text-gray-900"
                 }`}
               >
@@ -76,16 +89,17 @@ export function SiteHeader() {
           <div className="relative hidden sm:block">
             <button
               onClick={() => setLangOpen(!langOpen)}
-              className="flex items-center gap-1 text-[12px] font-medium text-gray-500 hover:text-gray-900 transition-colors px-2 py-1"
+              className="flex items-center gap-1.5 text-[12px] font-medium text-gray-600 hover:text-gray-900 transition-colors px-2.5 py-1.5 rounded-sm hover:bg-gray-50"
             >
-              Language
-              <ChevronDown className="size-3" />
+              <Globe className="size-3.5 text-gray-400" />
+              <span>{activeLangOption.short}</span>
+              <ChevronDown className="size-3 text-gray-400" />
             </button>
             {langOpen && (
               <motion.div
                 initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="absolute right-0 top-full mt-2 bg-white border border-gray-100 shadow-xl rounded overflow-hidden z-50 min-w-[110px]"
+                className="absolute right-0 top-full mt-2 bg-white border border-gray-200 shadow-lg rounded-sm overflow-hidden z-50 min-w-[120px]"
               >
                 {LANG_OPTIONS.map((opt) => (
                   <button
@@ -94,11 +108,12 @@ export function SiteHeader() {
                       setLang(opt.code);
                       setLangOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2.5 text-[12px] font-medium transition-colors hover:bg-gray-50 ${
-                      lang === opt.code ? "text-red-600" : "text-gray-700"
+                    className={`w-full text-left px-4 py-2.5 text-[12px] font-medium transition-colors hover:bg-gray-50 flex items-center justify-between ${
+                      lang === opt.code ? "text-red-600 bg-red-50/40" : "text-gray-700"
                     }`}
                   >
-                    {opt.label}
+                    <span>{opt.label}</span>
+                    <span className="text-[10px] text-gray-400 font-mono">{opt.short}</span>
                   </button>
                 ))}
               </motion.div>
