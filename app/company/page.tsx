@@ -476,7 +476,11 @@ function VisionSection({
         <div className="mx-auto max-w-7xl px-6 lg:px-10 grid grid-cols-2 lg:grid-cols-4 divide-x divide-gray-100">
           {t.goals.map((item, i) => (
             <FadeIn key={item.label} delay={i * 0.07}>
-              <div className="py-12 px-6 lg:px-10 first:pl-0">
+              <div
+                className={`py-12 ${
+                  i % 2 === 0 ? "pl-0 pr-6" : "pl-6 pr-0"
+                } ${i === 0 ? "lg:pl-0 lg:pr-10" : "lg:px-10"}`}
+              >
                 <p
                   className="font-black text-gray-900 leading-none tracking-tighter"
                   style={{ fontSize: "clamp(36px, 4vw, 60px)" }}

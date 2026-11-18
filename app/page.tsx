@@ -386,7 +386,7 @@ function ProcessCard({
       whileHover={{ y: -3 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
       onClick={onClick}
-      className="pt-8 pb-6 pr-4 lg:pr-6 pl-4 first:pl-0 cursor-pointer group border-t-2 border-transparent hover:border-red-600 transition-[border-color] duration-200"
+      className="pt-8 pb-6 pr-5 lg:pr-7 pl-5 lg:pl-7 first:pl-0 cursor-pointer group border-t-2 border-transparent hover:border-red-600 transition-[border-color] duration-200"
     >
       <p className="text-[11px] font-mono text-red-600 mb-4 tracking-wider">{step.step}</p>
       <Icon className="size-4 text-gray-400 group-hover:text-red-600 transition-colors mb-3" />
@@ -947,7 +947,7 @@ function HeroVideo({ lang }: { lang: Lang }) {
       <div className="relative z-10 border-t border-white/15 bg-black/40 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/15">
           {stats.map((s) => (
-            <div key={s.label} className="py-5 px-4 lg:px-8 first:pl-0">
+            <div key={s.label} className="py-5 px-6 lg:px-8 first:pl-0">
               <p className="text-[24px] lg:text-[28px] font-black text-white leading-none">{s.value}</p>
               <p className="text-[11px] text-white/65 tracking-wide mt-1.5">{s.label}</p>
             </div>
