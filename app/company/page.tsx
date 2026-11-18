@@ -555,152 +555,195 @@ function GroupSection({
   subsidiaries?: SubsidiaryItem[];
 }) {
   const data = subsidiaries ?? t.subsidiaries;
+  const [selectedIdx, setSelectedIdx] = useState(0);
+
+  const scrollToAffiliate = (idx: number) => {
+    setSelectedIdx(idx);
+    const el = document.getElementById(`affiliate-${idx}`);
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.scrollY - 140;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
+
   return (
-    <section id="group" className="bg-white">
-      <div className="border-t border-gray-100 mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-16 lg:pt-36 lg:pb-20">
+    <section id="group" className="bg-[#F8F9FB] border-t border-gray-200/70">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-24 pb-12 lg:pt-32 lg:pb-14">
         <FadeIn>
-          <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
+          <p className="text-[11px] font-semibold tracking-[0.35em] uppercase text-red-600 mb-4">
             {t.eyebrow}
           </p>
         </FadeIn>
-        <FadeIn delay={0.07}>
-          <h2
-            className="font-black text-gray-900 leading-[0.95] tracking-tight"
-            style={{ fontSize: "clamp(48px, 7vw, 110px)" }}
-          >
-            {t.title}
-          </h2>
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+          <FadeIn delay={0.05}>
+            <h2
+              className="font-bold text-gray-900 leading-[1.08] tracking-tight"
+              style={{ fontSize: "clamp(36px, 5vw, 64px)" }}
+            >
+              {t.title}
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <p className="text-gray-500 text-[14px] max-w-md leading-relaxed">
+              {t.subtitle}
+            </p>
+          </FadeIn>
+        </div>
+
+        {/* Motrex-style Affiliate Anchor Pill Tabs */}
+        <FadeIn delay={0.14}>
+          <div className="flex flex-wrap gap-2.5 mt-10">
+            {data.map((sub, idx) => (
+              <button
+                key={sub.name}
+                onClick={() => scrollToAffiliate(idx)}
+                className={`px-5 py-2.5 text-[13px] font-semibold rounded-sm border transition-all ${
+                  selectedIdx === idx
+                    ? "bg-gray-900 text-white border-gray-900"
+                    : "bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:text-gray-900"
+                }`}
+              >
+                {sub.name}
+              </button>
+            ))}
+          </div>
         </FadeIn>
       </div>
 
-      {/* Subsidiaries — alternating full-bleed layout */}
-      {data.map((sub, si) => (
-        <motion.div
-          key={sub.name}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className={`${sub.dark ? "bg-gray-950" : "bg-gray-50"} border-t border-gray-100`}
-        >
-          <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 lg:py-28">
-            <div className={`grid lg:grid-cols-2 gap-12 lg:gap-20 ${si % 2 === 1 ? "lg:direction-rtl" : ""}`}>
-              {/* Text */}
-              <div className={si % 2 === 1 ? "lg:order-2" : ""}>
-                <FadeIn delay={0.05}>
-                  <p className={`text-[10px] font-semibold tracking-[0.35em] uppercase mb-3 ${sub.dark ? "text-gray-600" : "text-gray-400"}`}>
-                    {sub.en}
-                  </p>
-                  <p
-                    className={`font-black leading-tight tracking-tight mb-3 ${sub.dark ? "text-white" : "text-gray-900"}`}
-                    style={{ fontSize: "clamp(40px, 5.5vw, 80px)" }}
-                  >
-                    {sub.name}
-                  </p>
-                  <p className="text-red-500 text-[13px] font-semibold mb-6">{sub.tagline}</p>
-                  <p className={`text-[14px] leading-[1.85] mb-10 ${sub.dark ? "text-gray-400" : "text-gray-600"}`}>
-                    {sub.desc}
-                  </p>
-                </FadeIn>
+      {/* Affiliate Cards — Motrex affiliates.php layout */}
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 pb-20 lg:pb-28 space-y-10">
+        {data.map((sub, si) => {
+          const meta = t.affiliatesMeta[si] ?? t.affiliatesMeta[0];
+          return (
+            <motion.article
+              id={`affiliate-${si}`}
+              key={sub.name}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              onViewportEnter={() => setSelectedIdx(si)}
+              className="group relative bg-white border border-gray-200 overflow-hidden"
+            >
+              {/* Top red accent bar */}
+              <span
+                aria-hidden="true"
+                className="block h-[2px] w-full bg-red-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
+              />
 
-                {/* Stats */}
-                <FadeIn delay={0.1}>
-                  <div className={`grid grid-cols-2 gap-0 border-t ${sub.dark ? "border-white/10" : "border-gray-200"}`}>
-                    <div className={`py-7 pr-8 border-r ${sub.dark ? "border-white/10" : "border-gray-200"}`}>
-                      <p
-                        className={`font-black leading-none tracking-tighter ${sub.dark ? "text-white" : "text-gray-900"}`}
-                        style={{ fontSize: "clamp(32px, 3.5vw, 52px)" }}
-                      >
-                        {sub.revenue}
-                      </p>
-                      <p className={`text-[11px] mt-2 ${sub.dark ? "text-gray-500" : "text-gray-400"}`}>{t.revenueLabel}</p>
-                    </div>
-                    <div className="py-7 pl-8">
-                      <p
-                        className={`font-black leading-none tracking-tighter ${sub.dark ? "text-white" : "text-gray-900"}`}
-                        style={{ fontSize: "clamp(32px, 3.5vw, 52px)" }}
-                      >
-                        {sub.employees}
-                      </p>
-                      <p className={`text-[11px] mt-2 ${sub.dark ? "text-gray-500" : "text-gray-400"}`}>{t.employeesLabel}</p>
-                    </div>
+              {/* Affiliate Header Row */}
+              <div className="px-7 py-7 lg:px-10 lg:py-8 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-red-600 mb-2">
+                    {meta?.category ?? sub.en}
+                  </p>
+                  <div className="flex flex-wrap items-baseline gap-3">
+                    <h3 className="text-[26px] lg:text-[32px] font-bold text-gray-900 tracking-tight leading-none">
+                      {sub.name}
+                    </h3>
+                    <span className="text-[13px] font-medium text-gray-400">
+                      {sub.en}
+                    </span>
                   </div>
-                </FadeIn>
+                </div>
+                <Link
+                  href={meta?.href ?? "/business"}
+                  className="inline-flex items-center gap-2 self-start sm:self-center px-5 py-2.5 text-[12px] font-semibold text-gray-900 border border-gray-300 hover:border-red-600 hover:bg-red-600 hover:text-white transition-all rounded-sm"
+                >
+                  <span>{t.visitSiteLabel}</span>
+                  <ArrowUpRight className="size-3.5" />
+                </Link>
               </div>
 
-              {/* Details card */}
-              <div className={si % 2 === 1 ? "lg:order-1" : ""}>
-                <FadeIn delay={0.15}>
-                  <div className={`rounded-none border ${sub.dark ? "border-white/10 bg-white/5" : "border-gray-200 bg-white"} p-8 lg:p-10`}>
-                    {/* Locations */}
-                    <div className="mb-8">
-                      <p className={`text-[10px] font-bold tracking-[0.3em] uppercase mb-4 ${sub.dark ? "text-gray-500" : "text-gray-400"}`}>
-                        {t.locationsLabel}
-                      </p>
-                      <ul className="space-y-2.5">
-                        {sub.locations.map((loc) => (
-                          <li key={loc} className="flex items-center gap-3">
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
-                            <span className={`text-[13px] ${sub.dark ? "text-gray-300" : "text-gray-700"}`}>{loc}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+              {/* 2-Column Body: Description + Stats (Left) | Spec Table (Right) */}
+              <div className="grid lg:grid-cols-[1.15fr_1fr] divide-y lg:divide-y-0 lg:divide-x divide-gray-200">
+                {/* Left: Description & Key Metrics */}
+                <div className="p-7 lg:p-10 flex flex-col justify-between gap-8">
+                  <div>
+                    <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">
+                      {t.descriptionLabel}
+                    </p>
+                    <p className="text-[16px] font-semibold text-gray-900 mb-3 leading-snug">
+                      {sub.tagline}
+                    </p>
+                    <p className="text-[14px] text-gray-600 leading-[1.85]">
+                      {sub.desc}
+                    </p>
+                  </div>
 
-                    <div className={`h-px mb-8 ${sub.dark ? "bg-white/10" : "bg-gray-100"}`} />
-
-                    {/* Products */}
-                    <div className="mb-8">
-                      <p className={`text-[10px] font-bold tracking-[0.3em] uppercase mb-4 ${sub.dark ? "text-gray-500" : "text-gray-400"}`}>
-                        {sub.productsLabel}
-                      </p>
-                      <ul className="space-y-2.5">
-                        {sub.products.map((p) => (
-                          <li key={p} className="flex items-center gap-3">
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
-                            <span className={`text-[13px] ${sub.dark ? "text-gray-300" : "text-gray-700"}`}>{p}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className={`h-px mb-8 ${sub.dark ? "bg-white/10" : "bg-gray-100"}`} />
-
-                    {/* Roles */}
-                    <div>
-                      <p className={`text-[10px] font-bold tracking-[0.3em] uppercase mb-4 ${sub.dark ? "text-gray-500" : "text-gray-400"}`}>
-                        {t.rolesLabel}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {sub.roles.map((role) => (
-                          <span
-                            key={role}
-                            className={`text-[11px] font-medium px-3 py-1.5 ${
-                              sub.dark
-                                ? "bg-white/10 text-gray-300"
-                                : "bg-gray-100 text-gray-600"
-                            }`}
-                          >
-                            {role}
-                          </span>
-                        ))}
+                  <div>
+                    {/* Key Metrics */}
+                    <div className="grid grid-cols-2 border-t border-gray-100 pt-6 mb-6">
+                      <div className="pr-6 border-r border-gray-100">
+                        <p className="text-[28px] lg:text-[34px] font-bold text-gray-900 leading-none tracking-tight tabular-nums">
+                          {sub.revenue}
+                        </p>
+                        <p className="text-[12px] text-gray-400 mt-1.5">{t.revenueLabel}</p>
+                      </div>
+                      <div className="pl-6">
+                        <p className="text-[28px] lg:text-[34px] font-bold text-gray-900 leading-none tracking-tight tabular-nums">
+                          {sub.employees}
+                        </p>
+                        <p className="text-[12px] text-gray-400 mt-1.5">{t.employeesLabel}</p>
                       </div>
                     </div>
+
+                    {/* Roles */}
+                    <div className="flex flex-wrap gap-2">
+                      {sub.roles.map((role) => (
+                        <span
+                          key={role}
+                          className="text-[11px] font-medium px-3 py-1.5 bg-[#F8F9FB] text-gray-700 border border-gray-200/80 rounded-sm"
+                        >
+                          {role}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </FadeIn>
+                </div>
+
+                {/* Right: Motrex-style Key-Value Spec Table */}
+                <div className="p-7 lg:p-10 bg-[#FCFCFD]">
+                  <dl className="divide-y divide-gray-200/80">
+                    <div className="py-3.5 first:pt-0 grid grid-cols-[100px_1fr] gap-4 items-start">
+                      <dt className="text-[12px] font-semibold text-gray-400">{t.foundedLabel}</dt>
+                      <dd className="text-[13px] font-medium text-gray-900">{meta?.founded}</dd>
+                    </div>
+                    <div className="py-3.5 grid grid-cols-[100px_1fr] gap-4 items-start">
+                      <dt className="text-[12px] font-semibold text-gray-400">{t.businessFieldLabel}</dt>
+                      <dd className="text-[13px] font-medium text-gray-900 leading-relaxed">{meta?.businessField}</dd>
+                    </div>
+                    <div className="py-3.5 grid grid-cols-[100px_1fr] gap-4 items-start">
+                      <dt className="text-[12px] font-semibold text-gray-400">{t.hqLabel}</dt>
+                      <dd className="text-[13px] font-medium text-gray-900">{meta?.hq}</dd>
+                    </div>
+                    <div className="py-3.5 grid grid-cols-[100px_1fr] gap-4 items-start">
+                      <dt className="text-[12px] font-semibold text-gray-400">{t.locationsLabel}</dt>
+                      <dd className="text-[13px] text-gray-700 leading-relaxed">
+                        {sub.locations.join(" · ")}
+                      </dd>
+                    </div>
+                    <div className="py-3.5 last:pb-0 grid grid-cols-[100px_1fr] gap-4 items-start">
+                      <dt className="text-[12px] font-semibold text-gray-400">{sub.productsLabel}</dt>
+                      <dd className="text-[13px] text-gray-700 leading-relaxed">
+                        {sub.products.join(" · ")}
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
               </div>
-            </div>
-          </div>
-        </motion.div>
-      ))}
+            </motion.article>
+          );
+        })}
+      </div>
 
       {/* Core message */}
-      <div className="border-t border-gray-100 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 lg:py-20">
+      <div className="border-t border-gray-200 bg-white">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-14 lg:py-16">
           <FadeIn>
             <p
-              className="font-bold text-gray-900 leading-relaxed border-l-4 border-red-600 pl-6"
-              style={{ fontSize: "clamp(15px, 1.8vw, 20px)" }}
+              className="font-semibold text-gray-900 leading-relaxed border-l-4 border-red-600 pl-6"
+              style={{ fontSize: "clamp(15px, 1.6vw, 19px)" }}
             >
               {t.coreMessage}
             </p>
@@ -944,11 +987,11 @@ function LocationSection({
 function PageHero({ t }: { t: CompanyTranslations["hero"] }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 120]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <div ref={ref} className="relative bg-gray-950 min-h-[90vh] flex items-end overflow-hidden">
+    <div ref={ref} className="relative bg-gray-950 pt-36 pb-16 lg:pt-44 lg:pb-24 flex items-end overflow-hidden">
       {/* Subtle animated gradient */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 grid-lines opacity-[0.04]" />
@@ -966,43 +1009,42 @@ function PageHero({ t }: { t: CompanyTranslations["hero"] }) {
       {/* Large background text */}
       <div
         aria-hidden
-        className="absolute bottom-0 left-0 right-0 font-black leading-none text-white/[0.025] select-none pointer-events-none overflow-hidden"
-        style={{ fontSize: "clamp(200px, 35vw, 520px)" }}
+        className="absolute bottom-0 right-6 font-black leading-none text-white/[0.025] select-none pointer-events-none overflow-hidden"
+        style={{ fontSize: "clamp(140px, 22vw, 320px)" }}
       >
         BJ
       </div>
 
       <motion.div
         style={{ y, opacity }}
-        className="relative mx-auto max-w-7xl px-6 lg:px-10 w-full pt-40 pb-20 lg:pb-28"
+        className="relative mx-auto max-w-7xl px-6 lg:px-10 w-full"
       >
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="text-[11px] font-semibold tracking-[0.45em] uppercase text-gray-500 mb-8"
+          className="text-[11px] font-semibold tracking-[0.35em] uppercase text-red-500 mb-4"
         >
           {t.eyebrow}
         </motion.p>
         <motion.h1
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
-          className="font-black text-white leading-[0.9] tracking-tight mb-8"
-          style={{ fontSize: "clamp(60px, 11vw, 160px)" }}
+          transition={{ duration: 0.8, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          className="font-bold text-white leading-[1.05] tracking-tight mb-5"
+          style={{ fontSize: "clamp(40px, 6vw, 76px)" }}
         >
           {t.title}
         </motion.h1>
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-center gap-6"
+          transition={{ duration: 0.7, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
+          className="flex items-center gap-4"
         >
-          <p className="text-gray-500 text-[14px] leading-relaxed max-w-xs">
+          <p className="text-gray-400 text-[14px] lg:text-[15px] leading-relaxed max-w-md">
             {t.subtitle}
           </p>
-          <ChevronDown className="size-5 text-gray-600 animate-bounce shrink-0" />
         </motion.div>
       </motion.div>
     </div>

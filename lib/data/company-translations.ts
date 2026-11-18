@@ -68,10 +68,23 @@ export interface CompanyTranslations {
   group: {
     eyebrow: string;
     title: string;
+    subtitle: string;
+    descriptionLabel: string;
+    foundedLabel: string;
+    businessFieldLabel: string;
+    hqLabel: string;
     revenueLabel: string;
     employeesLabel: string;
     locationsLabel: string;
     rolesLabel: string;
+    visitSiteLabel: string;
+    affiliatesMeta: {
+      category: string;
+      founded: string;
+      businessField: string;
+      hq: string;
+      href: string;
+    }[];
     subsidiaries: SubsidiaryItem[];
     coreMessage: string;
   };
@@ -281,12 +294,34 @@ const KO: CompanyTranslations = {
     ],
   },
   group: {
-    eyebrow: "Bumjin Group",
-    title: "범진",
+    eyebrow: "Affiliates",
+    title: "계열사",
+    subtitle: "음향전자부터 정밀 금형·사출성형까지 수직 계열화된 범진 그룹의 핵심 계열사를 소개합니다.",
+    descriptionLabel: "Description",
+    foundedLabel: "설립연도",
+    businessFieldLabel: "사업분야",
+    hqLabel: "본사위치",
     revenueLabel: "매출",
     employeesLabel: "임직원",
-    locationsLabel: "사업장",
+    locationsLabel: "글로벌 거점",
     rolesLabel: "주요 역할",
+    visitSiteLabel: "사업부 상세보기",
+    affiliatesMeta: [
+      {
+        category: "Acoustic & Electronics Solutions",
+        founded: "2004년 05월",
+        businessField: "사운드바 · 스피커 · 홈시어터 연구개발 및 ODM/OEM 제조",
+        hq: "경기도 수원시 권선구",
+        href: "/business/electronics",
+      },
+      {
+        category: "Precision Mold & Injection Molding",
+        founded: "1991년 10월",
+        businessField: "정밀 금형 설계·제작 및 생활가전·자동차 부품 사출성형",
+        hq: "경기도 수원시 권선구",
+        href: "/business/molding",
+      },
+    ],
     subsidiaries: [
       {
         name: "범진전자",
@@ -587,12 +622,34 @@ const EN: CompanyTranslations = {
     ],
   },
   group: {
-    eyebrow: "Bumjin Group",
-    title: "Bumjin",
+    eyebrow: "Affiliates",
+    title: "Affiliates",
+    subtitle: "Introducing Bumjin Group's vertically integrated affiliates spanning acoustic electronics to precision mold and injection molding.",
+    descriptionLabel: "Description",
+    foundedLabel: "Founded",
+    businessFieldLabel: "Business Field",
+    hqLabel: "Headquarters",
     revenueLabel: "Revenue",
     employeesLabel: "Employees",
-    locationsLabel: "Sites",
+    locationsLabel: "Global Sites",
     rolesLabel: "Key Roles",
+    visitSiteLabel: "View Division",
+    affiliatesMeta: [
+      {
+        category: "Acoustic & Electronics Solutions",
+        founded: "May 2004",
+        businessField: "R&D and ODM/OEM manufacturing of Sound Bars, Speakers & Home Theater",
+        hq: "Gwonseon-gu, Suwon-si, Gyeonggi-do",
+        href: "/business/electronics",
+      },
+      {
+        category: "Precision Mold & Injection Molding",
+        founded: "October 1991",
+        businessField: "Precision mold design & fabrication, appliance and automotive injection molding",
+        hq: "Gwonseon-gu, Suwon-si, Gyeonggi-do",
+        href: "/business/molding",
+      },
+    ],
     subsidiaries: [
       {
         name: "Bumjin Electronics",
@@ -877,12 +934,34 @@ const ZH: CompanyTranslations = {
     ],
   },
   group: {
-    eyebrow: "Bumjin Group",
-    title: "凡真",
+    eyebrow: "Affiliates",
+    title: "关联企业",
+    subtitle: "为您介绍从音响电子到精密模具·注塑成型的凡真集团核心关联企业。",
+    descriptionLabel: "Description",
+    foundedLabel: "创立年份",
+    businessFieldLabel: "业务领域",
+    hqLabel: "总部地址",
     revenueLabel: "营收",
     employeesLabel: "员工",
-    locationsLabel: "事业部/基地",
+    locationsLabel: "全球基地",
     rolesLabel: "核心职能",
+    visitSiteLabel: "查看事业部",
+    affiliatesMeta: [
+      {
+        category: "Acoustic & Electronics Solutions",
+        founded: "2004年 05月",
+        businessField: "条形音箱 · 扬声器 · 家庭影院研发与 ODM/OEM 制造",
+        hq: "京畿道水原市劝善区",
+        href: "/business/electronics",
+      },
+      {
+        category: "Precision Mold & Injection Molding",
+        founded: "1991年 10月",
+        businessField: "精密模具设计与制造，生活家电及汽车零部件注塑成型",
+        hq: "京畿道水原市劝善区",
+        href: "/business/molding",
+      },
+    ],
     subsidiaries: [
       {
         name: "凡真电子",
@@ -1163,12 +1242,34 @@ const JA: CompanyTranslations = {
     ],
   },
   group: {
-    eyebrow: "Bumjin Group",
-    title: "ボムジン",
+    eyebrow: "Affiliates",
+    title: "グループ会社",
+    subtitle: "音響エレクトロニクスから精密金型・射出成形まで垂直統合されたボムジングループの中核企業をご紹介します。",
+    descriptionLabel: "Description",
+    foundedLabel: "設立年",
+    businessFieldLabel: "事業分野",
+    hqLabel: "本社所在地",
     revenueLabel: "売上高",
     employeesLabel: "従業員数",
-    locationsLabel: "拠点",
+    locationsLabel: "グローバル拠点",
     rolesLabel: "主な役割",
+    visitSiteLabel: "事業部詳細",
+    affiliatesMeta: [
+      {
+        category: "Acoustic & Electronics Solutions",
+        founded: "2004年 05月",
+        businessField: "サウンドバー・スピーカー・ホームシアター研究開発およびODM/OEM製造",
+        hq: "京畿道水原市勧善区",
+        href: "/business/electronics",
+      },
+      {
+        category: "Precision Mold & Injection Molding",
+        founded: "1991年 10月",
+        businessField: "精密金型設計・製作および生活家電・自動車部品の射出成形",
+        hq: "京畿道水原市勧善区",
+        href: "/business/molding",
+      },
+    ],
     subsidiaries: [
       {
         name: "ボムジン電子",
