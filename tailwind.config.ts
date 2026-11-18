@@ -10,7 +10,20 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-noto)", "Noto Sans KR", "system-ui", "sans-serif"],
+        sans: [
+          "Pretendard Variable",
+          "Pretendard",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "system-ui",
+          "Roboto",
+          "Helvetica Neue",
+          "Segoe UI",
+          "Apple SD Gothic Neo",
+          "Noto Sans KR",
+          "Malgun Gothic",
+          "sans-serif",
+        ],
       },
       colors: {
         /* Company red #C0392B as red-600 base */

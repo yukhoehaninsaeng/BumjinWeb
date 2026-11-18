@@ -159,7 +159,7 @@ function OverviewSection({
                       x={i * 200 + 100}
                       y={78}
                       textAnchor="middle"
-                      fontFamily="Noto Sans KR, sans-serif"
+                      fontFamily="Pretendard Variable, Pretendard, sans-serif"
                       fontSize={lang === "en" ? 23 : 30}
                       fontWeight={700}
                       fill="#c0392b"

@@ -33,7 +33,6 @@ export function BusinessNav() {
                   className={`ml-2 text-[10px] tracking-[2px] uppercase transition-colors ${
                     isActive ? "text-[#C0392B]" : "text-[#999999]"
                   }`}
-                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   {dept.labelEn}
                 </span>

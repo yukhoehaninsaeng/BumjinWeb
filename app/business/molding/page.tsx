@@ -60,7 +60,6 @@ export default function MoldingPage() {
             <Reveal>
               <p
                 className="text-[11px] font-medium tracking-[3px] uppercase text-[#C0392B] mb-6"
-                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 {staticDept.index} &mdash; {staticDept.labelEn}
               </p>
@@ -84,7 +83,6 @@ export default function MoldingPage() {
             <Reveal delay={0.14}>
               <p
                 className="text-[11px] font-medium tracking-[2px] uppercase text-[#CCCCCC] mb-5"
-                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 {dept.tagline}
               </p>

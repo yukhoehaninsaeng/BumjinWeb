@@ -271,48 +271,66 @@ function BusinessSection({ lang }: { lang: Lang }) {
   const t = translations[lang].business;
 
   return (
-    <section id="solutions" className="bg-gray-50 py-20 lg:py-28 border-y border-gray-200/70">
+    <section id="solutions" className="bg-[#F8F9FB] py-20 lg:py-28 border-y border-gray-200/70">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        {/* Header row */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between border-b border-gray-200 pb-8 mb-0">
+        {/* Header row — Motrex style */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
           <div>
             <SectionLabel>{t.label}</SectionLabel>
             <h2
-              className="font-black text-gray-900 leading-[1.05] tracking-tight"
-              style={{ fontSize: "clamp(32px, 4.2vw, 56px)" }}
+              className="font-bold text-gray-900 leading-[1.12] tracking-tight"
+              style={{ fontSize: "clamp(30px, 3.8vw, 48px)" }}
             >
               {t.heading}
             </h2>
           </div>
-          <p className="text-gray-500 text-[14px] max-w-xs hidden lg:block leading-relaxed pb-1">
-            {t.subtitle}
-          </p>
+          <div className="flex flex-col lg:items-end gap-3">
+            <p className="text-gray-500 text-[14px] max-w-sm lg:text-right leading-relaxed">
+              {t.subtitle}
+            </p>
+            <Link
+              href="/business"
+              className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gray-900 hover:text-red-600 transition-colors group"
+            >
+              <span>{t.more}</span>
+              <ArrowUpRight className="size-4 text-red-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
+          </div>
         </div>
 
-        {/* Numbered list */}
-        {t.areas.map((area, i) => (
-          <Link
-            key={area.label}
-            href={BUSINESS_LINKS[i] ?? "/business"}
-            className="group flex items-center gap-6 lg:gap-14 py-8 border-b border-gray-200 hover:bg-white border-l-2 border-l-transparent hover:border-l-red-600 -mx-6 lg:-mx-10 px-6 lg:px-10 transition-all"
-          >
-            <span className="text-[12px] font-mono text-gray-400 group-hover:text-red-600 transition-colors shrink-0 w-6 tabular-nums">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <div className="flex-1 grid lg:grid-cols-3 gap-2 lg:gap-12 items-center min-w-0">
-              <div className="lg:col-span-1">
-                <p className="text-[18px] lg:text-[21px] font-bold text-gray-900 group-hover:text-red-600 transition-colors leading-snug">
+        {/* 4-column hairline grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-l border-t border-gray-200 bg-white">
+          {t.areas.map((area, i) => (
+            <Link
+              key={area.label}
+              href={BUSINESS_LINKS[i] ?? "/business"}
+              className="group relative flex flex-col justify-between p-7 lg:p-8 border-r border-b border-gray-200 hover:bg-[#F8F9FB] transition-colors min-h-[260px]"
+            >
+              {/* Top red accent bar on hover */}
+              <span
+                aria-hidden="true"
+                className="absolute top-0 left-0 right-0 h-[2px] bg-red-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+              />
+              <div>
+                <div className="flex items-center justify-between mb-8">
+                  <span className="text-[12px] font-semibold text-red-600 tracking-wider tabular-nums">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <ArrowUpRight className="size-4 text-gray-300 group-hover:text-red-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                </div>
+                <h3 className="text-[19px] font-bold text-gray-900 group-hover:text-red-600 transition-colors leading-snug mb-1.5">
                   {area.title}
+                </h3>
+                <p className="text-[11px] font-medium tracking-wide text-gray-400 uppercase mb-4">
+                  {area.titleSub}
                 </p>
-                <p className="text-[12px] text-gray-400 mt-0.5">{area.titleSub}</p>
               </div>
-              <p className="text-gray-600 text-[13px] leading-relaxed lg:col-span-2 hidden lg:block">
+              <p className="text-gray-600 text-[13px] leading-relaxed">
                 {area.desc}
               </p>
-            </div>
-            <ArrowUpRight className="size-5 text-gray-300 group-hover:text-red-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
-          </Link>
-        ))}
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -632,8 +650,6 @@ function ClientsSection({
       }))
     : CLIENT_PARTNERS.map((c) => ({ key: c.name, img: undefined, name: c.name, tracking: c.tracking }));
 
-  const sliderItemsRev = [...sliderItems].reverse().map((c) => ({ ...c, key: `r-${c.key}` }));
-
   function renderLogo(item: typeof sliderItems[0]) {
     if (item.img) {
       return (
@@ -682,23 +698,15 @@ function ClientsSection({
           </div>
         </div>
 
-        <div className="relative">
-          <ProgressiveBlur direction="left" blurIntensity={1} className="z-20" />
-          <ProgressiveBlur direction="right" blurIntensity={1} className="z-20" />
-          <InfiniteSlider gap={64} duration={30} className="py-5">
-            {sliderItems.map((c) => (
-              <div key={c.key} className="flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity min-w-[90px]">
-                {renderLogo(c)}
-              </div>
-            ))}
-          </InfiniteSlider>
-          <InfiniteSlider gap={64} duration={38} reverse className="py-4">
-            {sliderItemsRev.map((c) => (
-              <div key={c.key} className="flex items-center justify-center opacity-45 hover:opacity-85 transition-opacity min-w-[90px]">
-                {renderLogo(c)}
-              </div>
-            ))}
-          </InfiniteSlider>
+        <div className="grid grid-cols-2 sm:grid-cols-4 border-l border-t border-gray-200 bg-white">
+          {sliderItems.map((c) => (
+            <div
+              key={c.key}
+              className="flex items-center justify-center h-24 sm:h-28 px-6 border-r border-b border-gray-200 hover:bg-[#F8F9FB] transition-colors"
+            >
+              {renderLogo(c)}
+            </div>
+          ))}
         </div>
       </div>
     </section>

@@ -71,7 +71,6 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
       <div className="p-5 flex flex-col gap-1">
         <p
           className="text-[11px] font-semibold text-[#C0392B] tracking-[0.5px]"
-          style={{ fontFamily: "Inter, sans-serif" }}
         >
           {product.nameEn}
         </p>

@@ -63,7 +63,6 @@ export default function StartupPage() {
             <Reveal>
               <p
                 className="text-[11px] font-medium tracking-[3px] uppercase text-[#C0392B] mb-6"
-                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 {staticDept.index} &mdash; {staticDept.labelEn}
               </p>
@@ -87,7 +86,6 @@ export default function StartupPage() {
             <Reveal delay={0.14}>
               <p
                 className="text-[11px] font-medium tracking-[2px] uppercase text-[#CCCCCC] mb-5"
-                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 {dept.tagline}
               </p>
@@ -114,7 +112,6 @@ export default function StartupPage() {
                 <p className="text-[16px] font-medium text-[#333333] leading-snug">{labels.startupProcess}</p>
                 <p
                   className="text-[13px] text-[#999999] font-light"
-                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   From Idea to Mass Production
                 </p>

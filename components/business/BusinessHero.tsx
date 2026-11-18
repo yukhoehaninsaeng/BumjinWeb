@@ -27,7 +27,6 @@ export function BusinessHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="text-[#C0392B] text-[10px] font-medium tracking-[4px] uppercase mb-7"
-          style={{ fontFamily: "Inter, sans-serif" }}
         >
           {copy.badge}
         </motion.p>

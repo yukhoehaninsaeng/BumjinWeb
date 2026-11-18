@@ -1,13 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
-
-const notoSansKR = Noto_Sans_KR({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "900"],
-  variable: "--font-noto",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Bumjin Electronics — We Engineer the Future of Sound",
@@ -34,7 +26,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={notoSansKR.variable} suppressHydrationWarning>
+    <html lang="ko" suppressHydrationWarning>
+      <head>
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+      </head>
       <body className="bg-white text-gray-900 font-sans antialiased">
         {children}
       </body>

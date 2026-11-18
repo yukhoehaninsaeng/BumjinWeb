@@ -11,7 +11,6 @@ export function ContactBand({ contacts }: { contacts: Contact[] }) {
           <div key={c.email}>
             <p
               className="text-[10px] font-medium tracking-[3px] uppercase text-[#C0392B] mb-4"
-              style={{ fontFamily: "Inter, sans-serif" }}
             >
               {c.role}
             </p>
