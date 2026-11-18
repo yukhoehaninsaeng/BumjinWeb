@@ -92,7 +92,7 @@ function OverviewSection({
       {/* Intro */}
       <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-20 lg:pt-36 lg:pb-28">
         <FadeIn>
-          <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
+          <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-gray-400 mb-10">
             {t.eyebrow}
           </p>
         </FadeIn>
@@ -212,7 +212,7 @@ function CEOSection({
       <div className="border-t border-gray-100">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-0 lg:pt-36">
           <FadeIn>
-            <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
+            <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-gray-400 mb-10">
               {t.eyebrow}
             </p>
           </FadeIn>
@@ -297,7 +297,7 @@ function CEOSection({
       <div className="bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-24 lg:py-32">
           <FadeIn>
-            <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-600 mb-14">
+            <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-gray-400 mb-14">
               {t.philosophyEyebrow}
             </p>
           </FadeIn>
@@ -366,7 +366,7 @@ function VisionSection({
             Vision
           </div>
           <FadeIn>
-            <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-red-200 mb-8">
+            <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-red-200 mb-8">
               {t.eyebrow}
             </p>
           </FadeIn>
@@ -413,7 +413,7 @@ function VisionSection({
       <div className="mx-auto max-w-7xl px-6 lg:px-10 py-24 lg:py-32">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
           <FadeIn>
-            <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
+            <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-gray-400 mb-10">
               {t.meaningEyebrow}
             </p>
             {vm.map((item, i) => (
@@ -435,7 +435,7 @@ function VisionSection({
 
           {/* Core Values */}
           <FadeIn delay={0.1}>
-            <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
+            <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-gray-400 mb-10">
               {t.coreValuesEyebrow}
             </p>
             {cv.map((item, i) => (
@@ -676,7 +676,7 @@ function HistorySection({
       {/* Header */}
       <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-20 lg:pt-36 lg:pb-24">
         <FadeIn>
-          <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
+          <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-gray-400 mb-10">
             {t.eyebrow}
           </p>
         </FadeIn>
@@ -774,7 +774,7 @@ function LocationSection({
     <section id="location" className="bg-gray-950">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-16 lg:pt-36 lg:pb-20">
         <FadeIn>
-          <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-600 mb-10">
+          <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-gray-400 mb-10">
             {t.eyebrow}
           </p>
         </FadeIn>

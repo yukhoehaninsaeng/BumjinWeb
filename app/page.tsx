@@ -832,16 +832,18 @@ function HeroVideo({ lang }: { lang: Lang }) {
             {c.body}
           </p>
           <div className="flex flex-wrap gap-3">
-            <a href="#contact">
-              <button className="text-[13px] font-bold text-white bg-red-600 hover:bg-red-700 px-7 py-3.5 rounded-sm transition-colors inline-flex items-center gap-2">
-                {heroT.cta1}
-                <ArrowUpRight className="size-4" />
-              </button>
+            <a
+              href="#contact"
+              className="text-[13px] font-bold text-white bg-red-600 hover:bg-red-700 px-7 py-3.5 rounded-sm transition-colors inline-flex items-center gap-2"
+            >
+              {heroT.cta1}
+              <ArrowUpRight className="size-4" />
             </a>
-            <Link href="/business">
-              <button className="text-[13px] font-semibold text-white border border-white/35 hover:border-white hover:bg-white/10 px-7 py-3.5 rounded-sm transition-colors">
-                {heroT.cta2}
-              </button>
+            <Link
+              href="/business"
+              className="text-[13px] font-semibold text-white border border-white/35 hover:border-white hover:bg-white/10 px-7 py-3.5 rounded-sm transition-colors inline-flex items-center"
+            >
+              {heroT.cta2}
             </Link>
           </div>
         </div>
