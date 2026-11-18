@@ -2,12 +2,13 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { BUSINESS_DEPARTMENTS } from "@/lib/data/business";
+import { getBusinessDepartments, getBusinessSectionLabels } from "@/lib/data/business";
 import { ProcessFlow } from "@/components/business/ProcessFlow";
 import { SuccessCases } from "@/components/business/SuccessCases";
 import { ProductGrid } from "@/components/business/ProductGrid";
 import { ContactBand } from "@/components/business/ContactBand";
 import { useAdminContent } from "@/lib/hooks/useAdminContent";
+import { useLang } from "@/lib/hooks/useLang";
 
 function Reveal({
   children,
@@ -34,9 +35,11 @@ function Reveal({
 }
 
 export default function StartupPage() {
+  const [lang] = useLang();
   const adminContent = useAdminContent();
-  const staticDept = BUSINESS_DEPARTMENTS.find((d) => d.id === "startup")!;
-  const adminOverride = adminContent?.business?.startup;
+  const staticDept = getBusinessDepartments(lang).find((d) => d.id === "startup")!;
+  const labels = getBusinessSectionLabels(lang);
+  const adminOverride = lang === "ko" ? adminContent?.business?.startup : undefined;
   const images = adminContent?.images ?? {};
 
   const dept = {
@@ -108,7 +111,7 @@ export default function StartupPage() {
                 Process
               </span>
               <div className="sm:pb-2">
-                <p className="text-[16px] font-medium text-[#333333] leading-snug">4단계 협업 프로세스</p>
+                <p className="text-[16px] font-medium text-[#333333] leading-snug">{labels.startupProcess}</p>
                 <p
                   className="text-[13px] text-[#999999] font-light"
                   style={{ fontFamily: "Inter, sans-serif" }}
@@ -129,7 +132,7 @@ export default function StartupPage() {
           <Reveal>
             <div className="flex items-center gap-6 mb-8">
               <h3 className="text-[26px] lg:text-[32px] font-bold text-[#111111] shrink-0">
-                제품 라인업
+                {labels.productLineup}
               </h3>
               <div className="flex-1 h-px bg-[#E5E5E5]" />
             </div>
@@ -144,7 +147,7 @@ export default function StartupPage() {
           <Reveal>
             <div className="flex items-center gap-6 mb-8">
               <h3 className="text-[26px] lg:text-[32px] font-bold text-[#111111] shrink-0">
-                성공사례
+                {labels.successCases}
               </h3>
               <div className="flex-1 h-px bg-[#E5E5E5]" />
             </div>

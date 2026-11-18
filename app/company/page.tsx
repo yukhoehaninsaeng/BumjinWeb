@@ -7,6 +7,9 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { MapPin, Phone, ExternalLink, ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { SiteHeader } from "@/components/ui/SiteHeader";
 import { useAdminContent } from "@/lib/hooks/useAdminContent";
+import { useLang } from "@/lib/hooks/useLang";
+import { getCompanyTranslations, type CompanyTranslations } from "@/lib/data/company-translations";
+import type { Lang } from "@/lib/translations";
 import type { VisionMeaningItem, CoreValueItem, SubsidiaryItem, HistoryEntry } from "@/lib/content-store";
 
 /* ─── helpers ─── */
@@ -39,21 +42,14 @@ function FadeIn({
 
 /* ─── SUB-NAV ─── */
 
-const SUB_NAV = [
-  { id: "overview", label: "개요" },
-  { id: "ceo", label: "CEO 인사말" },
-  { id: "vision", label: "비전" },
-  { id: "group", label: "범진" },
-  { id: "history", label: "연혁" },
-  { id: "location", label: "찾아오시는 길" },
-];
+const SUB_NAV_IDS = ["overview", "ceo", "vision", "group", "history", "location"];
 
-function SubNav({ active }: { active: string }) {
+function SubNav({ active, items }: { active: string; items: { id: string; label: string }[] }) {
   return (
     <nav className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="flex items-center overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {SUB_NAV.map(({ id, label }) => (
+          {items.map(({ id, label }) => (
             <a
               key={id}
               href={`#${id}`}
@@ -74,47 +70,22 @@ function SubNav({ active }: { active: string }) {
 
 /* ─── SECTION 1: OVERVIEW ─── */
 
-const MOTTO_ITEMS = [
-  {
-    num: "01",
-    title: "도전과 혁신",
-    en: "Challenge & Innovation",
-    body: "지속적인 도전과 혁신을 통해 풍부한 가치를 창조합니다.",
-  },
-  {
-    num: "02",
-    title: "인재경영",
-    en: "People Management",
-    body: "범진의 미래는 인재에 달려있다는 믿음으로 인재 양성을 추구합니다.",
-  },
-  {
-    num: "03",
-    title: "고객만족",
-    en: "Customer Satisfaction",
-    body: "혁신적인 선도기술을 바탕으로 고객 감동을 실천합니다.",
-  },
-  {
-    num: "04",
-    title: "정도경영",
-    en: "Integrity Management",
-    body: "준법경영 실천을 통해 임직원, 고객 그리고 사회와의 약속을 지켜갑니다.",
-  },
-  {
-    num: "05",
-    title: "변화추구",
-    en: "Pursuit of Change",
-    body: "대담한 도전으로 새로운 가치를 창조하며 미래를 선도합니다.",
-  },
-];
-
-function OverviewSection({ headline, intro, coreMessage }: { headline?: string; intro?: string; coreMessage?: string }) {
-  const defaultHeadline = ["도전과 혁신,", "사람과 고객", "중심의 기업."];
-  const defaultIntro = "범진은 글로벌 전자·제조 전문 기업으로, 음향기기와 금형·사출 분야에서 30년 이상의 기술력과 신뢰를 축적해 왔습니다.";
-  const defaultCoreMessage = '"도전과 혁신, 인재와 고객 중심의 가치 실현을 통해 지속 가능한 성장을 만들어가는 기업"';
-
+function OverviewSection({
+  t,
+  lang,
+  headline,
+  intro,
+  coreMessage,
+}: {
+  t: CompanyTranslations["overview"];
+  lang: Lang;
+  headline?: string;
+  intro?: string;
+  coreMessage?: string;
+}) {
   const headlineLines = headline
     ? headline.split("\n")
-    : defaultHeadline;
+    : t.headlineLines;
 
   return (
     <section id="overview" className="bg-white">
@@ -122,7 +93,7 @@ function OverviewSection({ headline, intro, coreMessage }: { headline?: string; 
       <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-20 lg:pt-36 lg:pb-28">
         <FadeIn>
           <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
-            About Us
+            {t.eyebrow}
           </p>
         </FadeIn>
         <FadeIn delay={0.08}>
@@ -140,7 +111,7 @@ function OverviewSection({ headline, intro, coreMessage }: { headline?: string; 
         </FadeIn>
         <FadeIn delay={0.16} className="max-w-xl">
           <p className="text-gray-500 text-[15px] leading-relaxed">
-            {intro ?? defaultIntro}
+            {intro ?? t.intro}
           </p>
         </FadeIn>
       </div>
@@ -155,7 +126,7 @@ function OverviewSection({ headline, intro, coreMessage }: { headline?: string; 
             className="font-semibold tracking-[0.4em] uppercase mb-16"
             style={{ fontSize: "11px", color: "#999999" }}
           >
-            Vision
+            {t.visionEyebrow}
           </p>
         </FadeIn>
 
@@ -170,7 +141,7 @@ function OverviewSection({ headline, intro, coreMessage }: { headline?: string; 
                 aria-hidden="true"
                 style={{ aspectRatio: "1000 / 115" }}
               >
-                {MOTTO_ITEMS.map((item, i) => (
+                {t.mottoItems.map((item, i) => (
                   <g key={i}>
                     {/* Arch: M start-x,base A radius radius 0 0 0 end-x,base */}
                     <path
@@ -183,17 +154,17 @@ function OverviewSection({ headline, intro, coreMessage }: { headline?: string; 
                     {i > 0 && (
                       <circle cx={i * 200} cy={108} r="3.5" fill="#111111" />
                     )}
-                    {/* Korean keyword centered inside arch */}
+                    {/* Keyword centered inside arch */}
                     <text
                       x={i * 200 + 100}
                       y={78}
                       textAnchor="middle"
                       fontFamily="Noto Sans KR, sans-serif"
-                      fontSize={31}
+                      fontSize={lang === "en" ? 23 : 30}
                       fontWeight={700}
                       fill="#c0392b"
                     >
-                      {item.title}
+                      {item.archLabel}
                     </text>
                   </g>
                 ))}
@@ -202,9 +173,9 @@ function OverviewSection({ headline, intro, coreMessage }: { headline?: string; 
 
             {/* Detail columns */}
             <div className="grid grid-cols-5 divide-x divide-[#e8e8e8] border-t border-[#e8e8e8]">
-              {MOTTO_ITEMS.map((item, i) => (
+              {t.mottoItems.map((item, i) => (
                 <motion.div
-                  key={item.en}
+                  key={item.num}
                   initial={{ opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -284,7 +255,7 @@ function OverviewSection({ headline, intro, coreMessage }: { headline?: string; 
                   paddingTop: "4px",
                 }}
               >
-                Core Message
+                {t.coreMessageLabel}
               </span>
               <p
                 style={{
@@ -294,7 +265,7 @@ function OverviewSection({ headline, intro, coreMessage }: { headline?: string; 
                   lineHeight: 1.75,
                 }}
               >
-                {coreMessage ?? defaultCoreMessage}
+                {coreMessage ?? t.coreMessage}
               </p>
             </div>
           </div>
@@ -306,56 +277,19 @@ function OverviewSection({ headline, intro, coreMessage }: { headline?: string; 
 
 /* ─── SECTION 2: CEO ─── */
 
-const CEO_PARAGRAPHS = [
-  "범진은 고객의 행복한 삶이라는 가치 실현을 위해 끊임없이 도전하며 성장해 왔습니다.",
-  "1991년 창립 이후 범진은 견고한 기술력과 투명한 경영을 바탕으로 국내 시장에서 경쟁력을 확보하고, 세계 각국에 생산기지를 구축하며 음향기기 및 금형·사출 분야의 전문 기업으로 성장해 왔습니다. 모두가 불가능하다고 했던 꿈을 현실로 만들어 온 지난 시간처럼, 범진은 미래를 향한 도전을 멈추지 않을 것입니다.",
-  "범진은 단순한 외형적 성장에 만족하지 않습니다. 지속적인 투자와 연구개발을 통해 고객에게 더 큰 가치를 제공하고, 글로벌 시장에서 신뢰받는 기업으로 자리매김하기 위해 최선을 다하고 있습니다. 고객의 성공이 곧 우리의 성공이라는 믿음 아래 최고의 품질과 혁신적인 기술로 고객 만족을 실현해 나가겠습니다.",
-  "또한 범진은 고객, 임직원, 협력사와 함께 성장하는 기업을 지향합니다. 신뢰와 투명성을 바탕으로 정도경영을 실천하며, 인재를 소중히 여기고 사회적 책임을 다하는 기업으로서 지속 가능한 미래를 만들어 가겠습니다.",
-  "저희 임직원 모두는 현재의 자부심을 지키며 미래에 대한 확고한 비전으로 새로운 내일을 향해 나아가겠습니다.",
-  "앞으로도 범진의 도전과 성장에 변함없는 관심과 성원을 부탁드립니다.",
-];
-
-const MGMT_PHILOSOPHY = [
-  {
-    num: "01",
-    title: "인재를 소중하게 생각하며",
-    items: [
-      "고객과 직원의 풍요로운 삶과 행복을 최우선으로 생각합니다.",
-      "인재 육성을 통해 기업과 직원이 함께 성장하는 문화를 만들어 갑니다.",
-      "최고의 인재가 주인의식을 가지고 역량을 발휘할 수 있는 일터를 조성합니다.",
-    ],
-  },
-  {
-    num: "02",
-    title: "법과 윤리를 준수하고",
-    items: [
-      "신뢰와 투명성을 바탕으로 정도경영을 실천합니다.",
-      "성실한 납세와 책임 있는 경영으로 국가경제 발전에 기여합니다.",
-    ],
-  },
-  {
-    num: "03",
-    title: "최고의 제품으로",
-    items: [
-      "고객에게 최고의 만족을 제공하는 혁신적인 기술과 제품을 개발합니다.",
-      "삶의 질 향상에 기여하는 기술 개발을 지속적으로 추진합니다.",
-      "탁월한 품질과 브랜드 가치로 고객이 먼저 인정하는 제품을 만들어 갑니다.",
-    ],
-  },
-  {
-    num: "04",
-    title: "기업가치를 향상시킨다",
-    items: [
-      "사회적 가치 창출과 혁신을 통해 지속 가능한 성장을 추구합니다.",
-      "업계를 선도하는 기업으로 성장하여 미래 시장 경쟁력을 확보합니다.",
-      "경쟁사가 배우고 싶어 하는 모범적인 기업으로 발전해 나가겠습니다.",
-    ],
-  },
-];
-
-function CEOSection({ ceoOpening, ceoParagraphs, ceoPhoto }: { ceoOpening?: string; ceoParagraphs?: string[]; ceoPhoto?: string }) {
-  const opening = ceoOpening ?? CEO_PARAGRAPHS[0];
-  const paragraphs = ceoParagraphs ?? CEO_PARAGRAPHS.slice(1);
+function CEOSection({
+  t,
+  ceoOpening,
+  ceoParagraphs,
+  ceoPhoto,
+}: {
+  t: CompanyTranslations["ceo"];
+  ceoOpening?: string;
+  ceoParagraphs?: string[];
+  ceoPhoto?: string;
+}) {
+  const opening = ceoOpening ?? t.opening;
+  const paragraphs = ceoParagraphs ?? t.paragraphs;
 
   return (
     <section id="ceo" className="bg-white">
@@ -364,7 +298,7 @@ function CEOSection({ ceoOpening, ceoParagraphs, ceoPhoto }: { ceoOpening?: stri
         <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-0 lg:pt-36">
           <FadeIn>
             <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
-              CEO Message
+              {t.eyebrow}
             </p>
           </FadeIn>
           <FadeIn delay={0.08}>
@@ -372,9 +306,12 @@ function CEOSection({ ceoOpening, ceoParagraphs, ceoPhoto }: { ceoOpening?: stri
               className="font-black text-gray-900 leading-[0.95] tracking-tight mb-16"
               style={{ fontSize: "clamp(44px, 6.5vw, 96px)" }}
             >
-              CEO
-              <br />
-              인사말
+              {t.titleLines.map((line, i) => (
+                <span key={i}>
+                  {line}
+                  {i < t.titleLines.length - 1 && <br />}
+                </span>
+              ))}
             </h2>
           </FadeIn>
         </div>
@@ -400,9 +337,9 @@ function CEOSection({ ceoOpening, ceoParagraphs, ceoPhoto }: { ceoOpening?: stri
                 </div>
               )}
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-900/70 to-transparent">
-                <p className="text-[18px] font-black text-white">대표이사</p>
+                <p className="text-[18px] font-black text-white">{t.ceoTitle}</p>
                 <p className="text-[12px] text-white/55 mt-0.5">
-                  범진전자(주) · 범진아이엔디(주)
+                  {t.ceoCompany}
                 </p>
               </div>
             </div>
@@ -426,8 +363,8 @@ function CEOSection({ ceoOpening, ceoParagraphs, ceoPhoto }: { ceoOpening?: stri
             </div>
             <div className="mt-10 pt-8 border-t border-gray-100 flex items-center justify-between">
               <div>
-                <p className="text-[13px] text-gray-400">감사합니다.</p>
-                <p className="text-[16px] font-black text-gray-900 mt-1">대표이사</p>
+                <p className="text-[13px] text-gray-400">{t.thanks}</p>
+                <p className="text-[16px] font-black text-gray-900 mt-1">{t.ceoTitle}</p>
               </div>
               <Image
                 src="/bumjin%20icon.jpg"
@@ -446,11 +383,11 @@ function CEOSection({ ceoOpening, ceoParagraphs, ceoPhoto }: { ceoOpening?: stri
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-24 lg:py-32">
           <FadeIn>
             <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-600 mb-14">
-              경영철학
+              {t.philosophyEyebrow}
             </p>
           </FadeIn>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 divide-y lg:divide-y-0 divide-white/5">
-            {MGMT_PHILOSOPHY.map((item, i) => (
+            {t.philosophy.map((item, i) => (
               <motion.div
                 key={item.num}
                 initial={{ opacity: 0, y: 20 }}
@@ -486,34 +423,20 @@ function CEOSection({ ceoOpening, ceoParagraphs, ceoPhoto }: { ceoOpening?: stri
 
 /* ─── SECTION 3: VISION ─── */
 
-const VISION_MEANING = [
-  { term: "범진은", desc: "글로벌 범진 전체를 의미하며, 모든 사업과 성장의 중심이 되는 우리 모두를 뜻합니다." },
-  { term: "고객은", desc: "고객, 협력사, 주주 등 범진과 함께하는 모든 파트너를 의미합니다." },
-  { term: "범진인은", desc: "범진의 모든 사업을 이끌어가는 구성원 전체를 의미합니다." },
-  { term: "동행으로는", desc: "핵심가치의 실천을 통해 고객을 감동시키고 일류 경쟁력을 확보하는 것을 의미합니다." },
-  { term: "성장한다는", desc: "도전과 혁신을 통한 지속성장으로 백년기업을 추구하고 구성원의 행복과 가치를 실현하는 것을 의미합니다." },
-];
-
-const CORE_VALUES = [
-  { num: "01", title: "고객 최우선", en: "Customer First", body: "최고의 제품과 최상의 서비스를 제공하는 것을 최우선으로 하며, 범진의 모든 가치 중심에 고객을 두고 고객감동 문화를 만들어갑니다." },
-  { num: "02", title: "인재존중과 열린 조직문화", en: "People & Culture", body: "기업의 기본은 사람이라는 신념 아래 우수한 인재를 육성하고, 구성원들이 열정과 꿈을 펼칠 수 있는 행복한 회사를 만들어갑니다." },
-  { num: "03", title: "도전과 실행", en: "Challenge & Execution", body: "급변하는 글로벌 경영환경 속에서도 기존의 틀을 뛰어넘는 차별화된 아이디어와 창의적인 실행력으로 목표를 달성합니다." },
-  { num: "04", title: "열린 소통과 협력", en: "Communication & Partnership", body: "고객, 협력사, 그리고 내부 조직 간의 원활한 소통과 협력을 통해 조직 발전의 시너지 효과를 창출합니다." },
-  { num: "05", title: "투명·정도경영", en: "Integrity Management", body: "고객과 구성원의 신뢰를 바탕으로 투명경영과 준법경영을 실천하며, 사회적 책임을 다하는 지속가능한 기업으로 성장합니다." },
-];
-
 function VisionSection({
+  t,
   visionStatement,
   visionMeaning: visionMeaningProp,
   coreValues: coreValuesProp,
 }: {
+  t: CompanyTranslations["vision"];
   visionStatement?: string;
   visionMeaning?: VisionMeaningItem[];
   coreValues?: CoreValueItem[];
 }) {
-  const vm = visionMeaningProp ?? VISION_MEANING;
-  const cv = coreValuesProp ?? CORE_VALUES;
-  const statement = visionStatement ?? '"범진은 고객과 범진人의 동행으로 성장한다."';
+  const vm = visionMeaningProp ?? t.meaning;
+  const cv = coreValuesProp ?? t.coreValues;
+  const statement = visionStatement ?? t.statement;
 
   return (
     <section id="vision" className="bg-white">
@@ -529,7 +452,7 @@ function VisionSection({
           </div>
           <FadeIn>
             <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-red-200 mb-8">
-              Vision 2025
+              {t.eyebrow}
             </p>
           </FadeIn>
           <FadeIn delay={0.08}>
@@ -542,10 +465,7 @@ function VisionSection({
           </FadeIn>
           <FadeIn delay={0.16} className="mt-10 max-w-2xl">
             <p className="text-red-100 text-[14px] leading-[1.9]">
-              Vision 2025는 2025년까지 매출 1조 달성을 목표로 백년기업으로 성장 가능한 핵심
-              사업군을 발굴하고, R&amp;D 및 인프라를 지속적으로 발전시키며, 중견기업으로 도약하기
-              위한 인재 육성과 활기찬 조직문화를 구축하여 고객과 함께 성장하는 미래를
-              만들어갑니다.
+              {t.description}
             </p>
           </FadeIn>
         </div>
@@ -554,12 +474,7 @@ function VisionSection({
       {/* Goals */}
       <div className="border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 grid grid-cols-2 lg:grid-cols-4 divide-x divide-gray-100">
-          {[
-            { value: "1조", label: "2025 매출 목표" },
-            { value: "100년", label: "장기 목표" },
-            { value: "30+", label: "창립 연수" },
-            { value: "6개국", label: "글로벌 생산 거점" },
-          ].map((item, i) => (
+          {t.goals.map((item, i) => (
             <FadeIn key={item.label} delay={i * 0.07}>
               <div className="py-12 px-6 lg:px-10 first:pl-0">
                 <p
@@ -580,7 +495,7 @@ function VisionSection({
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
           <FadeIn>
             <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
-              비전의 의미
+              {t.meaningEyebrow}
             </p>
             {vm.map((item, i) => (
               <motion.div
@@ -591,7 +506,7 @@ function VisionSection({
                 transition={{ delay: i * 0.07, duration: 0.6 }}
                 className="flex gap-6 py-5 border-b border-gray-100 group"
               >
-                <span className="text-[13px] font-bold text-red-600 shrink-0 w-20 pt-0.5">
+                <span className="text-[13px] font-bold text-red-600 shrink-0 w-24 pt-0.5">
                   {item.term}
                 </span>
                 <span className="text-[13px] text-gray-600 leading-relaxed">{item.desc}</span>
@@ -602,7 +517,7 @@ function VisionSection({
           {/* Core Values */}
           <FadeIn delay={0.1}>
             <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
-              핵심가치
+              {t.coreValuesEyebrow}
             </p>
             {cv.map((item, i) => (
               <motion.div
@@ -632,43 +547,20 @@ function VisionSection({
 
 /* ─── SECTION 4: GROUP ─── */
 
-const SUBSIDIARIES = [
-  {
-    name: "범진전자",
-    en: "Bumjin Electronics",
-    tagline: "글로벌 전자제품 통합 제조 솔루션",
-    desc: "범진전자는 글로벌 전자제품 제조 전문 기업으로 연구개발부터 생산, 품질관리까지 통합 제조 솔루션을 제공합니다.",
-    locations: ["범진전자 (한국)", "범진전자 중국", "범진전자 베트남", "범진전자 인도네시아"],
-    revenue: "3,578억",
-    employees: "2,150",
-    productsLabel: "주력 제품",
-    products: ["Sound Bar", "Speaker", "Home Theater"],
-    roles: ["전자제품 연구개발", "ODM/OEM 생산", "글로벌 생산 및 품질관리"],
-    dark: true,
-  },
-  {
-    name: "범진IND",
-    en: "Bumjin IND",
-    tagline: "정밀 금형·사출성형 핵심 부품 공급",
-    desc: "범진IND는 금형 설계·제작 및 사출성형 분야의 전문 기업으로 생활가전과 자동차 산업에 필요한 핵심 부품을 공급하고 있습니다.",
-    locations: ["범진IND 금형·성형사업장", "범진IND 멕시코", "범진IND 헝가리"],
-    revenue: "2,069억",
-    employees: "1,200",
-    productsLabel: "주력 사업",
-    products: ["금형 설계·제작", "생활가전 사출성형", "자동차 부품 사출성형"],
-    roles: ["정밀 금형 개발", "사출성형 생산", "글로벌 제조 지원"],
-    dark: false,
-  },
-];
-
-function GroupSection({ subsidiaries }: { subsidiaries?: SubsidiaryItem[] }) {
-  const data = subsidiaries ?? SUBSIDIARIES;
+function GroupSection({
+  t,
+  subsidiaries,
+}: {
+  t: CompanyTranslations["group"];
+  subsidiaries?: SubsidiaryItem[];
+}) {
+  const data = subsidiaries ?? t.subsidiaries;
   return (
     <section id="group" className="bg-white">
       <div className="border-t border-gray-100 mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-16 lg:pt-36 lg:pb-20">
         <FadeIn>
           <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
-            Bumjin Group
+            {t.eyebrow}
           </p>
         </FadeIn>
         <FadeIn delay={0.07}>
@@ -676,7 +568,7 @@ function GroupSection({ subsidiaries }: { subsidiaries?: SubsidiaryItem[] }) {
             className="font-black text-gray-900 leading-[0.95] tracking-tight"
             style={{ fontSize: "clamp(48px, 7vw, 110px)" }}
           >
-            범진
+            {t.title}
           </h2>
         </FadeIn>
       </div>
@@ -721,7 +613,7 @@ function GroupSection({ subsidiaries }: { subsidiaries?: SubsidiaryItem[] }) {
                       >
                         {sub.revenue}
                       </p>
-                      <p className={`text-[11px] mt-2 ${sub.dark ? "text-gray-500" : "text-gray-400"}`}>매출</p>
+                      <p className={`text-[11px] mt-2 ${sub.dark ? "text-gray-500" : "text-gray-400"}`}>{t.revenueLabel}</p>
                     </div>
                     <div className="py-7 pl-8">
                       <p
@@ -730,7 +622,7 @@ function GroupSection({ subsidiaries }: { subsidiaries?: SubsidiaryItem[] }) {
                       >
                         {sub.employees}
                       </p>
-                      <p className={`text-[11px] mt-2 ${sub.dark ? "text-gray-500" : "text-gray-400"}`}>임직원</p>
+                      <p className={`text-[11px] mt-2 ${sub.dark ? "text-gray-500" : "text-gray-400"}`}>{t.employeesLabel}</p>
                     </div>
                   </div>
                 </FadeIn>
@@ -743,7 +635,7 @@ function GroupSection({ subsidiaries }: { subsidiaries?: SubsidiaryItem[] }) {
                     {/* Locations */}
                     <div className="mb-8">
                       <p className={`text-[10px] font-bold tracking-[0.3em] uppercase mb-4 ${sub.dark ? "text-gray-500" : "text-gray-400"}`}>
-                        사업장
+                        {t.locationsLabel}
                       </p>
                       <ul className="space-y-2.5">
                         {sub.locations.map((loc) => (
@@ -777,7 +669,7 @@ function GroupSection({ subsidiaries }: { subsidiaries?: SubsidiaryItem[] }) {
                     {/* Roles */}
                     <div>
                       <p className={`text-[10px] font-bold tracking-[0.3em] uppercase mb-4 ${sub.dark ? "text-gray-500" : "text-gray-400"}`}>
-                        주요 역할
+                        {t.rolesLabel}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {sub.roles.map((role) => (
@@ -810,8 +702,7 @@ function GroupSection({ subsidiaries }: { subsidiaries?: SubsidiaryItem[] }) {
               className="font-bold text-gray-900 leading-relaxed border-l-4 border-red-600 pl-6"
               style={{ fontSize: "clamp(15px, 1.8vw, 20px)" }}
             >
-              "연구개발, 생산, 금형, 사출성형까지 아우르는 글로벌 제조 밸류체인을 구축하여
-              고객의 성공을 지원합니다."
+              {t.coreMessage}
             </p>
           </FadeIn>
         </div>
@@ -822,53 +713,21 @@ function GroupSection({ subsidiaries }: { subsidiaries?: SubsidiaryItem[] }) {
 
 /* ─── SECTION 5: HISTORY ─── */
 
-const HISTORY_DATA = [
-  { year: "2023", events: [{ month: "02", text: "DENON 거래 개시 (AV Receiver 생산)" }] },
-  { year: "2019", events: [{ month: "10", text: "범진전자베트남 유한공사 설립" }] },
-  { year: "2018", events: [{ month: "01", text: "멀티미디어연구소 설립 (사운드바 자체 개발)" }] },
-  { year: "2017", events: [{ month: "12", text: "범진 신사옥 신축 완공" }] },
-  { year: "2016", events: [{ month: "12", text: "제53회 무역의 날 3,000만불 수출의 탑 수상" }] },
-  { year: "2015", events: [{ month: "12", text: "블루투스 스피커 출시 (자사 브랜드 : TONN)" }] },
-  {
-    year: "2014",
-    events: [
-      { month: "12", text: "삼성전자(주) 자랑스런 삼성인상 특별상 수상" },
-      { month: "08", text: "헝가리범진전자 KFT 설립" },
-      { month: "02", text: "삼성전자(주) 올해의 강소기업 인증" },
-    ],
-  },
-  { year: "2013", events: [{ month: "07", text: "범진아이엔디(주) 수원공장 신축 이전" }] },
-  { year: "2011", events: [{ month: "11", text: "제48회 무역의 날 500만불 수출의 탑 수상" }] },
-  { year: "2010", events: [{ month: "04", text: "범진전자 인도네시아 설립 (스피커시스템, 사출)" }] },
-  {
-    year: "2008",
-    events: [
-      { month: "09", text: "범진시엔엘(주) 기업부설연구소 인증" },
-      { month: "08", text: "범진시엔엘(주) 안산공장 신축 이전" },
-      { month: "01", text: "천진범진전자유한공사 설립" },
-    ],
-  },
-  { year: "2007", events: [{ month: "09", text: "범진공업(주) 기업부설연구소 인증" }] },
-  { year: "2005", events: [{ month: "04", text: "범진공업(주) 성형사업부 설립" }] },
-  {
-    year: "2004",
-    events: [
-      { month: "08", text: "중국범진전자유한공사 설립 (스피커시스템)" },
-      { month: "05", text: "범진전자(주) 설립 (스피커시스템)" },
-    ],
-  },
-  { year: "1991", events: [{ month: "10", text: "범진공업사 설립 (금형, 서울 영등포 소재)" }] },
-];
-
-function HistorySection({ historyData }: { historyData?: HistoryEntry[] }) {
-  const data = historyData ?? HISTORY_DATA;
+function HistorySection({
+  t,
+  historyData,
+}: {
+  t: CompanyTranslations["history"];
+  historyData?: HistoryEntry[];
+}) {
+  const data = historyData ?? t.entries;
   return (
     <section id="history" className="bg-white border-t border-gray-100">
       {/* Header */}
       <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-20 lg:pt-36 lg:pb-24">
         <FadeIn>
           <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-400 mb-10">
-            History
+            {t.eyebrow}
           </p>
         </FadeIn>
         <FadeIn delay={0.07}>
@@ -876,12 +735,12 @@ function HistorySection({ historyData }: { historyData?: HistoryEntry[] }) {
             className="font-black text-gray-900 leading-[0.95] tracking-tight mb-6"
             style={{ fontSize: "clamp(48px, 7vw, 110px)" }}
           >
-            연혁
+            {t.title}
           </h2>
         </FadeIn>
         <FadeIn delay={0.14} className="max-w-md">
           <p className="text-gray-500 text-[14px] leading-relaxed">
-            1991년 창립 이후 지속적인 도전과 혁신으로 성장해 온 범진의 발자취입니다.
+            {t.subtitle}
           </p>
         </FadeIn>
       </div>
@@ -944,32 +803,14 @@ function HistorySection({ historyData }: { historyData?: HistoryEntry[] }) {
 
 /* ─── SECTION 6: LOCATION ─── */
 
-const LOCATION_DATA = [
-  {
-    name: "범진전자 수원사업장",
-    type: "본사 · 전자사업장",
-    address: "경기도 수원시 권선구 산업로155번길 217 (고색동)",
-    phone: "031-493-9415",
-    note: "1호선 고색역 인근",
-  },
-  {
-    name: "범진IND 금형사업장",
-    type: "금형 제조",
-    address: "경기도 수원시 권선구 고색동",
-    phone: "031-676-1461",
-    note: "금형 설계 및 제작 전문 사업장",
-  },
-  {
-    name: "범진IND 성형사업장",
-    type: "사출성형 제조",
-    address: "경기도 안성시",
-    phone: "031-210-4930",
-    note: "생활가전·자동차 부품 사출성형",
-  },
-];
-
-function LocationSection({ locations }: { locations?: typeof LOCATION_DATA }) {
-  const locs = locations ?? LOCATION_DATA;
+function LocationSection({
+  t,
+  locations,
+}: {
+  t: CompanyTranslations["location"];
+  locations?: CompanyTranslations["location"]["locations"];
+}) {
+  const locs = locations ?? t.locations;
   const sliderRef = useRef<HTMLDivElement>(null);
 
   function scrollSlider(dir: -1 | 1) {
@@ -984,7 +825,7 @@ function LocationSection({ locations }: { locations?: typeof LOCATION_DATA }) {
       <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-16 lg:pt-36 lg:pb-20">
         <FadeIn>
           <p className="text-[11px] font-semibold tracking-[0.4em] uppercase text-gray-600 mb-10">
-            Location
+            {t.eyebrow}
           </p>
         </FadeIn>
         <FadeIn delay={0.07}>
@@ -992,12 +833,12 @@ function LocationSection({ locations }: { locations?: typeof LOCATION_DATA }) {
             className="font-black text-white leading-[0.95] tracking-tight mb-6"
             style={{ fontSize: "clamp(48px, 7vw, 110px)" }}
           >
-            찾아오시는 길
+            {t.title}
           </h2>
         </FadeIn>
         <FadeIn delay={0.14} className="max-w-md">
           <p className="text-gray-500 text-[14px] leading-relaxed">
-            범진의 사업장을 방문하시기 전 아래 정보를 확인해 주세요.
+            {t.subtitle}
           </p>
         </FadeIn>
       </div>
@@ -1020,7 +861,7 @@ function LocationSection({ locations }: { locations?: typeof LOCATION_DATA }) {
                 {/* Google Maps embed */}
                 <div className="aspect-video relative overflow-hidden">
                   <iframe
-                    src={`https://maps.google.com/maps?q=${encodeURIComponent(loc.address)}&output=embed&hl=ko&z=16`}
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(loc.address)}&output=embed&hl=${t.mapHl}&z=16`}
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -1036,7 +877,7 @@ function LocationSection({ locations }: { locations?: typeof LOCATION_DATA }) {
                     rel="noopener noreferrer"
                     className="absolute bottom-3 right-3 flex items-center gap-1.5 text-[10px] font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors px-3 py-1.5 z-10"
                   >
-                    크게 보기 <ExternalLink className="size-2.5" />
+                    {t.viewLarge} <ExternalLink className="size-2.5" />
                   </a>
                 </div>
 
@@ -1072,18 +913,18 @@ function LocationSection({ locations }: { locations?: typeof LOCATION_DATA }) {
 
           {/* Slider controls */}
           <div className="flex items-center justify-between mt-5">
-            <p className="text-[11px] text-gray-700">{locs.length}개 사업장</p>
+            <p className="text-[11px] text-gray-700">{t.sitesCountLabel(locs.length)}</p>
             <div className="flex gap-2">
               <button
                 onClick={() => scrollSlider(-1)}
-                aria-label="이전"
+                aria-label={t.prevLabel}
                 className="w-9 h-9 border border-white/10 text-gray-400 hover:text-white hover:border-white/30 flex items-center justify-center transition-colors"
               >
                 <ChevronLeft className="size-4" />
               </button>
               <button
                 onClick={() => scrollSlider(1)}
-                aria-label="다음"
+                aria-label={t.nextLabel}
                 className="w-9 h-9 border border-white/10 text-gray-400 hover:text-white hover:border-white/30 flex items-center justify-center transition-colors"
               >
                 <ChevronRight className="size-4" />
@@ -1100,7 +941,7 @@ function LocationSection({ locations }: { locations?: typeof LOCATION_DATA }) {
 
 /* ─── PAGE HERO ─── */
 
-function PageHero() {
+function PageHero({ t }: { t: CompanyTranslations["hero"] }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 120]);
@@ -1141,7 +982,7 @@ function PageHero() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="text-[11px] font-semibold tracking-[0.45em] uppercase text-gray-500 mb-8"
         >
-          Company Introduction
+          {t.eyebrow}
         </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
@@ -1150,7 +991,7 @@ function PageHero() {
           className="font-black text-white leading-[0.9] tracking-tight mb-8"
           style={{ fontSize: "clamp(60px, 11vw, 160px)" }}
         >
-          회사소개
+          {t.title}
         </motion.h1>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -1159,7 +1000,7 @@ function PageHero() {
           className="flex items-center gap-6"
         >
           <p className="text-gray-500 text-[14px] leading-relaxed max-w-xs">
-            1991년 창립 이후 도전과 혁신으로 성장해 온 범진을 소개합니다.
+            {t.subtitle}
           </p>
           <ChevronDown className="size-5 text-gray-600 animate-bounce shrink-0" />
         </motion.div>
@@ -1170,17 +1011,18 @@ function PageHero() {
 
 /* ─── FOOTER ─── */
 
-function CompanyFooter() {
+function CompanyFooter({ t }: { t: CompanyTranslations["footer"] }) {
   return (
     <footer className="bg-gray-950 border-t border-white/5 py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <Image
-          src="/bumjin%20icon.jpg"
-          alt="Bumjin Electronics"
-          width={120}
-          height={36}
-          className="h-8 w-auto object-contain brightness-0 invert opacity-40"
-        />
+        <div className="flex items-center gap-3">
+          <div className="w-7 h-7 rounded bg-red-600 flex items-center justify-center">
+            <span className="text-white font-black text-xs tracking-tighter">B</span>
+          </div>
+          <span className="text-gray-400 text-xs font-semibold tracking-[0.18em] uppercase">
+            BUMJIN
+          </span>
+        </div>
         <p className="text-gray-700 text-[11px]">
           © {new Date().getFullYear()} Bumjin Electronics Co., Ltd.
         </p>
@@ -1188,7 +1030,7 @@ function CompanyFooter() {
           href="/"
           className="flex items-center gap-1.5 text-[12px] text-gray-600 hover:text-gray-300 transition-colors"
         >
-          메인 홈페이지
+          {t.mainHome}
           <ArrowUpRight className="size-3.5" />
         </Link>
       </div>
@@ -1199,13 +1041,15 @@ function CompanyFooter() {
 /* ─── PAGE ─── */
 
 export default function CompanyPage() {
+  const [lang] = useLang();
   const [activeSection, setActiveSection] = useState("overview");
   const adminContent = useAdminContent();
-  const co = adminContent?.company ?? null;
+  const t = getCompanyTranslations(lang);
+  const co = lang === "ko" ? (adminContent?.company ?? null) : null;
   const images = adminContent?.images ?? {};
 
   useEffect(() => {
-    const els = SUB_NAV.map(({ id }) => document.getElementById(id)).filter(Boolean);
+    const els = SUB_NAV_IDS.map((id) => document.getElementById(id)).filter(Boolean);
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -1221,29 +1065,33 @@ export default function CompanyPage() {
   return (
     <div className="bg-white text-gray-900 min-h-screen">
       <SiteHeader />
-      <PageHero />
-      <SubNav active={activeSection} />
+      <PageHero t={t.hero} />
+      <SubNav active={activeSection} items={t.subNav} />
       <main>
         <OverviewSection
+          t={t.overview}
+          lang={lang}
           headline={co?.overviewHeadline}
           intro={co?.overviewIntro}
           coreMessage={co?.coreMessage}
         />
         <CEOSection
+          t={t.ceo}
           ceoOpening={co?.ceoOpening}
           ceoParagraphs={co?.ceoParagraphs}
           ceoPhoto={images["company-ceo"]}
         />
         <VisionSection
+          t={t.vision}
           visionStatement={co?.visionStatement}
           visionMeaning={co?.visionMeaning}
           coreValues={co?.coreValues}
         />
-        <GroupSection subsidiaries={co?.subsidiaries} />
-        <HistorySection historyData={co?.historyData} />
-        <LocationSection locations={co?.locations} />
+        <GroupSection t={t.group} subsidiaries={co?.subsidiaries} />
+        <HistorySection t={t.history} historyData={co?.historyData} />
+        <LocationSection t={t.location} locations={co?.locations} />
       </main>
-      <CompanyFooter />
+      <CompanyFooter t={t.footer} />
     </div>
   );
 }

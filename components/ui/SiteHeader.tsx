@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { ChevronDown, Globe, Menu, X } from "lucide-react";
 import { translations, type Lang } from "@/lib/translations";
+import { useLang } from "@/lib/hooks/useLang";
 
 const LANG_OPTIONS: { code: Lang; label: string; short: string }[] = [
   { code: "ko", label: "한국어", short: "KR" },
@@ -17,21 +18,9 @@ const LANG_OPTIONS: { code: Lang; label: string; short: string }[] = [
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const [lang, setLangState] = useState<Lang>("ko");
+  const [lang, setLang] = useLang();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-
-  useEffect(() => {
-    const saved = localStorage.getItem("bumjin-lang") as Lang | null;
-    if (saved && ["ko", "en", "zh", "ja"].includes(saved)) {
-      setLangState(saved);
-    }
-  }, []);
-
-  const setLang = (next: Lang) => {
-    setLangState(next);
-    localStorage.setItem("bumjin-lang", next);
-  };
 
   const t = translations[lang].nav;
   const activeLangOption = LANG_OPTIONS.find((o) => o.code === lang) ?? LANG_OPTIONS[0];

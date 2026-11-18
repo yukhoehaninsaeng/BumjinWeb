@@ -2,16 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BUSINESS_DEPARTMENTS } from "@/lib/data/business";
+import { getBusinessDepartments } from "@/lib/data/business";
+import { useLang } from "@/lib/hooks/useLang";
 
 export function BusinessNav() {
   const pathname = usePathname();
+  const [lang] = useLang();
+  const departments = getBusinessDepartments(lang);
 
   return (
     <nav className="sticky top-16 z-40 bg-white border-b border-[#E5E5E5]">
       <div className="mx-auto max-w-[1280px] px-6 lg:px-16">
         <div className="flex items-end overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {BUSINESS_DEPARTMENTS.map((dept) => {
+          {departments.map((dept) => {
             const href = `/business/${dept.id}`;
             const isActive =
               pathname === href || pathname.startsWith(`${href}/`);

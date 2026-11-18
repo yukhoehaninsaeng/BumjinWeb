@@ -2,11 +2,12 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { BUSINESS_DEPARTMENTS } from "@/lib/data/business";
+import { getBusinessDepartments, getBusinessSectionLabels } from "@/lib/data/business";
 import { ProcessFlow } from "@/components/business/ProcessFlow";
 import { ProductGrid } from "@/components/business/ProductGrid";
 import { ContactBand } from "@/components/business/ContactBand";
 import { useAdminContent } from "@/lib/hooks/useAdminContent";
+import { useLang } from "@/lib/hooks/useLang";
 
 function Reveal({
   children,
@@ -33,9 +34,11 @@ function Reveal({
 }
 
 export default function ElectronicsPage() {
+  const [lang] = useLang();
   const adminContent = useAdminContent();
-  const staticDept = BUSINESS_DEPARTMENTS.find((d) => d.id === "electronics")!;
-  const adminOverride = adminContent?.business?.electronics;
+  const staticDept = getBusinessDepartments(lang).find((d) => d.id === "electronics")!;
+  const labels = getBusinessSectionLabels(lang);
+  const adminOverride = lang === "ko" ? adminContent?.business?.electronics : undefined;
   const images = adminContent?.images ?? {};
 
   const dept = {
@@ -105,7 +108,7 @@ export default function ElectronicsPage() {
                 ODM
               </span>
               <div className="sm:pb-2">
-                <p className="text-[16px] font-medium text-[#333333] leading-snug">제조자 개발생산</p>
+                <p className="text-[16px] font-medium text-[#333333] leading-snug">{labels.odmSubtitle}</p>
                 <p
                   className="text-[13px] text-[#999999] font-light"
                   style={{ fontFamily: "Inter, sans-serif" }}
@@ -129,7 +132,7 @@ export default function ElectronicsPage() {
           <Reveal>
             <div className="flex items-center gap-6 mb-8">
               <h3 className="text-[26px] lg:text-[32px] font-bold text-[#111111] shrink-0">
-                제품 라인업
+                {labels.productLineup}
               </h3>
               <div className="flex-1 h-px bg-[#E5E5E5]" />
             </div>

@@ -2,10 +2,11 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { BUSINESS_DEPARTMENTS } from "@/lib/data/business";
+import { getBusinessDepartments, getBusinessSectionLabels } from "@/lib/data/business";
 import { ProductGrid } from "@/components/business/ProductGrid";
 import { ContactBand } from "@/components/business/ContactBand";
 import { useAdminContent } from "@/lib/hooks/useAdminContent";
+import { useLang } from "@/lib/hooks/useLang";
 
 function Reveal({
   children,
@@ -32,9 +33,11 @@ function Reveal({
 }
 
 export default function MoldingPage() {
+  const [lang] = useLang();
   const adminContent = useAdminContent();
-  const staticDept = BUSINESS_DEPARTMENTS.find((d) => d.id === "molding")!;
-  const adminOverride = adminContent?.business?.molding;
+  const staticDept = getBusinessDepartments(lang).find((d) => d.id === "molding")!;
+  const labels = getBusinessSectionLabels(lang);
+  const adminOverride = lang === "ko" ? adminContent?.business?.molding : undefined;
   const images = adminContent?.images ?? {};
 
   const dept = {
@@ -111,7 +114,7 @@ export default function MoldingPage() {
           <Reveal>
             <div className="flex items-center gap-6 mb-8">
               <h3 className="text-[26px] lg:text-[32px] font-bold text-[#111111] shrink-0">
-                기술 역량
+                {labels.capabilities}
               </h3>
               <div className="flex-1 h-px bg-[#E5E5E5]" />
             </div>
