@@ -46,7 +46,7 @@ const SUB_NAV_IDS = ["overview", "ceo", "vision", "group", "history", "location"
 
 function SubNav({ active, items }: { active: string; items: { id: string; label: string }[] }) {
   return (
-    <nav className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+    <nav className="sticky top-[72px] z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="flex items-center overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {items.map(({ id, label }) => (

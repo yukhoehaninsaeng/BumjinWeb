@@ -34,10 +34,10 @@ import {
   BadgeCheck,
 } from "lucide-react";
 
-import { InfiniteSlider } from "@/components/ui/infinite-slider";
-import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { FactoryGlobeMap } from "@/components/ui/factory-globe-map";
+import { SiteHeader } from "@/components/ui/SiteHeader";
 import { translations, type Lang } from "@/lib/translations";
+import { useLang } from "@/lib/hooks/useLang";
 import { useAdminContent } from "@/lib/hooks/useAdminContent";
 import type { GlobalSiteItem, ClientItem } from "@/lib/content-store";
 
@@ -72,128 +72,6 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
     <p className="text-[11px] font-semibold tracking-[0.25em] uppercase text-red-600 mb-4">
       {children}
     </p>
-  );
-}
-
-/* ─── NAVIGATION ─── */
-
-const LANG_OPTIONS: { code: Lang; label: string; short: string }[] = [
-  { code: "ko", label: "한국어", short: "KR" },
-  { code: "en", label: "English", short: "EN" },
-  { code: "zh", label: "中文", short: "ZH" },
-  { code: "ja", label: "日本語", short: "JA" },
-];
-
-function Navigation({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
-  const t = translations[lang].nav;
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
-  const activeLangOption = LANG_OPTIONS.find((o) => o.code === lang) ?? LANG_OPTIONS[0];
-
-  const navLinks = [
-    { label: t.company, href: "/company" },
-    { label: t.business, href: "/business" },
-    { label: t.technology, href: "#capabilities" },
-    { label: t.global, href: "#operations" },
-    { label: t.clients, href: "#clients" },
-  ];
-
-  return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200/80">
-      <nav className="mx-auto max-w-7xl px-6 lg:px-10 h-16 flex items-center justify-between">
-        <a href="#" className="shrink-0">
-          <Image src="/bumjin%20icon.jpg" alt="Bumjin Electronics" width={160} height={48} priority className="h-10 w-auto object-contain" />
-        </a>
-
-        <ul className="hidden lg:flex items-center gap-10">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a href={link.href} className="text-[13px] font-medium text-gray-600 hover:text-gray-900 transition-colors">
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex items-center gap-3">
-          <div className="relative hidden sm:block">
-            <button
-              onClick={() => setLangOpen(!langOpen)}
-              className="flex items-center gap-1.5 text-[12px] font-medium text-gray-600 hover:text-gray-900 transition-colors px-2.5 py-1.5 rounded-sm hover:bg-gray-50"
-            >
-              <Globe className="size-3.5 text-gray-400" />
-              <span>{activeLangOption.short}</span>
-              <ChevronDown className="size-3 text-gray-400" />
-            </button>
-            {langOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="absolute right-0 top-full mt-2 bg-white border border-gray-200 shadow-lg rounded-sm overflow-hidden z-50 min-w-[120px]"
-              >
-                {LANG_OPTIONS.map((opt) => (
-                  <button
-                    key={opt.code}
-                    onClick={() => { setLang(opt.code); setLangOpen(false); }}
-                    className={`w-full text-left px-4 py-2.5 text-[12px] font-medium transition-colors hover:bg-gray-50 flex items-center justify-between ${
-                      lang === opt.code ? "text-red-600 bg-red-50/40" : "text-gray-700"
-                    }`}
-                  >
-                    <span>{opt.label}</span>
-                    <span className="text-[10px] text-gray-400 font-mono">{opt.short}</span>
-                  </button>
-                ))}
-              </motion.div>
-            )}
-          </div>
-
-          <a href="#contact" className="hidden sm:block">
-            <button className="text-[13px] font-semibold text-white bg-red-600 hover:bg-red-700 px-5 py-2 rounded-sm transition-colors">
-              {t.contact}
-            </button>
-          </a>
-
-          <button className="lg:hidden p-1 text-gray-700" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
-            {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-        </div>
-      </nav>
-
-      {mobileOpen && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="block px-6 py-4 text-[13px] font-medium text-gray-700 border-b border-gray-50 hover:text-red-600 transition-colors"
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
-          <div className="px-6 py-3 flex flex-wrap gap-2 border-b border-gray-50">
-            {LANG_OPTIONS.map((opt) => (
-              <button
-                key={opt.code}
-                onClick={() => { setLang(opt.code); setMobileOpen(false); }}
-                className={`text-[11px] font-semibold px-3 py-1.5 rounded-sm border transition-colors ${
-                  lang === opt.code ? "bg-red-600 text-white border-red-600" : "border-gray-200 text-gray-600"
-                }`}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
-          <div className="px-6 py-4">
-            <a href="#contact" onClick={() => setMobileOpen(false)}>
-              <button className="w-full text-[13px] font-semibold text-white bg-red-600 py-3 rounded-sm transition-colors">
-                {t.contact}
-              </button>
-            </a>
-          </div>
-        </motion.div>
-      )}
-    </header>
   );
 }
 
@@ -1083,24 +961,12 @@ function HeroVideo({ lang }: { lang: Lang }) {
 /* ─── PAGE ─── */
 
 export default function Page() {
-  const [lang, setLangState] = useState<Lang>("ko");
+  const [lang] = useLang();
   const adminContent = useAdminContent();
-
-  useEffect(() => {
-    const saved = localStorage.getItem("bumjin-lang") as Lang | null;
-    if (saved && ["ko", "en", "zh", "ja"].includes(saved)) {
-      setLangState(saved);
-    }
-  }, []);
-
-  const setLang = (next: Lang) => {
-    setLangState(next);
-    localStorage.setItem("bumjin-lang", next);
-  };
 
   return (
     <div className="bg-white text-gray-900 min-h-screen">
-      <Navigation lang={lang} setLang={setLang} />
+      <SiteHeader />
       <main>
         <HeroVideo lang={lang} />
         <CompanySection lang={lang} />
