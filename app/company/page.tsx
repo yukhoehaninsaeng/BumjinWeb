@@ -1015,14 +1015,13 @@ function CompanyFooter({ t }: { t: CompanyTranslations["footer"] }) {
   return (
     <footer className="bg-gray-950 border-t border-white/5 py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded bg-red-600 flex items-center justify-center">
-            <span className="text-white font-black text-xs tracking-tighter">B</span>
-          </div>
-          <span className="text-gray-400 text-xs font-semibold tracking-[0.18em] uppercase">
-            BUMJIN
-          </span>
-        </div>
+        <Image
+          src="/bumjin-logo-dark.png"
+          alt="Bumjin Electronics"
+          width={140}
+          height={42}
+          className="h-7 w-auto object-contain opacity-85"
+        />
         <p className="text-gray-700 text-[11px]">
           © {new Date().getFullYear()} Bumjin Electronics Co., Ltd.
         </p>

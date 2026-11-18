@@ -237,7 +237,13 @@ function CompanySection({ lang }: { lang: Lang }) {
         <div className="border-t border-gray-200 pt-12 grid grid-cols-2 lg:grid-cols-5 gap-y-8">
           {t.stats.map((s, i) => (
             <FadeIn key={s.label} delay={i * 0.05}>
-              <div className={i < t.stats.length - 1 ? "lg:pr-8 lg:border-r lg:border-gray-200/80" : "lg:pl-0"}>
+              <div
+                className={`${
+                  i % 2 === 1 ? "pl-4" : "pr-4"
+                } ${i > 0 ? "lg:pl-8" : "lg:pl-0"} ${
+                  i < t.stats.length - 1 ? "lg:pr-8 lg:border-r lg:border-gray-200/80" : "lg:pr-0"
+                }`}
+              >
                 <p className="text-[40px] lg:text-[52px] font-black text-gray-900 leading-none tracking-tight">
                   {s.value}
                 </p>
@@ -906,14 +912,14 @@ function Footer({ lang }: { lang: Lang }) {
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-9 h-9 rounded-sm bg-red-600 flex items-center justify-center">
-                <span className="text-white font-black text-base leading-none">B</span>
-              </div>
-              <div>
-                <p className="text-white text-[13px] font-bold tracking-[0.18em]">BUMJIN</p>
-                <p className="text-gray-400 text-[9px] tracking-[0.28em] uppercase">Electronics</p>
-              </div>
+            <div className="mb-5">
+              <Image
+                src="/bumjin-logo-dark.png"
+                alt="Bumjin Electronics"
+                width={140}
+                height={42}
+                className="h-8 w-auto object-contain"
+              />
             </div>
             <p className="text-gray-400 text-[13px] leading-relaxed max-w-xs mb-5">{t.desc}</p>
             <a href="https://bumjin.career.greetinghr.com/ko/home" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-red-400 text-[13px] hover:text-red-300 transition-colors">
