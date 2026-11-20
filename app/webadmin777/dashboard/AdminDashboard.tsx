@@ -626,24 +626,25 @@ const DEFAULT_HISTORY_DATA: HistoryEntry[] = [
 ];
 
 const DEFAULT_GLOBAL_SITES: GlobalSiteItem[] = [
-  { city: "수원, 한국", role: "HQ · 금형사업장", type: "hq" },
-  { city: "안성, 한국", role: "사출성형 공장", type: "plant" },
+  { city: "수원 본사 (범진전자 · C&L)", role: "본사 · 전자 R&D", type: "hq" },
+  { city: "수원 금형 (범진IND)", role: "정밀 금형 사업장", type: "plant" },
+  { city: "안성 성형 (범진IND)", role: "사출성형 공장", type: "plant" },
   { city: "티후아나, 멕시코", role: "BJAM MEXICANA", type: "plant" },
-  { city: "찌카랑, 인도네시아", role: "동남아 생산 거점", type: "plant" },
-  { city: "꽝닌, 베트남", role: "베트남 제조 허브", type: "plant" },
-  { city: "후이저우, 중국", role: "광동 부품 공장", type: "plant" },
-  { city: "뢰린치, 헝가리", role: "유럽 제조 거점", type: "plant" },
+  { city: "찌카랑, 인도네시아", role: "범진전자 인도네시아", type: "plant" },
+  { city: "꽝닌, 베트남", role: "범진전자 베트남", type: "plant" },
+  { city: "후이저우, 중국", role: "혜주범진과기(유)", type: "plant" },
+  { city: "뢰린치, 헝가리", role: "범진IND 헝가리", type: "plant" },
 ];
 
 const DEFAULT_CLIENTS: ClientItem[] = [
   { id: "samsung", name: "Samsung Electronics" },
-  { id: "lg", name: "LG Electronics" },
-  { id: "sony", name: "SONY" },
+  { id: "denon", name: "DENON" },
   { id: "harman-kardon", name: "Harman Kardon" },
   { id: "jbl", name: "JBL" },
+  { id: "lg", name: "LG Electronics" },
+  { id: "sony", name: "SONY" },
   { id: "panasonic", name: "Panasonic" },
-  { id: "hp", name: "HP" },
-  { id: "dell", name: "Dell" },
+  { id: "tonn", name: "TONN" },
 ];
 
 function initCompany(stored: CompanyContent | null): CompanyContent {

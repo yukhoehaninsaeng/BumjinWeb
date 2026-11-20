@@ -122,9 +122,9 @@ function CompanySection({ lang }: { lang: Lang }) {
 
 const BUSINESS_LINKS = [
   "/business/electronics",
-  "/business/electronics",
   "/business/molding",
-  "/business/electronics",
+  "/company#affiliate-2",
+  "/business/startup",
 ];
 
 function BusinessSection({ lang }: { lang: Lang }) {
@@ -312,7 +312,7 @@ function ProcessSection({ lang }: { lang: Lang }) {
   const t = translations[lang].process;
 
   return (
-    <section className="bg-white py-20 lg:py-28">
+    <section id="process" className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
           <div>
@@ -370,13 +370,13 @@ function ProcessSection({ lang }: { lang: Lang }) {
 
 const CLIENT_PARTNERS = [
   { name: "SAMSUNG", tracking: "tracking-[0.06em]" },
-  { name: "LG", tracking: "tracking-[0.14em]" },
-  { name: "SONY", tracking: "tracking-[0.22em]" },
+  { name: "DENON", tracking: "tracking-[0.14em]" },
   { name: "HARMAN KARDON", tracking: "tracking-[0.14em]" },
   { name: "JBL", tracking: "tracking-[0.08em]" },
+  { name: "LG", tracking: "tracking-[0.14em]" },
+  { name: "SONY", tracking: "tracking-[0.22em]" },
   { name: "PANASONIC", tracking: "tracking-[0.12em]" },
-  { name: "HP", tracking: "tracking-[0.1em]" },
-  { name: "DELL", tracking: "tracking-[0.16em]" },
+  { name: "TONN", tracking: "tracking-[0.18em]" },
 ];
 
 function ClientsSection({
@@ -509,7 +509,7 @@ function ContactSection({ lang }: { lang: Lang }) {
             <FadeIn delay={0.1} className="space-y-4 mb-8">
               <div className="flex items-center gap-3 text-gray-600">
                 <span className="text-red-600 shrink-0"><Mail className="size-4" /></span>
-                <span className="text-[13px]">bd@bumjin.co.kr</span>
+                <span className="text-[13px]">odm_sales@bumjin.net</span>
               </div>
               <div className="flex items-start gap-3 text-gray-600">
                 <span className="text-red-600 shrink-0 mt-0.5"><Phone className="size-4" /></span>
@@ -573,7 +573,7 @@ function ContactSection({ lang }: { lang: Lang }) {
                   <FormField label={t.form.firstName} id="fname" placeholder={t.form.firstNamePlaceholder} required />
                   <FormField label={t.form.lastName} id="lname" placeholder={t.form.lastNamePlaceholder} required />
                 </div>
-                <FormField label={t.form.company} id="company" placeholder="Samsung Electronics" required />
+                <FormField label={t.form.company} id="company" placeholder={lang === "ko" ? "(주)파트너사" : "Company Name"} required />
                 <FormField label={t.form.email} id="email" type="email" placeholder="example@company.com" required />
                 <FormField label={t.form.phone} id="phone" type="tel" placeholder="+82 10 1234 5678" />
 
@@ -583,12 +583,21 @@ function ContactSection({ lang }: { lang: Lang }) {
                   </label>
                   <select className="w-full bg-gray-50 border border-gray-200 rounded-sm text-gray-700 text-[13px] px-4 py-3 focus:outline-none focus:border-red-600 focus:bg-white transition-colors" required>
                     <option value="">{t.form.categoryPlaceholder}</option>
-                    <option>Soundbar ODM</option>
-                    <option>Soundbar OEM</option>
-                    <option>Custom Acoustic Driver</option>
-                    <option>DSP Module</option>
-                    <option>Full System Design</option>
-                    <option>Other</option>
+                    <option value="electronics">
+                      {lang === "ko" ? "전자부문 (사운드바 · 스피커 ODM/OEM)" : "Electronics (Audio ODM/OEM)"}
+                    </option>
+                    <option value="molding">
+                      {lang === "ko" ? "금형 · 성형부문 (정밀금형 · 사출성형)" : "Mold & Molding"}
+                    </option>
+                    <option value="rnd">
+                      {lang === "ko" ? "자사브랜드 · R&D 협력" : "Own Brand & R&D"}
+                    </option>
+                    <option value="startup">
+                      {lang === "ko" ? "스타트업부문 (개발·양산 지원)" : "Startup Support"}
+                    </option>
+                    <option value="other">
+                      {lang === "ko" ? "기타 일반문의" : "General Inquiry"}
+                    </option>
                   </select>
                 </div>
 
@@ -635,6 +644,7 @@ function ContactSection({ lang }: { lang: Lang }) {
 function Footer({ lang }: { lang: Lang }) {
   const t = translations[lang].footer;
   const nav = translations[lang].nav;
+  const biz = translations[lang].business.areas;
 
   return (
     <footer className="bg-charcoal py-14">
@@ -660,15 +670,10 @@ function Footer({ lang }: { lang: Lang }) {
           <div>
             <p className="text-white/80 text-[10px] font-bold tracking-[0.25em] uppercase mb-5">{t.solutions}</p>
             <ul className="space-y-3">
-              {[
-                { label: "Soundbar ODM", href: "/business/electronics" },
-                { label: "Soundbar OEM", href: "/business/electronics" },
-                { label: "Precision Molding", href: "/business/molding" },
-                { label: "Startup Lab", href: "/business/startup" },
-              ].map((item) => (
-                <li key={item.label}>
-                  <Link href={item.href} className="text-gray-400 text-[13px] hover:text-white transition-colors">
-                    {item.label}
+              {biz.map((area, i) => (
+                <li key={area.label}>
+                  <Link href={BUSINESS_LINKS[i] ?? "/business"} className="text-gray-400 text-[13px] hover:text-white transition-colors">
+                    {area.title}
                   </Link>
                 </li>
               ))}
@@ -705,7 +710,7 @@ function Footer({ lang }: { lang: Lang }) {
               </p>
               <p className="text-gray-500 text-[11px] leading-relaxed">
                 {lang === "ko"
-                  ? "경기도 수원시 권선구 산업로 155번길 217"
+                  ? "경기도 수원시 권선구 산업로 155번길 217(고색동)"
                   : "217, Saneop-ro 155beon-gil, Suwon-si"}
                 <br />
                 TEL. 031-493-9415
@@ -717,7 +722,7 @@ function Footer({ lang }: { lang: Lang }) {
               </p>
               <p className="text-gray-500 text-[11px] leading-relaxed">
                 {lang === "ko"
-                  ? "경기도 수원시 권선구 산업로 174-14"
+                  ? "경기도 수원시 권선구 산업로 174-14 (고색동)"
                   : "174-14, Saneop-ro, Gwonseon-gu, Suwon-si"}
                 <br />
                 TEL. 031-676-1461
@@ -729,7 +734,7 @@ function Footer({ lang }: { lang: Lang }) {
               </p>
               <p className="text-gray-500 text-[11px] leading-relaxed">
                 {lang === "ko"
-                  ? "경기도 수원시 권선구 산업로 155번길 217"
+                  ? "경기도 수원시 권선구 산업로 155번길 217(고색동)"
                   : "217, Saneop-ro 155beon-gil, Suwon-si"}
                 <br />
                 TEL. 031-493-9415
@@ -750,6 +755,15 @@ function Footer({ lang }: { lang: Lang }) {
             <Link href="/company#affiliate-2" className="text-[12px] text-gray-400 hover:text-white transition-colors">
               {lang === "ko" ? "범진C&L" : "Bumjin C&L"}
             </Link>
+            <a
+              href="http://grw.bumjin.net"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[12px] text-gray-400 hover:text-white transition-colors"
+            >
+              <span>Groupware</span>
+              <ExternalLink className="size-3" />
+            </a>
             <a
               href="https://bumjin.career.greetinghr.com/ko/home"
               target="_blank"
@@ -775,24 +789,24 @@ function Footer({ lang }: { lang: Lang }) {
 
 const HERO_COPY: Record<Lang, { tag: string; headline: string; body: string }> = {
   ko: {
-    tag: "Since 1993 — Bumjin Electronics",
-    headline: "Your complete\nmanufacturing partner",
-    body: "범진은 기획부터 설계, 금형, 사출, 조립까지 전 공정을 내재화하여 고객의 아이디어를 글로벌 양산 제품으로 완성합니다.",
+    tag: "Since 1991 — BUMJIN",
+    headline: "고객과 범진人의 동행으로\n미래를 여는 제조 파트너",
+    body: "1991년 창립 이래 전자(사운드바·스피커 ODM/OEM)부터 정밀 금형·사출, R&D, 스타트업 완제품 양산까지 원스톱 제조 솔루션을 제공합니다.",
   },
   en: {
-    tag: "Since 1993 — Bumjin Electronics",
-    headline: "Your complete\nmanufacturing partner",
-    body: "From concept and acoustic engineering to in-house tooling, injection molding, and mass assembly — Bumjin delivers end-to-end electronics manufacturing.",
+    tag: "Since 1991 — BUMJIN",
+    headline: "Your One-Stop\nManufacturing Partner",
+    body: "Since 1991, Bumjin delivers vertically integrated manufacturing — from audio electronics ODM/OEM and precision molding to R&D and startup mass production.",
   },
   zh: {
-    tag: "自1993年 — 范振电子",
-    headline: "您的全程\n制造合作伙伴",
-    body: "从产品策划、声学设计到自主模具、注塑与量产组装，范振提供全流程内制化的全球电子制造服务。",
+    tag: "1991年创立 — 范振 (BUMJIN)",
+    headline: "与客户及范振人同行\n共创未来的制造伙伴",
+    body: "自1991年创立以来，范振提供涵盖音响电子ODM/OEM、精密模具与注塑、研发及初创产品量产的一站式全球制造服务。",
   },
   ja: {
-    tag: "1993年創業 — 範珍電子",
-    headline: "お客様の完全な\n製造パートナー",
-    body: "企画・音響設計から自社金型・射出成形・量産組立まで全工程を内製化し、お客様のアイデアを確かな製品へと導きます。",
+    tag: "1991年創業 — 範珍 (BUMJIN)",
+    headline: "顧客と範珍人の同行で\n未来を拓く製造パートナー",
+    body: "1991年の創業以来、音響電子ODM/OEMから精密金型・射出成形、研究開発・スタートアップ製品量産までワンストップ製造ソリューションを提供します。",
   },
 };
 
