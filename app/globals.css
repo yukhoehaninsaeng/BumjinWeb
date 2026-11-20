@@ -37,6 +37,12 @@ body {
   scroll-behavior: smooth;
 }
 
+h1,
+h2,
+h3 {
+  word-break: keep-all;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 4px;
@@ -110,6 +116,26 @@ body {
 }
 .maplibregl-ctrl-attrib {
   display: none !important;
+}
+
+/* Continuous client CI marquee */
+@keyframes client-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-client-marquee {
+  display: flex;
+  width: max-content;
+  animation: client-marquee 28s linear infinite;
+}
+
+.animate-client-marquee:hover {
+  animation-play-state: paused;
 }
 
 /* Accessibility: visible keyboard focus & reduced motion */

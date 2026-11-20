@@ -369,14 +369,10 @@ function ProcessSection({ lang }: { lang: Lang }) {
 /* ─── CLIENTS ─── */
 
 const CLIENT_PARTNERS = [
-  { name: "SAMSUNG", tracking: "tracking-[0.06em]" },
-  { name: "DENON", tracking: "tracking-[0.14em]" },
-  { name: "HARMAN KARDON", tracking: "tracking-[0.14em]" },
-  { name: "JBL", tracking: "tracking-[0.08em]" },
-  { name: "LG", tracking: "tracking-[0.14em]" },
-  { name: "SONY", tracking: "tracking-[0.22em]" },
-  { name: "PANASONIC", tracking: "tracking-[0.12em]" },
-  { name: "TONN", tracking: "tracking-[0.18em]" },
+  { name: "SAMSUNG", img: "/images/clients/samsung.png", width: 168, height: 30 },
+  { name: "DENON", img: "/images/clients/denon.png", width: 144, height: 34 },
+  { name: "YAMAHA", img: "/images/clients/yamaha.png", width: 148, height: 37 },
+  { name: "Linkplay Technology Inc.", img: "/images/clients/linkplay.png", width: 176, height: 36 },
 ];
 
 function ClientsSection({
@@ -391,31 +387,46 @@ function ClientsSection({
   const t = translations[lang].clients;
   const hasAdminClients = clients && clients.length > 0;
 
-  const sliderItems = hasAdminClients
-    ? clients!.map((c) => ({
-        key: c.id,
-        img: images?.[c.id],
+  const baseItems = hasAdminClients
+    ? clients!.map((c) => {
+        const defaultMatch = CLIENT_PARTNERS.find(
+          (p) =>
+            p.name.toLowerCase().includes(c.id.toLowerCase()) ||
+            c.name.toLowerCase().includes(p.name.split(" ")[0].toLowerCase())
+        );
+        return {
+          key: c.id,
+          img: images?.[c.id] ?? defaultMatch?.img,
+          name: c.name,
+          width: defaultMatch?.width ?? 160,
+          height: defaultMatch?.height ?? 36,
+        };
+      })
+    : CLIENT_PARTNERS.map((c) => ({
+        key: c.name,
+        img: c.img,
         name: c.name,
-        tracking: "tracking-[0.12em]",
-      }))
-    : CLIENT_PARTNERS.map((c) => ({ key: c.name, img: undefined, name: c.name, tracking: c.tracking }));
+        width: c.width,
+        height: c.height,
+      }));
 
-  function renderLogo(item: typeof sliderItems[0]) {
+  // Repeat items enough times inside each half-track so even ultrawide screens stay full
+  const halfTrack = [...baseItems, ...baseItems, ...baseItems];
+
+  function renderLogo(item: (typeof baseItems)[0]) {
     if (item.img) {
       return (
         <Image
           src={item.img}
           alt={item.name}
-          width={160}
-          height={40}
-          className="object-contain max-h-10 w-auto"
+          width={item.width}
+          height={item.height}
+          className="h-8 sm:h-9 w-auto object-contain select-none"
         />
       );
     }
     return (
-      <span
-        className={`text-[15px] lg:text-[17px] font-bold text-gray-500 hover:text-gray-900 transition-colors select-none whitespace-nowrap ${item.tracking}`}
-      >
+      <span className="text-[16px] sm:text-[18px] font-bold tracking-[0.12em] text-gray-600 whitespace-nowrap select-none">
         {item.name}
       </span>
     );
@@ -424,37 +435,55 @@ function ClientsSection({
   return (
     <section id="clients" className="bg-gray-50 py-20 lg:py-28 border-y border-gray-200/70">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid lg:grid-cols-3 gap-12 lg:gap-16 mb-14 items-end">
-          <div className="lg:col-span-1">
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 mb-14 items-end">
+          <div className="lg:col-span-6">
             <SectionLabel>{t.label}</SectionLabel>
             <h2
-              className="font-black text-gray-900 leading-[1.08] tracking-tight"
-              style={{ fontSize: "clamp(30px, 3.6vw, 48px)" }}
+              className="font-black text-gray-900 leading-[1.14] tracking-tight break-keep"
+              style={{ fontSize: "clamp(28px, 3.2vw, 44px)" }}
             >
               {t.heading}
-              <span className="block text-red-600">{t.headingAccent}</span>
+              <span className="block text-red-600 mt-1">{t.headingAccent}</span>
             </h2>
           </div>
-          <div className="lg:col-span-2">
-            <p className="text-gray-600 text-[15px] leading-relaxed mb-8">{t.subtitle}</p>
+          <div className="lg:col-span-6">
+            <p className="text-gray-600 text-[15px] leading-relaxed mb-8 break-keep">
+              {t.subtitle}
+            </p>
             <div className="grid grid-cols-3 gap-6">
               {t.stats.map((item) => (
                 <div key={item.label} className="border-t-2 border-red-600 pt-4">
-                  <p className="text-[28px] font-black text-gray-900">{item.value}</p>
+                  <p className="text-[26px] sm:text-[28px] font-black text-gray-900">{item.value}</p>
                   <p className="text-[11px] text-gray-500 mt-1">{item.label}</p>
                 </div>
               ))}
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 border-l border-t border-gray-200 bg-white">
-          {sliderItems.map((c) => (
-            <div
-              key={c.key}
-              className="flex items-center justify-center h-24 sm:h-28 px-6 border-r border-b border-gray-200 hover:bg-[#F8F9FB] transition-colors"
-            >
-              {renderLogo(c)}
+      {/* Full-width continuous CI logo marquee */}
+      <div className="relative bg-white border-y border-gray-200 overflow-hidden py-8 sm:py-10">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-28 bg-gradient-to-r from-white to-transparent z-10"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-28 bg-gradient-to-l from-white to-transparent z-10"
+        />
+
+        <div className="animate-client-marquee items-center">
+          {[0, 1].map((loopIdx) => (
+            <div key={loopIdx} className="flex items-center shrink-0">
+              {halfTrack.map((c, idx) => (
+                <div
+                  key={`${loopIdx}-${c.key}-${idx}`}
+                  className="flex items-center justify-center px-10 sm:px-14 lg:px-16 shrink-0"
+                >
+                  {renderLogo(c)}
+                </div>
+              ))}
             </div>
           ))}
         </div>

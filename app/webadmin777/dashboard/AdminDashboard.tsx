@@ -637,14 +637,10 @@ const DEFAULT_GLOBAL_SITES: GlobalSiteItem[] = [
 ];
 
 const DEFAULT_CLIENTS: ClientItem[] = [
-  { id: "samsung", name: "Samsung Electronics" },
+  { id: "samsung", name: "SAMSUNG" },
   { id: "denon", name: "DENON" },
-  { id: "harman-kardon", name: "Harman Kardon" },
-  { id: "jbl", name: "JBL" },
-  { id: "lg", name: "LG Electronics" },
-  { id: "sony", name: "SONY" },
-  { id: "panasonic", name: "Panasonic" },
-  { id: "tonn", name: "TONN" },
+  { id: "yamaha", name: "YAMAHA" },
+  { id: "linkplay", name: "Linkplay Technology Inc." },
 ];
 
 function initCompany(stored: CompanyContent | null): CompanyContent {

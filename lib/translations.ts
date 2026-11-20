@@ -157,7 +157,7 @@ export const translations = {
       label: "고객협력사",
       heading: "글로벌 고객사와 함께",
       headingAccent: "성장해 온 기술력",
-      subtitle: "삼성전자 '올해의 강소기업' 선정 및 자랑스런 삼성인상 특별상 수상, DENON 거래 등 글로벌 파트너와 함께하고 있습니다.",
+      subtitle: "삼성전자 '올해의 강소기업' 선정 및 자랑스런 삼성인상 특별상 수상을 비롯해 SAMSUNG, DENON, YAMAHA, Linkplay 등 글로벌 오디오·가전 파트너와 함께하고 있습니다.",
       stats: [
         { value: "1991", label: "창립연도" },
         { value: "30+", label: "제조 · 금형 업력(년)" },
