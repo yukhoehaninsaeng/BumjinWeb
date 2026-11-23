@@ -43,6 +43,8 @@ export interface CompanyTranslations {
     mottoItems: MottoItem[];
     coreMessageLabel: string;
     coreMessage: string;
+    coreMessageSub: string;
+    nextSectionLabel: string;
   };
   ceo: {
     eyebrow: string;
@@ -90,7 +92,15 @@ export interface CompanyTranslations {
       href: string;
     }[];
     subsidiaries: SubsidiaryItem[];
+    synergyEyebrow: string;
     coreMessage: string;
+    synergyCta: string;
+    synergySteps: {
+      step: string;
+      company: string;
+      title: string;
+      desc: string;
+    }[];
   };
   history: {
     eyebrow: string;
@@ -173,9 +183,12 @@ const KO: CompanyTranslations = {
         body: "대담한 도전으로 새로운 가치를 창조하며 미래를 선도합니다.",
       },
     ],
-    coreMessageLabel: "Core Message",
+    coreMessageLabel: "LIFE & HAPPINESS · CORE MESSAGE",
     coreMessage:
+      '"일상의 모든 순간부터 더 행복한 내일까지, 범진의 스마트 솔루션이 함께합니다."',
+    coreMessageSub:
       '"In everyday life, and a happier tomorrow, Bumjin’s smart solution will be there with you."',
+    nextSectionLabel: "CEO 인사말 이어보기",
   },
   ceo: {
     eyebrow: "CEO Message",
@@ -404,8 +417,30 @@ const KO: CompanyTranslations = {
         dark: true,
       },
     ],
+    synergyEyebrow: "ONE-STOP GROUP SYNERGY",
     coreMessage:
-      '"선행 R&D부터 정밀 금형·사출, 완제품 양산까지 — 각 계열사의 전문성이 하나로 이어지는 원스톱 제조 솔루션을 제공합니다."',
+      "선행 R&D부터 초정밀 금형·사출, 완제품 글로벌 양산까지 — 3개 계열사가 하나의 공정으로 연결됩니다.",
+    synergyCta: "전체 사업영역 보기",
+    synergySteps: [
+      {
+        step: "STEP 01",
+        company: "범진시엔엘(주)",
+        title: "멀티미디어 · 음향 선행 R&D",
+        desc: "Audio SoC, 음향 시뮬레이션, 무향실·AV 쇼룸 검증",
+      },
+      {
+        step: "STEP 02",
+        company: "범진IND(주)",
+        title: "초정밀 금형 · 대형 사출",
+        desc: "E-MOLD · 42,000RPM 고속가공, 최대 3,200T TOC 사출",
+      },
+      {
+        step: "STEP 03",
+        company: "범진전자(주)",
+        title: "완제품 양산 · 77개국 공급",
+        desc: "드라이버·SMD 내재화 및 5대륙 글로벌 거점 적기 납품",
+      },
+    ],
   },
   history: {
     eyebrow: "History & Awards",
@@ -568,9 +603,11 @@ const EN: CompanyTranslations = {
         body: "Leading the future by creating new value through bold transformation.",
       },
     ],
-    coreMessageLabel: "Core Message",
+    coreMessageLabel: "LIFE & HAPPINESS · CORE MESSAGE",
     coreMessage:
       '"In everyday life, and a happier tomorrow, Bumjin’s smart solution will be there with you."',
+    coreMessageSub: "",
+    nextSectionLabel: "Read CEO Message",
   },
   ceo: {
     eyebrow: "CEO Message",
@@ -799,8 +836,30 @@ const EN: CompanyTranslations = {
         dark: true,
       },
     ],
+    synergyEyebrow: "ONE-STOP GROUP SYNERGY",
     coreMessage:
-      '"From advanced R&D to precision tooling, molding, and finished assembly — each affiliate connects seamlessly to deliver a true one-stop manufacturing solution."',
+      "From advanced R&D to precision tooling, molding, and finished assembly — our three affiliates operate as one seamless pipeline.",
+    synergyCta: "Explore All Business Divisions",
+    synergySteps: [
+      {
+        step: "STEP 01",
+        company: "Bumjin C&L",
+        title: "Multimedia & Acoustic R&D",
+        desc: "Audio SoC, acoustic simulation, anechoic chamber & AV showroom verification",
+      },
+      {
+        step: "STEP 02",
+        company: "Bumjin IND",
+        title: "Precision Tooling & Large Molding",
+        desc: "E-MOLD · 42,000RPM CNC machining and up to 3,200T TOC injection molding",
+      },
+      {
+        step: "STEP 03",
+        company: "Bumjin Electronics",
+        title: "Finished Assembly & Global Supply",
+        desc: "In-house speaker drivers & SMT delivering to 77 countries worldwide",
+      },
+    ],
   },
   history: {
     eyebrow: "History & Awards",
@@ -963,9 +1022,12 @@ const ZH: CompanyTranslations = {
         body: "以大胆挑战创造全新价值，引领未来发展。",
       },
     ],
-    coreMessageLabel: "Core Message",
+    coreMessageLabel: "LIFE & HAPPINESS · CORE MESSAGE",
     coreMessage:
+      '"从日常生活的每个瞬间到更美好的明天，凡真智能解决方案始终伴您同行。"',
+    coreMessageSub:
       '"In everyday life, and a happier tomorrow, Bumjin’s smart solution will be there with you."',
+    nextSectionLabel: "阅读 CEO 致辞",
   },
   ceo: {
     eyebrow: "CEO Message",
@@ -1174,8 +1236,30 @@ const ZH: CompanyTranslations = {
         dark: true,
       },
     ],
+    synergyEyebrow: "ONE-STOP GROUP SYNERGY",
     coreMessage:
-      '"从前沿研发到精密模具、注塑与整机量产——各关联企业紧密协同，为客户提供真正的一站式制造解决方案。"',
+      "从前沿研发到超精密模具·注塑、再到整机全球量产——三大关联企业无缝串联为一体。",
+    synergyCta: "查看全部业务领域",
+    synergySteps: [
+      {
+        step: "STEP 01",
+        company: "凡真C&L(株)",
+        title: "多媒体 · 声学前沿研发",
+        desc: "Audio SoC、声学仿真及消声室·AV展示厅验证",
+      },
+      {
+        step: "STEP 02",
+        company: "凡真IND(株)",
+        title: "超精密模具 · 大型注塑",
+        desc: "E-MOLD · 42,000RPM高速加工及最大3,200T TOC注塑",
+      },
+      {
+        step: "STEP 03",
+        company: "凡真电子(株)",
+        title: "整机量产 · 77国供应",
+        desc: "扬声器单元与SMT自研制造，精准交付5大洲市场",
+      },
+    ],
   },
   history: {
     eyebrow: "History & Awards",
@@ -1338,9 +1422,12 @@ const JA: CompanyTranslations = {
         body: "大胆な挑戦で新たな価値を創造し、未来をリードします。",
       },
     ],
-    coreMessageLabel: "Core Message",
+    coreMessageLabel: "LIFE & HAPPINESS · CORE MESSAGE",
     coreMessage:
+      '"日々のあらゆる瞬間からより幸福な明日まで、ボムジンのスマートソリューションが寄り添います。"',
+    coreMessageSub:
       '"In everyday life, and a happier tomorrow, Bumjin’s smart solution will be there with you."',
+    nextSectionLabel: "CEO ご挨拶を見る",
   },
   ceo: {
     eyebrow: "CEO Message",
@@ -1554,8 +1641,30 @@ const JA: CompanyTranslations = {
         dark: true,
       },
     ],
+    synergyEyebrow: "ONE-STOP GROUP SYNERGY",
     coreMessage:
-      '"先行R&Dから精密金型・射出成形、完成品量産まで——グループ各社の専門性がひとつにつながるワンストップ製造ソリューションを提供します。"',
+      "先行R&Dから超精密金型・射出成形、完成品量産まで——グループ3社がひとつの工程でつながります。",
+    synergyCta: "事業領域を詳しく見る",
+    synergySteps: [
+      {
+        step: "STEP 01",
+        company: "ボムジンC&L(株)",
+        title: "マルチメディア・音響先行R&D",
+        desc: "Audio SoC、音響シミュレーション、無響室・AVショールーム検証",
+      },
+      {
+        step: "STEP 02",
+        company: "ボムジンIND(株)",
+        title: "超精密金型・大型射出成形",
+        desc: "E-MOLD・42,000RPM高速加工、最大3,200T TOC射出成形",
+      },
+      {
+        step: "STEP 03",
+        company: "ボムジン電子(株)",
+        title: "完成品量産・77ヶ国供給",
+        desc: "ドライバー・SMD内製化と5大陸グローバル拠点からの適時供給",
+      },
+    ],
   },
   history: {
     eyebrow: "History & Awards",

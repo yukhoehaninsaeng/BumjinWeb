@@ -656,7 +656,7 @@ function initCompany(stored: CompanyContent | null): CompanyContent {
     overviewIntro:
       "1991년 창립한 범진(범진전자㈜·범진아이엔디㈜·범진시엔엘㈜)은 매출 6,056억 원·임직원 3,565명 규모로 성장하며, 음향 완제품·스피커 드라이버·정밀 금형·사출 성형을 100% 내재화해 5대륙 77개국에 공급하고 있습니다.",
     coreMessage:
-      '"In everyday life, and a happier tomorrow, Bumjin’s smart solution will be there with you."',
+      '"일상의 모든 순간부터 더 행복한 내일까지, 범진의 스마트 솔루션이 함께합니다."',
     ceoOpening: DEFAULT_CEO_OPENING,
     ceoParagraphs: DEFAULT_CEO_PARAGRAPHS,
     visionStatement: DEFAULT_VISION_STATEMENT,

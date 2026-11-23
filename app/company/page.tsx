@@ -151,37 +151,37 @@ function OverviewSection({
         </div>
       </div>
 
-      {/* Core message block */}
+      {/* Core message transition band */}
       <FadeIn>
-        <div
-          className="mx-auto px-12 pb-20"
-          style={{ maxWidth: "1200px", marginTop: "48px" }}
-        >
-          <div style={{ paddingTop: "40px" }}>
-            <div className="flex flex-col sm:flex-row gap-8 sm:gap-16 items-start">
-              <span
-                className="shrink-0"
-                style={{
-                  color: "#999999",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  letterSpacing: "2px",
-                  textTransform: "uppercase",
-                  paddingTop: "4px",
-                }}
-              >
-                {t.coreMessageLabel}
-              </span>
-              <p
-                style={{
-                  color: "#111111",
-                  fontSize: "clamp(19px, 2.2vw, 27px)",
-                  fontWeight: 500,
-                  lineHeight: 1.75,
-                }}
-              >
-                {coreMessage ?? t.coreMessage}
-              </p>
+        <div className="mt-20 border-t border-gray-200 bg-[#F8F9FB]">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10 py-14 lg:py-20">
+            <div className="grid lg:grid-cols-12 gap-8 items-end">
+              <div className="lg:col-span-9">
+                <p className="inline-flex items-center gap-2.5 text-[11px] font-semibold tracking-[0.18em] uppercase text-red-600 mb-4">
+                  <span aria-hidden="true" className="w-3 h-[2px] bg-red-600 inline-block" />
+                  <span>{t.coreMessageLabel}</span>
+                </p>
+                <p
+                  className="font-black text-gray-900 leading-[1.25] tracking-tight break-keep"
+                  style={{ fontSize: "clamp(22px, 2.5vw, 34px)" }}
+                >
+                  {coreMessage ?? t.coreMessage}
+                </p>
+                {t.coreMessageSub && (coreMessage ?? t.coreMessage) !== t.coreMessageSub && (
+                  <p className="text-[13px] text-gray-400 tracking-wide mt-3 font-medium">
+                    {t.coreMessageSub}
+                  </p>
+                )}
+              </div>
+              <div className="lg:col-span-3 lg:text-right">
+                <a
+                  href="#ceo"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 text-[12px] font-semibold text-gray-900 bg-white border border-gray-300 hover:border-red-600 hover:bg-red-600 hover:text-white transition-all rounded-sm"
+                >
+                  <span>{t.nextSectionLabel}</span>
+                  <ChevronDown className="size-3.5" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -674,16 +674,59 @@ function GroupSection({
         })}
       </div>
 
-      {/* Core message */}
-      <div className="border-t border-gray-200 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-14 lg:py-16">
+      {/* Group One-Stop Synergy Band */}
+      <div className="bg-gray-950 text-white border-t border-gray-900">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 lg:py-24">
           <FadeIn>
-            <p
-              className="font-semibold text-gray-900 leading-relaxed border-l-4 border-red-600 pl-6"
-              style={{ fontSize: "clamp(15px, 1.6vw, 19px)" }}
-            >
-              {t.coreMessage}
-            </p>
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
+              <div className="max-w-3xl">
+                <p className="inline-flex items-center gap-2.5 text-[11px] font-semibold tracking-[0.18em] uppercase text-red-500 mb-4">
+                  <span aria-hidden="true" className="w-3 h-[2px] bg-red-500 inline-block" />
+                  <span>{t.synergyEyebrow}</span>
+                </p>
+                <p
+                  className="font-bold text-white leading-[1.35] tracking-tight break-keep"
+                  style={{ fontSize: "clamp(20px, 2.2vw, 30px)" }}
+                >
+                  {t.coreMessage}
+                </p>
+              </div>
+              <Link
+                href="/business"
+                className="inline-flex items-center gap-2 self-start lg:self-end px-6 py-3 text-[12px] font-semibold text-white border border-white/25 hover:border-red-600 hover:bg-red-600 transition-all rounded-sm shrink-0"
+              >
+                <span>{t.synergyCta}</span>
+                <ArrowUpRight className="size-3.5" />
+              </Link>
+            </div>
+
+            {t.synergySteps && t.synergySteps.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-white/10">
+                {t.synergySteps.map((s) => (
+                  <div
+                    key={s.step}
+                    className="border-r border-b border-white/10 p-6 lg:p-8 flex flex-col justify-between gap-4"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-red-500 tracking-widest">
+                        {s.step}
+                      </span>
+                      <span className="text-[11px] font-semibold text-gray-400">
+                        {s.company}
+                      </span>
+                    </div>
+                    <div>
+                      <h4 className="text-[16px] font-bold text-white mb-1.5 break-keep">
+                        {s.title}
+                      </h4>
+                      <p className="text-[13px] text-gray-400 leading-relaxed break-keep">
+                        {s.desc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </FadeIn>
         </div>
       </div>
