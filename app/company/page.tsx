@@ -579,21 +579,23 @@ function GroupSection({
                   </div>
 
                   <div>
-                    {/* Key Metrics */}
-                    <div className="grid grid-cols-2 border-t border-gray-100 pt-6 mb-6">
-                      <div className="pr-6 border-r border-gray-100">
-                        <p className="text-[28px] lg:text-[34px] font-bold text-gray-900 leading-none tracking-tight tabular-nums">
-                          {sub.revenue}
-                        </p>
-                        <p className="text-[12px] text-gray-400 mt-1.5">{t.revenueLabel}</p>
+                    {/* Key Metrics (optional) */}
+                    {(sub.revenue?.trim() || sub.employees?.trim()) && (
+                      <div className="grid grid-cols-2 border-t border-gray-100 pt-6 mb-6">
+                        <div className="pr-6 border-r border-gray-100">
+                          <p className="text-[28px] lg:text-[34px] font-bold text-gray-900 leading-none tracking-tight tabular-nums">
+                            {sub.revenue}
+                          </p>
+                          <p className="text-[12px] text-gray-400 mt-1.5">{t.revenueLabel}</p>
+                        </div>
+                        <div className="pl-6">
+                          <p className="text-[28px] lg:text-[34px] font-bold text-gray-900 leading-none tracking-tight tabular-nums">
+                            {sub.employees}
+                          </p>
+                          <p className="text-[12px] text-gray-400 mt-1.5">{t.employeesLabel}</p>
+                        </div>
                       </div>
-                      <div className="pl-6">
-                        <p className="text-[28px] lg:text-[34px] font-bold text-gray-900 leading-none tracking-tight tabular-nums">
-                          {sub.employees}
-                        </p>
-                        <p className="text-[12px] text-gray-400 mt-1.5">{t.employeesLabel}</p>
-                      </div>
-                    </div>
+                    )}
 
                     {/* Roles */}
                     <div className="flex flex-wrap gap-2">
