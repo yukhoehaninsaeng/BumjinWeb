@@ -88,7 +88,7 @@ export const translations = {
         { id: "c6", category: "manufacturing", title: "3D 냉각 코어 & Suction Unit", desc: "브레이징·확산접합 3D 냉각 코어 및 캐비티 내부 Air·Gas 제거용 Suction Unit 기술 보유." },
         { id: "c7", category: "manufacturing", title: "42,000RPM 고속가공 · 대형 EDM", desc: "고속 NC 6대·대형 EDM(1200×2000)·흑연가공·비접촉 3차원 측정기로 25~60일 정밀 금형 납기." },
         { id: "c8", category: "manufacturing", title: "80대 사출기(3,200T TOC) · 80% 자동화", desc: "160T~3,200T 대형 이중사출(TOC) 설비 80대 및 SMD 7라인(월 230M pcs)·로봇 조립 80% 자동화." },
-        { id: "c9", category: "certification", title: "PLM · SAP ERP · MES · WBP 통합", desc: "과제 기획부터 단종까지 PLM 전 생애주기 추적 및 SAP ERP·MES·SCM(WBP) 실시간 연계." },
+        { id: "c9", category: "certification", title: "전 생애주기 개발·생산 통합 관리", desc: "과제 기획부터 양산·단종까지 전 개발 이력 추적 및 글로벌 생산·공급 현황 통합 관리." },
         { id: "c10", category: "certification", title: "5단계 Full Lifecycle 품질 보증", desc: "선행(개발) → 입고(부품) → 공정 → 출하 → 시장(고객) 품질까지 5단계 전 주기 품질 관리." },
         { id: "c11", category: "certification", title: "Dolby Vision · HDMI 2.1 · ISO/IATF", desc: "Dolby Vision, HDMI 2.1, HDCP 2.3 라이선스 시험 및 ISO 9001·ISO 14001·IATF 16949 준수." },
         { id: "c12", category: "certification", title: "대통령상 · 우수특허 · 삼성인상 수상", desc: "대한민국 일자리 으뜸기업(대통령상), 자랑스런 삼성인상 특별상, 대한민국 우수특허·품질혁신대상 수상." },
@@ -117,14 +117,14 @@ export const translations = {
       heading: "원스톱 ODM 제조 프로세스",
       headingAccent: "기획에서 글로벌 출하까지",
       subtitle:
-        "PLM 기반 선행 기획부터 시뮬레이션 설계, 100% 인하우스 금형·사출·SMD·드라이버 조립 및 5단계 품질보증까지 원스톱으로 수행합니다.",
+        "고객 공동 기획부터 시뮬레이션 설계, 100% 인하우스 금형·사출·SMD·드라이버 조립 및 5단계 품질보증까지 원스톱으로 수행합니다.",
       cta: "비즈니스 문의하기",
       viewDetail: "상세 보기",
       steps: [
         {
-          step: "01", title: "제품 기획 · 선행품질", titleEn: "Planning & PLM",
-          body: "고객 R&D 공동 기획, 시장·원가 검토, PLM 과제 등록 및 음향·기구 컨셉 수립.",
-          detail: "개발 초기부터 PLM 시스템을 통해 과제 사양, 타겟 원가, Rtings 음장 목표 및 선행 품질 기준을 수립합니다.",
+          step: "01", title: "제품 기획 · 선행품질", titleEn: "Planning",
+          body: "고객 R&D 공동 기획, 시장·원가 검토 및 음향·기구 컨셉 수립.",
+          detail: "개발 초기부터 과제 사양, 타겟 원가, 음향 목표 및 선행 품질 기준을 체계적으로 수립합니다.",
         },
         {
           step: "02", title: "통합 설계 · 시뮬레이션", titleEn: "Engineering",
@@ -148,7 +148,7 @@ export const translations = {
         },
         {
           step: "06", title: "5대륙 77개국 글로벌 물류", titleEn: "Global Logistics",
-          body: "SAP ERP·MES·SCM(WBP) 연동 및 6개국 8개 거점 기반 적기 납품.",
+          body: "6개국 8개 생산 거점 통합 공급망을 통한 글로벌 적기 납품.",
           detail: "한국·베트남·중국·인도네시아·멕시코·헝가리 거점과 글로벌 물류망을 연결해 5대륙 77개국에 적기 공급합니다.",
         },
       ],
@@ -302,7 +302,7 @@ export const translations = {
         { id: "c6", category: "manufacturing", title: "3D Cooling Cores & Suction Units", desc: "Brazing and diffusion-bonded 3D conformal cooling cores paired with cavity air/gas vacuum suction units." },
         { id: "c7", category: "manufacturing", title: "42,000RPM CNC & Large EDM", desc: "High-speed NC, large 1200×2000 EDM, graphite machining & non-contact 3D CMM achieving 25–60 day mold lead times." },
         { id: "c8", category: "manufacturing", title: "80 Injection M/Cs (3,200T TOC) & SMD", desc: "80 injection machines up to 3,200T two-color (TOC), 7 SMD lines (230M pcs/mo) & 80% automated assembly." },
-        { id: "c9", category: "certification", title: "PLM · SAP ERP · MES · WBP", desc: "Full lifecycle PLM tracking integrated in real time with SAP ERP, MES, and WBP supply chain management." },
+        { id: "c9", category: "certification", title: "End-to-End Lifecycle Tracking", desc: "Full product lifecycle management from initial planning through mass production and global supply coordination." },
         { id: "c10", category: "certification", title: "5-Stage Lifecycle Quality Gate", desc: "End-to-end quality assurance across R&D, incoming materials, in-process, outgoing, and field quality." },
         { id: "c11", category: "certification", title: "Dolby Vision · HDMI 2.1 · ISO/IATF", desc: "Authorized Dolby Vision, HDMI 2.1 & HDCP 2.3 testing alongside ISO 9001, ISO 14001 & IATF 16949." },
         { id: "c12", category: "certification", title: "Presidential & Innovation Awards", desc: "Presidential Job Creation Award, Samsung Special Award for Manufacturing Innovation, and Korea Excellent Patent Award." },
@@ -331,14 +331,14 @@ export const translations = {
       heading: "One-Stop ODM Process",
       headingAccent: "Concept to 77 Countries",
       subtitle:
-        "A six-stage PLM-tracked pipeline spanning joint planning, simulation engineering, precision tooling, driver/SMD assembly, 5-stage quality control, and global logistics.",
+        "A six-stage unified pipeline spanning joint planning, simulation engineering, precision tooling, driver/SMD assembly, 5-stage quality control, and global logistics.",
       cta: "Contact Us",
       viewDetail: "View Details",
       steps: [
         {
-          step: "01", title: "Planning & PLM", titleEn: "Planning",
-          body: "Joint R&D roadmap, target cost review, Rtings acoustic targets & PLM launch.",
-          detail: "We establish specs, cost structure, and advance quality gates tracked end-to-end inside our PLM platform.",
+          step: "01", title: "Product Planning", titleEn: "Planning",
+          body: "Joint R&D roadmap, target cost review, acoustic targets & concept definition.",
+          detail: "We establish specs, cost structure, and advance quality gates tracked end-to-end across product lifecycles.",
         },
         {
           step: "02", title: "Simulation & Design", titleEn: "Engineering",
@@ -362,7 +362,7 @@ export const translations = {
         },
         {
           step: "06", title: "77-Country Fulfillment", titleEn: "Logistics",
-          body: "SAP ERP · MES · WBP digital supply chain delivering to 77 countries worldwide.",
+          body: "Coordinated supply across 8 global manufacturing sites delivering to 77 countries.",
           detail: "Coordinated supply across Korea, Vietnam, China, Indonesia, Mexico, and Hungary tailored to customer demand.",
         },
       ],
@@ -515,7 +515,7 @@ export const translations = {
         { id: "c6", category: "manufacturing", title: "3D冷却模芯与真空抽气技术", desc: "拥有钎焊/扩散焊3D随形冷却模芯技术及模腔排气Vacuum Suction Unit技术。" },
         { id: "c7", category: "manufacturing", title: "42,000RPM高速加工与大型EDM", desc: "高速CNC、1200×2000大型EDM、石墨加工与非接触三维测量仪保障25~60天制模交期。" },
         { id: "c8", category: "manufacturing", title: "80台注塑机(3,200T TOC)与80%自动化", desc: "配备160T~3,200T双色注塑机80台、7条SMD产线(月2.3亿颗)及80%自动化组装。" },
-        { id: "c9", category: "certification", title: "PLM · SAP ERP · MES · WBP 集成", desc: "实现从研发立项到停产的全生命周期PLM追踪，与SAP ERP·MES·SCM实时联动。" },
+        { id: "c9", category: "certification", title: "全生命周期研发生产管理", desc: "实现从产品立项、量产到停产的全程追溯与全球生产供货一体化管理。" },
         { id: "c10", category: "certification", title: "5阶段 Full Lifecycle 质量保障", desc: "覆盖先行开发、来料、制程、出货及市场质量的五阶段全生命周期品控体系。" },
         { id: "c11", category: "certification", title: "Dolby Vision · HDMI 2.1 · ISO/IATF", desc: "全面支持Dolby Vision、HDMI 2.1、HDCP 2.3及ISO 9001·ISO 14001·IATF 16949。" },
         { id: "c12", category: "certification", title: "总统奖 · 优秀专利与质量创新奖", desc: "荣获韩国总统就业优秀企业奖、自豪三星人特别奖及韩国优秀专利与质量创新大奖。" },
@@ -542,14 +542,14 @@ export const translations = {
       label: "制造流程",
       heading: "一站式 ODM 制造流程",
       headingAccent: "从策划直达77国市场",
-      subtitle: "运营基于PLM的联合策划、仿真设计、100%自制模具注塑/SMD/单元组装及5阶段品质管理的6步制造体系。",
+      subtitle: "运营覆盖联合策划、仿真设计、100%自制模具注塑/SMD/单元组装及5阶段品质管理的6步制造体系。",
       cta: "商务咨询",
       viewDetail: "查看详情",
       steps: [
         {
-          step: "01", title: "产品策划 · 先行品控", titleEn: "Planning & PLM",
-          body: "与客户研发协同策划、目标成本评审、Rtings声学设定及PLM立项。",
-          detail: "从开发初期起在PLM系统内全流程管理规格、成本目标及先行品控标准。",
+          step: "01", title: "产品策划 · 先行品控", titleEn: "Planning",
+          body: "与客户研发协同策划、目标成本评审及声学结构方案制定。",
+          detail: "从开发初期起系统统筹规格、成本目标及先行品控标准。",
         },
         {
           step: "02", title: "集成设计与仿真", titleEn: "Engineering",
@@ -573,7 +573,7 @@ export const translations = {
         },
         {
           step: "06", title: "5大洲77国全球物流", titleEn: "Global Logistics",
-          body: "SAP ERP · MES · WBP协同，依托6国8大基地准时交付全球。",
+          body: "依托6国8大生产基地协同供应，准时交付全球77个国家。",
           detail: "联动韩、越、中、印尼、墨、匈基地，精准保障5大洲77国供应。",
         },
       ],
@@ -723,7 +723,7 @@ export const translations = {
         { id: "c6", category: "manufacturing", title: "3D冷却コア・Suction Unit", desc: "ろう付け/拡散接合3D冷却コア技術およびキャビティ内のAir・Gasを除去するSuction Unit技術。" },
         { id: "c7", category: "manufacturing", title: "42,000RPM高速加工・大型EDM", desc: "高速NC・大型EDM(1200×2000)・黒鉛加工・非接触3次元測定機で25~60日金型納期を実現。" },
         { id: "c8", category: "manufacturing", title: "射出機80台(3,200T TOC)・80%自動化", desc: "160T~3,200T二色成形機80台およびSMD 7ライン(月2.3億pcs)・ロボット組立80%自動化を構築。" },
-        { id: "c9", category: "certification", title: "PLM · SAP ERP · MES · WBP 統合", desc: "課題企画から生産終了までPLMで一貫追跡し、SAP ERP・MES・SCM(WBP)をリアルタイム連携。" },
+        { id: "c9", category: "certification", title: "全ライフサイクル開発・生産管理", desc: "企画立上げから量産・生産終了まで開発履歴の一貫追跡とグローバル生産・供給体制を構築。" },
         { id: "c10", category: "certification", title: "5段階 Full Lifecycle 品質保証", desc: "先行開発・受入・工程・出荷・市場品質まで5段階の全ライフサイクル品質管理を実施。" },
         { id: "c11", category: "certification", title: "Dolby Vision · HDMI 2.1 · ISO/IATF", desc: "Dolby Vision、HDMI 2.1、HDCP 2.3試験およびISO 9001・ISO 14001・IATF 16949に準拠。" },
         { id: "c12", category: "certification", title: "大統領賞・優秀特許・イノベーション賞", desc: "大韓民国雇用優良企業(大統領賞)、誇るサムスン人賞特別賞、大韓民国優秀特許・品質革新大賞を受賞。" },
@@ -750,14 +750,14 @@ export const translations = {
       label: "製造プロセス",
       heading: "ワンストップ ODM 製造プロセス",
       headingAccent: "企画から世界77か国へ",
-      subtitle: "PLMベースの先行企画から解析設計、100%内製金型・射出・SMD・ドライバー組立、5段階品質保証まで一貫対応します。",
+      subtitle: "共同企画から解析設計、100%内製金型・射出・SMD・ドライバー組立、5段階品質保証まで一貫対応します。",
       cta: "お問い合わせ",
       viewDetail: "詳細を見る",
       steps: [
         {
-          step: "01", title: "製品企画・先行品質", titleEn: "Planning & PLM",
-          body: "お客様R&Dとの共同企画、原価検討、Rtings目標設定およびPLM登録。",
-          detail: "開発初期段階からPLMシステム上で仕様・目標原価・先行品質基準を一元管理します。",
+          step: "01", title: "製品企画・先行品質", titleEn: "Planning",
+          body: "お客様R&Dとの共同企画、原価検討および音響・機構コンセプト立案。",
+          detail: "開発初期段階から仕様・目標原価・先行品質基準を一貫して管理します。",
         },
         {
           step: "02", title: "統合設計・シミュレーション", titleEn: "Engineering",
@@ -781,7 +781,7 @@ export const translations = {
         },
         {
           step: "06", title: "5大陸77か国グローバル物流", titleEn: "Global Logistics",
-          body: "SAP ERP・MES・SCM(WBP)連携および6か国8拠点による適時納品体制。",
+          body: "6か国8拠点のグローバル生産網による世界77か国への適時納品体制。",
           detail: "韓国・ベトナム・中国・インドネシア・メキシコ・ハンガリー網から世界77か国へ安定供給します。",
         },
       ],

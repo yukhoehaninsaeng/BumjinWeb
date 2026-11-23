@@ -20,7 +20,7 @@ export const BUSINESS_DEPARTMENTS: Department[] = [
     odmBody:
       "제조자 개발생산(Original Development Manufacturing). 고객 R&D 공동 기획부터 Fine Box·Abaqus 시뮬레이션, Audio SoC SW 개발, 완전무향실·Rtings 검증, 금형·사출·SMD 및 글로벌 양산 출하까지 전 과정을 책임집니다.",
     odmFlow: [
-      { step: "01", title: "제품 기획 · PLM" },
+      { step: "01", title: "제품 기획 · 컨셉 수립" },
       { step: "02", title: "회로 · 기구 · SoC 설계" },
       { step: "03", title: "무향실 · 시제품 검증" },
       { step: "04", title: "Dolby · HDMI 2.1 인증" },
@@ -298,7 +298,7 @@ export function getBusinessDepartments(lang: Lang): Department[] {
         odmBody:
           "Original Development Manufacturing — From joint planning, Fine Box/Abaqus simulation, and SoC software to anechoic/Rtings testing, precision tooling, SMT, and global delivery to 77 countries.",
         odmFlow: [
-          { step: "01", title: "Planning · PLM" },
+          { step: "01", title: "Planning · Concept" },
           { step: "02", title: "Circuit · Mech · SoC" },
           { step: "03", title: "Anechoic Validation" },
           { step: "04", title: "Dolby · HDMI 2.1 Cert" },
@@ -362,7 +362,7 @@ export function getBusinessDepartments(lang: Lang): Department[] {
           "将多媒体研究所的声学、电路及Audio SoC软件自主研发能力与100%垂直整合、80%自动化产线(7条SMD线，月2.3亿颗)相结合，一站式供应11.1.4ch Atmos声棒、AV功放及年产6,000万只扬声器单元。",
         odmBody: "自主设计制造（ODM）——全面负责联合策划、Fine Box/Abaqus仿真、SoC软件开发、消声室/Rtings测试及全球77国量产交付。",
         odmFlow: [
-          { step: "01", title: "策划 · PLM" },
+          { step: "01", title: "产品策划 · 方案" },
           { step: "02", title: "电路·结构·SoC" },
           { step: "03", title: "消声室验证" },
           { step: "04", title: "Dolby·HDMI 2.1" },
@@ -426,7 +426,7 @@ export function getBusinessDepartments(lang: Lang): Department[] {
           "マルチメディア研究所の音響・回路・Audio SoCソフト自社開発力と100%垂直統合・80%自動化ライン(SMD 7ライン月2.3億pcs)を融合し、11.1.4ch Atmosサウンドバー、AVレシーバー、年6,000万個のスピーカードライバーを一貫供給します。",
         odmBody: "自社設計製造（ODM）——共同企画、Fine Box/Abaqus解析、SoCソフト開発、無響室・Rtings検証、精密金型・射出・SMD・77か国出荷まで全工程を担います。",
         odmFlow: [
-          { step: "01", title: "製品企画・PLM" },
+          { step: "01", title: "製品企画・立案" },
           { step: "02", title: "回路・機構・SoC" },
           { step: "03", title: "無響室・試作検証" },
           { step: "04", title: "Dolby・HDMI 2.1" },
