@@ -234,44 +234,72 @@ function CEOSection({
 
       {/* CEO content — 2 col */}
       <div className="mx-auto max-w-7xl px-6 lg:px-10 pb-24 lg:pb-32">
-        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-start">
-          {/* Photo */}
-          <FadeIn className="lg:col-span-2">
-            <div className="bg-gray-100 aspect-[3/4] relative overflow-hidden">
-              {ceoPhoto ? (
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Leadership Card / Photo */}
+          <FadeIn className="lg:col-span-5">
+            {ceoPhoto ? (
+              <div className="bg-gray-100 aspect-[3/4] relative overflow-hidden">
                 <Image src={ceoPhoto} alt="CEO" fill className="object-cover" />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span
-                    aria-hidden
-                    className="font-black text-gray-200 select-none"
-                    style={{ fontSize: "clamp(140px, 22vw, 240px)" }}
-                  >
-                    B
-                  </span>
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-900/75 to-transparent">
+                  <p className="text-[18px] font-black text-white">{t.ceoTitle}</p>
+                  <p className="text-[12px] text-white/65 mt-0.5">{t.ceoCompany}</p>
                 </div>
-              )}
-              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-900/70 to-transparent">
-                <p className="text-[18px] font-black text-white">{t.ceoTitle}</p>
-                <p className="text-[12px] text-white/55 mt-0.5">
-                  {t.ceoCompany}
-                </p>
               </div>
-            </div>
+            ) : (
+              <div className="bg-gray-950 text-white p-8 lg:p-10 flex flex-col justify-between min-h-[380px] border border-gray-900">
+                <div>
+                  <span className="block w-8 h-[2px] bg-red-600 mb-6" />
+                  <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-gray-400 mb-4">
+                    {t.profileEyebrow}
+                  </p>
+                  <p className="text-[20px] lg:text-[22px] font-bold text-white leading-snug break-keep">
+                    {t.profileHeadline}
+                  </p>
+                </div>
+
+                <div className="my-8 divide-y divide-white/10 border-y border-white/10">
+                  {t.profileMetrics.map((m) => (
+                    <div key={m.label} className="py-3.5 flex items-baseline justify-between gap-4">
+                      <span className="text-[12px] text-gray-400">{m.label}</span>
+                      <span className="text-[14px] font-bold text-white whitespace-nowrap">{m.value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div>
+                  <p className="text-[18px] font-black text-white">{t.ceoTitle}</p>
+                  <p className="text-[12px] text-gray-400 mt-1">{t.ceoCompany}</p>
+                </div>
+              </div>
+            )}
           </FadeIn>
 
           {/* Message */}
-          <FadeIn delay={0.12} className="lg:col-span-3 pt-4">
-            {/* Big opening line */}
-            <p
-              className="font-bold text-gray-900 leading-snug mb-10"
-              style={{ fontSize: "clamp(18px, 2vw, 26px)" }}
+          <FadeIn delay={0.12} className="lg:col-span-7 pt-1">
+            {/* Key opening statement */}
+            <blockquote
+              className="font-bold text-gray-900 leading-[1.4] mb-10 border-l-[3px] border-red-600 pl-6 break-keep"
+              style={{ fontSize: "clamp(19px, 2.1vw, 26px)" }}
             >
               {opening}
-            </p>
+            </blockquote>
+
+            {/* 3 Core CEO Commitments */}
+            {t.highlights && t.highlights.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-3 border-t border-b border-gray-200 divide-y sm:divide-y-0 sm:divide-x divide-gray-200 mb-10">
+                {t.highlights.map((h) => (
+                  <div key={h.num} className="py-5 sm:px-5 first:sm:pl-0 last:sm:pr-0">
+                    <span className="text-[10px] font-mono text-red-600 block mb-1.5">{h.num}</span>
+                    <p className="text-[13px] font-bold text-gray-900 mb-1 break-keep">{h.title}</p>
+                    <p className="text-[12px] text-gray-500 leading-relaxed break-keep">{h.desc}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
             <div className="space-y-5">
               {paragraphs.map((para, i) => (
-                <p key={i} className="text-[14px] text-gray-600 leading-[1.85]">
+                <p key={i} className="text-[14px] text-gray-600 leading-[1.9] break-keep">
                   {para}
                 </p>
               ))}
@@ -372,14 +400,14 @@ function VisionSection({
           </FadeIn>
           <FadeIn delay={0.08}>
             <p
-              className="font-black text-white leading-[1.05] tracking-tight max-w-3xl"
+              className="font-black text-white leading-[1.05] tracking-tight max-w-3xl break-keep"
               style={{ fontSize: "clamp(32px, 5vw, 72px)" }}
             >
               {statement}
             </p>
           </FadeIn>
           <FadeIn delay={0.16} className="mt-10 max-w-2xl">
-            <p className="text-red-100 text-[14px] leading-[1.9]">
+            <p className="text-red-100 text-[14px] leading-[1.9] break-keep">
               {t.description}
             </p>
           </FadeIn>
@@ -394,15 +422,15 @@ function VisionSection({
               <div
                 className={`py-12 ${
                   i % 2 === 0 ? "pl-0 pr-6" : "pl-6 pr-0"
-                } ${i === 0 ? "lg:pl-0 lg:pr-10" : "lg:px-10"}`}
+                } ${i === 0 ? "lg:pl-0 lg:pr-8" : "lg:px-8"}`}
               >
                 <p
-                  className="font-black text-gray-900 leading-none tracking-tighter"
-                  style={{ fontSize: "clamp(36px, 4vw, 60px)" }}
+                  className="font-black text-gray-900 leading-none tracking-tighter whitespace-nowrap"
+                  style={{ fontSize: "clamp(28px, 3.2vw, 50px)" }}
                 >
                   {item.value}
                 </p>
-                <p className="text-[12px] text-gray-400 mt-2">{item.label}</p>
+                <p className="text-[12px] text-gray-400 mt-2 break-keep">{item.label}</p>
               </div>
             </FadeIn>
           ))}

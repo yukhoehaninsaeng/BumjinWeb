@@ -49,7 +49,11 @@ export interface CompanyTranslations {
     titleLines: string[];
     ceoTitle: string;
     ceoCompany: string;
+    profileEyebrow: string;
+    profileHeadline: string;
+    profileMetrics: { label: string; value: string }[];
     opening: string;
+    highlights: { num: string; title: string; desc: string }[];
     paragraphs: string[];
     thanks: string;
     philosophyEyebrow: string;
@@ -178,14 +182,37 @@ const KO: CompanyTranslations = {
     titleLines: ["CEO", "인사말"],
     ceoTitle: "대표이사 박정길",
     ceoCompany: "범진전자(주) · 범진아이엔디(주) · 범진시엔엘(주)",
+    profileEyebrow: "SINCE 1991 · LEADERSHIP",
+    profileHeadline: "도전과 혁신으로 30여 년을 걸어온 글로벌 제조 파트너",
+    profileMetrics: [
+      { label: "창립", value: "1991.10.01" },
+      { label: "제조 역량", value: "100% 인하우스 수직계열화" },
+      { label: "글로벌 공급", value: "5대륙 77개국" },
+      { label: "비전 목표", value: "Vision 2030" },
+    ],
     opening:
-      "범진은 고객의 행복한 삶이라는 가치 실현을 위해 끊임없이 도전하며 성장해 왔습니다.",
+      "기술 자립과 정도경영으로 고객의 신뢰에 보답하며, 사람과 기술이 함께 성장하는 100년 기업을 만들어가겠습니다.",
+    highlights: [
+      {
+        num: "01",
+        title: "100% 인하우스 기술 자립",
+        desc: "선행 R&D부터 금형·사출·완제품 양산까지 자체 기술로 완결",
+      },
+      {
+        num: "02",
+        title: "타협 없는 품질·납기 신뢰",
+        desc: "글로벌 생산거점 기반 5대륙 77개국 적기 공급 체계 구축",
+      },
+      {
+        num: "03",
+        title: "사람 중심·정도경영",
+        desc: "투명한 준법경영과 인재 육성으로 지속 가능한 동반성장 실현",
+      },
+    ],
     paragraphs: [
-      "1991년 창립 이후 범진은 견고한 기술력과 투명한 경영을 바탕으로 국내 시장에서 경쟁력을 확보하고, 세계 각국에 생산기지를 구축하며 음향기기 및 금형·사출 분야의 전문 기업으로 성장해 왔습니다. 모두가 불가능하다고 했던 꿈을 현실로 만들어 온 지난 시간처럼, 범진은 미래를 향한 도전을 멈추지 않을 것입니다.",
-      "범진은 단순한 외형적 성장에 만족하지 않습니다. 지속적인 투자와 연구개발을 통해 고객에게 더 큰 가치를 제공하고, 글로벌 시장에서 신뢰받는 기업으로 자리매김하기 위해 최선을 다하고 있습니다. 고객의 성공이 곧 우리의 성공이라는 믿음 아래 최고의 품질과 혁신적인 기술로 고객 만족을 실현해 나가겠습니다.",
-      "또한 범진은 고객, 임직원, 협력사와 함께 성장하는 기업을 지향합니다. 신뢰와 투명성을 바탕으로 정도경영을 실천하며, 인재를 소중히 여기고 사회적 책임을 다하는 기업으로서 지속 가능한 미래를 만들어 가겠습니다.",
-      "저희 임직원 모두는 현재의 자부심을 지키며 미래에 대한 확고한 비전으로 새로운 내일을 향해 나아가겠습니다.",
-      "앞으로도 범진의 도전과 성장에 변함없는 관심과 성원을 부탁드립니다.",
+      "1991년 정밀 금형 제조로 출발한 범진은 지난 30여 년간 끊임없는 기술 도전과 투명한 경영을 바탕으로, 음향·멀티미디어 완제품과 스피커 드라이버, 초정밀 금형·사출성형을 아우르는 글로벌 제조 파트너로 성장해 왔습니다.",
+      "범진은 단순한 외형 확장이 아닌 본질적인 제조 경쟁력에 집중합니다. 선행 R&D 투자와 100% 인하우스 공정 내재화, 타협 없는 품질 관리로 고객의 제품 가치를 높이고 5대륙 77개국 시장에서 약속된 납기와 품질을 지켜나가고 있습니다.",
+      "법과 윤리를 준수하는 투명경영, 인재가 자부심을 가지고 역량을 펼치는 건강한 조직문화를 토대로 고객·임직원·협력사가 함께 도약하는 Vision 2030의 미래를 열어가겠습니다.",
     ],
     thanks: "감사합니다.",
     philosophyEyebrow: "경영철학",
@@ -378,7 +405,7 @@ const KO: CompanyTranslations = {
       },
     ],
     coreMessage:
-      '"연구개발, 생산, 금형, 사출성형까지 100% 수직 통합된 글로벌 제조 밸류체인을 통해 5대륙 77개국 고객의 성공을 지원합니다."',
+      '"선행 R&D부터 정밀 금형·사출, 완제품 양산까지 — 각 계열사의 전문성이 하나로 이어지는 원스톱 제조 솔루션을 제공합니다."',
   },
   history: {
     eyebrow: "History & Awards",
@@ -550,14 +577,37 @@ const EN: CompanyTranslations = {
     titleLines: ["CEO", "Message"],
     ceoTitle: "CEO Park Jung-gil",
     ceoCompany: "Bumjin Electronics · Bumjin I&D · Bumjin C&L",
+    profileEyebrow: "SINCE 1991 · LEADERSHIP",
+    profileHeadline: "A 30-year global manufacturing partner built on innovation",
+    profileMetrics: [
+      { label: "Founded", value: "Oct 01, 1991" },
+      { label: "Capability", value: "100% In-House Integration" },
+      { label: "Global Reach", value: "77 Countries · 5 Continents" },
+      { label: "Vision Target", value: "Vision 2030" },
+    ],
     opening:
-      "Bumjin has grown through continuous challenge to realize the value of a happier life for our customers.",
+      "Through independent engineering and transparent management, we earn our customers' trust and build a 100-year enterprise where people and technology grow together.",
+    highlights: [
+      {
+        num: "01",
+        title: "100% In-House Engineering",
+        desc: "Self-reliant capabilities spanning R&D, precision tooling, molding, and final assembly",
+      },
+      {
+        num: "02",
+        title: "Uncompromising Quality & Delivery",
+        desc: "Reliable global manufacturing delivering on time across 77 countries",
+      },
+      {
+        num: "03",
+        title: "People-First Integrity",
+        desc: "Transparent governance and talent development driving shared growth",
+      },
+    ],
     paragraphs: [
-      "Since our founding in 1991, Bumjin has built strong competitiveness in the domestic market on a foundation of solid technology and transparent management, expanding production bases worldwide to become a specialist in acoustic devices, precision molds, and injection molding. Just as we turned what many called impossible dreams into reality, Bumjin will never stop challenging the future.",
-      "We are never satisfied with mere quantitative growth. Through continuous investment and R&D, we strive to deliver greater value to our customers and stand as a trusted partner in the global market. Guided by the belief that our customers' success is our success, we will achieve complete customer satisfaction with superior quality and innovative technology.",
-      "Furthermore, Bumjin aspires to grow together with our customers, employees, and partners. Practicing ethical management built on trust and transparency, we will cherish our talent and fulfill our social responsibilities to build a sustainable future.",
-      "All of us at Bumjin will uphold our pride today and move forward toward a new tomorrow with a steadfast vision for the future.",
-      "We sincerely ask for your continued interest and support in Bumjin's ongoing journey of challenge and growth.",
+      "Founded in 1991 in precision tooling, Bumjin has grown over the past three decades through relentless technical challenge and transparent governance into a global manufacturing partner spanning finished audio, speaker drivers, precision molds, and large-scale molding.",
+      "Rather than pursuing mere scale, we focus on fundamental manufacturing strength — investing in advanced R&D, maintaining 100% in-house process control, and upholding strict quality standards to maximize customer product value worldwide.",
+      "Guided by ethical compliance and a culture where talent thrives with ownership, we are advancing toward Vision 2030 alongside our customers, employees, and partners.",
     ],
     thanks: "Thank you.",
     philosophyEyebrow: "Management Philosophy",
@@ -750,7 +800,7 @@ const EN: CompanyTranslations = {
       },
     ],
     coreMessage:
-      '"Through a 100% vertically integrated manufacturing value chain from R&D to tooling and mass molding, we empower customer success across 77 countries."',
+      '"From advanced R&D to precision tooling, molding, and finished assembly — each affiliate connects seamlessly to deliver a true one-stop manufacturing solution."',
   },
   history: {
     eyebrow: "History & Awards",
@@ -922,13 +972,37 @@ const ZH: CompanyTranslations = {
     titleLines: ["CEO", "致辞"],
     ceoTitle: "代表理事 朴正吉",
     ceoCompany: "凡真电子(株) · 凡真IND(株) · 凡真C&L(株)",
-    opening: "凡真为实现客户幸福生活的价值理念，不断挑战并持续成长。",
+    profileEyebrow: "SINCE 1991 · LEADERSHIP",
+    profileHeadline: "以挑战与创新走过三十余载的全球制造合作伙伴",
+    profileMetrics: [
+      { label: "创立日期", value: "1991.10.01" },
+      { label: "制造实力", value: "100% 自主垂直整合" },
+      { label: "全球供货", value: "5大洲 77个国家" },
+      { label: "愿景目标", value: "Vision 2030" },
+    ],
+    opening:
+      "依托自主技术实力与正道透明经营回馈客户信赖，打造人才与技术共同成长的百年企业。",
+    highlights: [
+      {
+        num: "01",
+        title: "100% 自主技术独立",
+        desc: "以前沿研发、精密模具、注塑到整机量产全流程自主技术赋能",
+      },
+      {
+        num: "02",
+        title: "坚守品质与交期信赖",
+        desc: "依托全球生产基地，向5大洲77个国家准时交付卓越品质",
+      },
+      {
+        num: "03",
+        title: "以人为本 · 正道经营",
+        desc: "以透明合规经营与人才培养践行可持续发展，与伙伴共赢未来",
+      },
+    ],
     paragraphs: [
-      "自1991年创立以来，凡真凭借扎实的技术实力与透明经营在国内市场确立竞争力，并在全球各地建立生产基地，成长为音响设备及模具·注塑领域的专业企业。正如我们将众人认为不可能的梦想变为现实一样，凡真面向未来的挑战永不止步。",
-      "凡真不满足于单纯的规模扩张。我们将通过持续投资与研发，为客户创造更大价值，全力打造全球市场信赖的企业。秉持客户成功即我们成功的信念，以卓越品质与创新技术实现客户满意。",
-      "同时，凡真致力于与客户、员工及合作伙伴共同成长。以信赖与透明为基础践行正道经营，珍视人才并履行社会责任，共创可持续发展的未来。",
-      "全体员工将坚守当下的自豪，怀抱对未来的坚定愿景，迈向崭新的明天。",
-      "今后也恳请各位一如既往地关注与支持凡真的挑战与成长。",
+      "自1991年以精密模具制造起步以来，凡真在过去三十余年间凭借持之以恒的技术挑战与透明经营，成长为涵盖音响多媒体整机、扬声器单元及超精密模具注塑的全球制造合作伙伴。",
+      "凡真不满足于单纯的规模扩张，而是聚焦制造本质竞争力。通过前瞻研发投入、100%工序内制化及严格质量体系，全面提升客户产品价值，并在全球77个国家兑现交期与品质承诺。",
+      "我们将继续践行恪守法规与伦理的透明经营，建设让人才引以为傲的健康组织文化，携手客户、员工与合作伙伴共同迈向 Vision 2030 的崭新未来。",
     ],
     thanks: "谢谢。",
     philosophyEyebrow: "经营哲学",
@@ -1101,7 +1175,7 @@ const ZH: CompanyTranslations = {
       },
     ],
     coreMessage:
-      '"依托研发、制造、精密模具与注塑成形100%垂直整合的全球制造价值链，助力5大洲77个国家的客户取得成功。"',
+      '"从前沿研发到精密模具、注塑与整机量产——各关联企业紧密协同，为客户提供真正的一站式制造解决方案。"',
   },
   history: {
     eyebrow: "History & Awards",
@@ -1273,14 +1347,37 @@ const JA: CompanyTranslations = {
     titleLines: ["CEO", "ご挨拶"],
     ceoTitle: "代表取締役 朴正吉 (Park Jung-gil)",
     ceoCompany: "ボムジン電子(株) · ボムジンIND(株) · ボムジンC&L(株)",
+    profileEyebrow: "SINCE 1991 · LEADERSHIP",
+    profileHeadline: "挑戦と革新で30年余りを歩んできたグローバル製造パートナー",
+    profileMetrics: [
+      { label: "創業", value: "1991.10.01" },
+      { label: "製造力", value: "100% インハウス垂直統合" },
+      { label: "グローバル供給", value: "5大陸 77ヶ国" },
+      { label: "ビジョン目標", value: "Vision 2030" },
+    ],
     opening:
-      "ボムジンはお客様の幸せな暮らしという価値実現のため、絶えず挑戦し成長してきました。",
+      "技術の自立と正道経営でお客様の信頼に応え、人材と技術がともに成長する100年企業を築いてまいります。",
+    highlights: [
+      {
+        num: "01",
+        title: "100% インハウス技術自立",
+        desc: "先行R&Dから金型・射出成形・完成品量産まで自社技術で完結",
+      },
+      {
+        num: "02",
+        title: "妥協のない品質・納期信頼",
+        desc: "グローバル生産拠点網により5大陸77ヶ国へ適時供給を実現",
+      },
+      {
+        num: "03",
+        title: "人材尊重・正道経営",
+        desc: "透明なコンプライアンス経営と人材育成で持続可能な共創成長を実現",
+      },
+    ],
     paragraphs: [
-      "1991年の創業以来、ボムジンは確かな技術力と透明な経営を基盤に国内市場で競争力を確立し、世界各地に生産拠点を築きながら音響機器および金型・射出成形分野の専門企業へと成長してまいりました。誰もが不可能だと言った夢を現実にしてきたこれまでのように、ボムジンは未来への挑戦を止めません。",
-      "私たちは単なる外形的成長に満足いたしません。継続的な投資と研究開発を通じてお客様により大きな価値を提供し、グローバル市場で信頼される企業として地位を確立すべく最善を尽くしております。お客様の成功こそが私たちの成功であるという信念のもと、最高の品質と革新的な技術でお客様満足を実現してまいります。",
-      "またボムジンは、お客様、社員、パートナー企業とともに成長する企業を目指します。信頼と透明性に基づく正道経営を実践し、人材を大切にして社会的責任を果たす企業として持続可能な未来を築いてまいります。",
-      "私たち社員一同は現在の誇りを胸に、未来への確固たるビジョンをもって新たな明日へと邁進してまいります。",
-      "今後ともボムジンの挑戦と成長に変わらぬご関心とご支援を賜りますようお願い申し上げます。",
+      "1991年の精密金型製造から歩みを始めたボムジンは、過去30余年にわたる絶え間ない技術挑戦と透明な経営により、音響・マルチメディア完成品からスピーカードライバー、超精密金型・射出成形まで網羅するグローバル製造パートナーへと成長してまいりました。",
+      "私たちは単なる規模拡大ではなく本質的な製造競争力に注力しています。先行R&D投資と100%インハウス工程内製化、厳格な品質管理によりお客様の製品価値を高め、世界77ヶ国市場で約束された品質と納期を守り続けています。",
+      "法と倫理を遵守する透明経営と、社員が誇りをもって力を発揮できる健全な組織文化を基盤に、お客様・社員・パートナー企業とともに飛躍する Vision 2030 の未来を切り拓いてまいります。",
     ],
     thanks: "ありがとうございます。",
     philosophyEyebrow: "経営哲学",
@@ -1458,7 +1555,7 @@ const JA: CompanyTranslations = {
       },
     ],
     coreMessage:
-      '"研究開発、生産、金型、射出成形まで100%垂直統合されたグローバル製造バリューチェーンを通じて、5大陸77ヶ国のお客様の成功を支援します。"',
+      '"先行R&Dから精密金型・射出成形、完成品量産まで——グループ各社の専門性がひとつにつながるワンストップ製造ソリューションを提供します。"',
   },
   history: {
     eyebrow: "History & Awards",

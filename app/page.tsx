@@ -79,7 +79,7 @@ function CompanySection({ lang }: { lang: Lang }) {
             </h2>
           </FadeIn>
           <FadeIn delay={0.1} className="flex flex-col justify-end">
-            <p className="text-gray-600 text-[15px] leading-relaxed mb-6">{t.body}</p>
+            <p className="text-gray-600 text-[15px] leading-relaxed mb-6 break-keep">{t.body}</p>
             <div className="flex flex-wrap items-center gap-6">
               <a href="#contact" className="inline-flex items-center gap-2 text-red-600 font-semibold text-[13px] hover:gap-3 transition-all group">
                 {t.inquiryLink}
@@ -100,15 +100,18 @@ function CompanySection({ lang }: { lang: Lang }) {
               <div
                 className={`${
                   i % 2 === 1 ? "pl-4" : "pr-4"
-                } ${i > 0 ? "lg:pl-8" : "lg:pl-0"} ${
-                  i < t.stats.length - 1 ? "lg:pr-8 lg:border-r lg:border-gray-200/80" : "lg:pr-0"
+                } ${i > 0 ? "lg:pl-6" : "lg:pl-0"} ${
+                  i < t.stats.length - 1 ? "lg:pr-6 lg:border-r lg:border-gray-200/80" : "lg:pr-0"
                 }`}
               >
-                <p className="text-[40px] lg:text-[52px] font-black text-gray-900 leading-none tracking-tight">
+                <p
+                  className="font-black text-gray-900 leading-none tracking-tight whitespace-nowrap"
+                  style={{ fontSize: "clamp(28px, 2.8vw, 42px)" }}
+                >
                   {s.value}
                 </p>
-                <p className="text-[13px] font-semibold text-gray-800 mt-3">{s.label}</p>
-                {s.sub && <p className="text-[11px] text-gray-400 mt-1">{s.sub}</p>}
+                <p className="text-[13px] font-semibold text-gray-800 mt-3 break-keep">{s.label}</p>
+                {s.sub && <p className="text-[11px] text-gray-400 mt-1 break-keep">{s.sub}</p>}
               </div>
             </FadeIn>
           ))}
@@ -453,8 +456,8 @@ function ClientsSection({
             <div className="grid grid-cols-3 gap-6">
               {t.stats.map((item) => (
                 <div key={item.label} className="border-t-2 border-red-600 pt-4">
-                  <p className="text-[26px] sm:text-[28px] font-black text-gray-900">{item.value}</p>
-                  <p className="text-[11px] text-gray-500 mt-1">{item.label}</p>
+                  <p className="text-[24px] sm:text-[28px] font-black text-gray-900 whitespace-nowrap">{item.value}</p>
+                  <p className="text-[11px] text-gray-500 mt-1 break-keep">{item.label}</p>
                 </div>
               ))}
             </div>
