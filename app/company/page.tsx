@@ -693,6 +693,35 @@ function HistorySection({
             {t.subtitle}
           </p>
         </FadeIn>
+
+        {/* Awards & Recognition */}
+        {t.awards && t.awards.length > 0 && (
+          <FadeIn delay={0.2} className="mt-16">
+            <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-red-600 mb-6">
+              {t.awardsEyebrow}
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-gray-200">
+              {t.awards.map((award, idx) => (
+                <div
+                  key={award.title}
+                  className="border-r border-b border-gray-200 p-6 lg:p-8 flex flex-col justify-between gap-4 hover:bg-gray-50 transition-colors"
+                >
+                  <span className="text-[11px] font-bold tracking-[0.14em] text-gray-300">
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 className="text-[16px] font-bold text-gray-900 leading-snug mb-1.5">
+                      {award.title}
+                    </h3>
+                    <p className="text-[12px] font-medium text-gray-500">
+                      {award.org}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+        )}
       </div>
 
       {/* Timeline */}
